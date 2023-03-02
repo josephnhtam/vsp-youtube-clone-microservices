@@ -1,0 +1,80 @@
+.comments-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.comments-header h3 {
+  margin: 0 8px 0 0;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  gap: 16px;
+}
+
+.sort-by {
+  margin-left: 6px;
+}
+
+.show-more-comments button span {
+  margin: 0 4px 0 6px;
+}
+
+.pending-container {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner svg {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.loading-more-comment-container{
+  margin-top: 24px;
+}
+
+.initializing-container {
+  margin-top: 24px;
+}
+
+.forum-container {
+  position: relative;
+  width: 100%;
+}
+
+.content-container{
+  width: 100%;
+}
+
+.content-container.loading {
+ opacity: 0.5;
+ pointer-events: none;
+}
+
+.loading-container {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 190px;
+  justify-content: end !important;
+}
+
+.bottom-section {
+  width: 100%;
+  pointer-events: none;
+}

@@ -1,0 +1,38 @@
+<vg-player #videoPlayer (onPlayerReady)="onPlayerReady($event)">
+  <!-- <div *ngIf="switchingVideoResource"
+    style="position:absolute; top:0; bottom:0; left:0; right:0; background-color: black; z-index: 1000;"></div> -->
+  <vg-overlay-play></vg-overlay-play>
+  <vg-buffering></vg-buffering>
+
+  <ng-container *ngIf="!inlineProgressBar">
+    <app-scrub-bar>
+      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+    </app-scrub-bar>
+  </ng-container>
+
+  <vg-controls class="controls" [vgAutohide]="true" [vgAutohideTime]="3">
+    <vg-play-pause></vg-play-pause>
+
+    <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+    <app-scrub-bar>
+      <ng-container *ngIf="inlineProgressBar">
+        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+      </ng-container>
+    </app-scrub-bar>
+
+    <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+    <vg-mute></vg-mute>
+    <vg-volume></vg-volume>
+    <app-quality-selector *ngIf="showQualitySelector" [videoResources]="videoResources"
+      [selectedHeight]="selectedHeight" (heightSelected)="onHeightSelected($event)"></app-quality-selector>
+
+    <vg-fullscreen></vg-fullscreen>
+  </vg-controls>
+
+  <video class="w-100 h-100" #media [vgMedia]="$any(media)" [poster]="thumbnailUrl" preload="auto" crossorigin>
+  </video>
+</vg-player>

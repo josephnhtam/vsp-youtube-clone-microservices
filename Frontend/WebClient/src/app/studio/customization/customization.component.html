@@ -1,0 +1,43 @@
+<div class="customization-container" cdkScrollable>
+  <h1>Channel customization</h1>
+
+  <mat-tab-group animationDuration="0ms" color="accent" style="z-index: 0;">
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span>Layout</span>
+        <mat-icon *ngIf="!layout.isValid()" class="material-symbols-outlined invalid-icon">warning</mat-icon>
+      </ng-template>
+      <app-edit-layout #layout></app-edit-layout>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span>Branding</span>
+        <mat-icon *ngIf="!branding.isValid()" class="material-symbols-outlined invalid-icon">warning</mat-icon>
+      </ng-template>
+      <app-edit-branding #branding></app-edit-branding>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span>Basic info</span>
+        <mat-icon *ngIf="!basicInfo.isValid()" class="material-symbols-outlined invalid-icon">warning</mat-icon>
+      </ng-template>
+      <app-edit-basic-info #basicInfo></app-edit-basic-info>
+    </mat-tab>
+
+    <mat-tab disabled>
+      <ng-template mat-tab-label>
+        <div class="actions-container">
+          <a color="accent" mat-button [routerLink]="channelLink$|async" target="_blank">VIEW CHANNEL</a>
+          <button [disabled]="!isDirty() || (isPending$|async)" color="accent" mat-button
+            (click)="reset()">CANCEL</button>
+          <button [disabled]="!isDirty() || !isValid() || (isPending$|async)" color="accent" mat-flat-button
+            (click)="publish()">PUBLISH</button>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

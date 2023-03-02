@@ -1,0 +1,59 @@
+<div class="video-playlist-container" [hidden]="failedToLoad$|async" *ngIf="isLoaded$|async">
+  <div class="header">
+    <a class="title" (click)="viewPlaylist()">
+      {{title$|async}}
+    </a>
+
+    <div class="info">
+      <div class="visibility">
+        <mat-icon class="material-symbols-outlined">{{visibilityIcon$|async}}</mat-icon>
+        <span>{{visibility$|async}}</span>
+      </div>
+
+      <div class="author">
+        {{creatorDisplayName$|async}}
+      </div>
+
+      <div class="position">
+        <span>{{currentPosition$|async}}/{{itemsCount$|async}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <div class="options">
+      <button mat-icon-button matTooltip="Loop playlist" class="loop-btn" [class.active]="loopState!=0"
+        [class.single]="loopState==2" matTooltipPosition="below" (click)="switchLoopState()">
+        <mat-icon class="material-symbols-outlined">repeat</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Shuffle playlist" class="shuffle-btn" matTooltipPosition="below"
+        [class.active]="shuffle" (click)="toggleShuffle()">
+        <mat-icon class="material-symbols-outlined">shuffle</mat-icon>
+      </button>
+    </div>
+
+    <div class="other-option" *ngIf="hasOptions && (isAuthenticated$|async)">
+      <button mat-icon-button [matMenuTriggerFor]="optionsMenu">
+        <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="playlist-items-container">
+    <ng-container *ngFor="let item of (playlistItems$|async)">
+      <app-video-playlist-item [item]="item" [isCurrent]="item==(currentItem$|async)"></app-video-playlist-item>
+    </ng-container>
+  </div>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <button mat-menu-item (click)="createPlaylistRef()" [disabled]="(isMine$|async)"
+    *ngIf="!(hasPlaylistRef$|async)"><mat-icon class="material-symbols-outlined">library_add</mat-icon>Save playlist to
+    library</button>
+
+  <button mat-menu-item (click)="removePlaylistRef()" [disabled]="(isMine$|async)"
+    *ngIf="(hasPlaylistRef$|async)"><mat-icon class="material-symbols-outlined">library_add_check</mat-icon>Remove
+    playlist
+    from
+    library</button>
+</mat-menu>

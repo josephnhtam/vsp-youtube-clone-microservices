@@ -1,0 +1,37 @@
+@media (min-width: 2000px){
+  .row-cols-xxxl-5 > * {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}
+
+@media (min-width: 2300px){
+  .row-cols-xxxxl-6 > * {
+    flex: 0 0 auto;
+    width: 16.66%;
+  }
+}
+
+.bottom-section {
+  position: absolute;
+  height: 300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+app-video-grid-item {
+  padding: 0 8px 0 8px !important;
+}
+
+.home-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.content-container {
+  width: 100%;
+  position: relative;
+}

@@ -1,0 +1,39 @@
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 280,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.mat-icon {
+  transform: scale(1.05);
+}
+
+.mat-icon-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height:40px;
+}
+
+.tools-container {
+  display: flex;
+  gap: 12px;
+}
+
+.tool-placeholder-container {
+  width: 40px;
+  height:40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tool-placeholder {
+  background-color: var(--tint-200);
+  border-radius: 50%;
+  width:32px;
+  height:32px;
+}

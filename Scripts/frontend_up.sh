@@ -1,0 +1,1 @@
+docker run --name vspclient --rm -d -p 4200:80 vspclient

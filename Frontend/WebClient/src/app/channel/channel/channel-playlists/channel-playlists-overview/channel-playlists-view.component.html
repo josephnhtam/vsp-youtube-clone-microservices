@@ -1,0 +1,20 @@
+<div class="channel-playlists-container">
+  <div *ngIf="loaded$|async"
+    class="playlists-container row row-cols-xxl-6 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-start">
+
+    <ng-container *ngFor="let playlist of (playlists$|async)">
+      <app-playlist-grid-item class="col mini-mode" [playlistInfo]="playlist" [hideUserThumbnail]="true"
+        [hideUser]="true"></app-playlist-grid-item>
+    </ng-container>
+  </div>
+
+  <div *ngIf="(loaded$|async) && (playlists$|async)!.length==0">
+    This section has no playlists.
+  </div>
+
+  <div class="pending-container" *ngIf="pending$|async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="bottom-section" #bottomSection></div>
+</div>

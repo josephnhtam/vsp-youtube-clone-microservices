@@ -1,0 +1,33 @@
+:host {
+  width: 100%;
+}
+
+.channel-playlists-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.playlists-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+app-channel-playlists-overview  {
+  width: 85%;
+  max-width: 1284px;
+}
+
+app-channel-playlists-view  {
+  width: 100%;
+  max-width: 1284px;
+}
+
+.header-container {
+  width: 100%;
+  margin-top: 24px;
+  max-width: 1284px;
+}

@@ -1,0 +1,58 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.section-row-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title-container {
+  flex: 0;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.section-title-container .mat-flat-button {
+  margin-left: 4px;
+  border-radius: 100px;
+  color: var(--primary-color);
+}
+
+.slider-container {
+  flex: 0 0 216px;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.section-desc-container {
+  flex: 1;
+  margin: 8px 0 0;
+}
+
+.section-desc-container p {
+  margin: 0;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--tint-600);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}

@@ -1,0 +1,49 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.section-row-container .swiper {
+  flex: 1;
+  height: 100%;
+}
+
+::ng-deep .section-row-container .swiper-slide {
+  user-select: none;
+}
+
+.section-row-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.section-row-container .swipe-btn {
+  z-index: 500;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  color: var(--tint-600)
+}
+
+.section-row-container .prev-btn {
+  position: absolute;
+  top: 50%;
+  left: -4px;
+  transform: translate(-50%) translateY(-180%);
+}
+
+.section-row-container .next-btn {
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  transform: translateX(50%) translateY(-180%);
+}
+
+.section-row-container .mat-icon-button {
+  background-color: var(--bg-color);
+}

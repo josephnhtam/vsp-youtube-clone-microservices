@@ -1,0 +1,51 @@
+<div class="forum-container" *ngIf="!(initializing$|async); else initializing">
+  <div class="comments-header">
+
+    <h3>{{commentsCount$|async}} {{(commentsCount$|async)! > 0 ? 'Comments' : 'Comment'}}</h3>
+    <button mat-flat-button class="rounded-pill" [matMenuTriggerFor]="sortMenu">
+      <mat-icon class="material-symbols-outlined">sort</mat-icon><span class="sort-by">Sort by</span>
+    </button>
+  </div>
+
+  <app-video-comment-adder *ngIf="(isAuthenticated$|async) && (isUserReady$|async)"></app-video-comment-adder>
+
+  <div class="content-container" [class.loading]="loading$|async">
+    <div class="comments">
+      <ng-container *ngFor="let rootCommentClient of (rootComments$|async); trackBy: trackCommentClient">
+        <app-video-comment-block [commentClient]="rootCommentClient"></app-video-comment-block>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="showLoadMoreRootCommentsButton && (hasMoreComments$|async) && !(loadingMoreComments$|async)">
+      <div class="show-more-comments">
+        <button mat-button color="accent" class="rounded-pill" (click)="showMoreComments()">
+          <mat-icon>subdirectory_arrow_right</mat-icon>
+          <span>Show more comments</span>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="pending-container loading-container" *ngIf="loading$|async">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+
+<ng-template #initializing>
+  <div class="pending-container initializing-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
+<div class="bottom-section" #bottomSection></div>
+
+<div *ngIf="(loadingMoreComments$|async)">
+  <div class="pending-container loading-more-comment-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+
+<mat-menu #sortMenu="matMenu">
+  <button mat-menu-item (click)="sortByTopComments()">Top comments</button>
+  <button mat-menu-item (click)="sortByNewestFirst()">Newest first</button>
+</mat-menu>

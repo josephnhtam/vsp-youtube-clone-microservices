@@ -1,0 +1,21 @@
+.toolbar-container {
+  padding: 0 16px;
+  background-color: var(--bg-color);
+  height: 100%;
+  width: 100%;
+}
+
+.main-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+}
+
+.main-icon {
+  object-fit: cover;
+  width: 28px;
+  height: auto;
+  cursor: pointer;
+}

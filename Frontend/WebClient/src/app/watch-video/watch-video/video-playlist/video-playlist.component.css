@@ -1,0 +1,146 @@
+.video-playlist-container {
+  border: 1px solid var(--tint-200);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-items-container {
+  overflow-y: auto;
+}
+
+.header {
+  padding: 12px 6px 0 16px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  color: var(--primary-color);
+  text-decoration: none;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title:hover {
+  cursor: pointer;
+}
+
+.info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+  margin-top: 4px;
+}
+
+.author {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.visibility {
+  border-radius: 2px;
+  background-color: var(--tint-50);
+  color: var(--tint-600);
+  font-weight: 500;
+  padding: 3px 4px 3px 4px;
+  margin-right: 8px;
+
+  display: flex;
+  align-items: center;
+}
+
+.visibility mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
+}
+
+.visibility span{
+  margin-right: 2px;
+}
+
+.position {
+  color: var(--tint-600)
+}
+
+.position::before {
+  display: inline-block;
+  content: '-';
+  padding: 0 4px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.actions {
+  padding: 0px 6px 0 6px;
+  display: flex;
+}
+
+.options {
+  flex: 1;
+}
+
+.options .mat-icon-button mat-icon {
+  font-size: 24px;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 320,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.other-option .mat-icon-button mat-icon {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 500,
+  'GRAD' 0,
+  'opsz' 36
+}
+
+.loop-btn {
+  position: relative;
+}
+
+.loop-btn.active.active .mat-icon {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 600,
+  'GRAD' 0,
+  'opsz' 36
+}
+
+.loop-btn.active.single::before {
+  display: block;
+  position: absolute;
+  top: 0.5;
+  left: 0.5;
+  content: '1';
+  transform: translateY(-1px) scale(0.65);
+}
+
+.shuffle-btn.active.active mat-icon {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 600,
+  'GRAD' 0,
+  'opsz' 36
+}

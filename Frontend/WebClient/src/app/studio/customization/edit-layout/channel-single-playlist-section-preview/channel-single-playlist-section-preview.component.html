@@ -1,0 +1,22 @@
+<app-channel-section-preview-base (onRemoved)="onRemoved.emit()">
+  <span title *ngIf="!pending">{{title}} ({{totalCount}})</span>
+
+  <div class="videos-container" content *ngIf="!pending && videos.length == 0">
+    <app-video-preview [video]="hiddenVideoDummy"></app-video-preview>
+  </div>
+
+  <div class="videos-container" content *ngIf="!pending && videos.length > 0">
+    <app-video-preview *ngFor="let video of videos" [video]="video"></app-video-preview>
+  </div>
+
+  <ng-container options>
+    <button mat-menu-item (click)="edit()">
+      <mat-icon class="material-symbols-outlined">edit</mat-icon>
+      <span>Edit section contents</span>
+    </button>
+    <a mat-menu-item [routerLink]="['/playlist']" [queryParams]="{list:section.content.playlistId}" target="_blank">
+      <mat-icon class="material-symbols-outlined">playlist_play</mat-icon>
+      <span>View playlist</span>
+    </a>
+  </ng-container>
+</app-channel-section-preview-base>

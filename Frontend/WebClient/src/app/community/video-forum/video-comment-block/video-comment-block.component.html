@@ -1,0 +1,121 @@
+<div class="comment-container" [class.small]="small">
+  <div class="icon-col">
+    <app-user-thumbnail [userThumbnailData]="userProfile" [size]="small?24:40"></app-user-thumbnail>
+  </div>
+
+  <div class="comment-col" [class.small]="small">
+    <div class="comment-content">
+      <ng-container *ngIf="!isEditing;else editor">
+        <div class="author">
+          <span *ngIf="!userProfile.handle">{{userProfile.displayName}}</span>
+          <span *ngIf="!!userProfile.handle"> @{{userProfile.handle}}</span>
+          <span class="date">{{relativeDate}}</span>
+          <span class="edited" *ngIf="edited">(edited)</span>
+        </div>
+
+        <div class="comment-row">
+          <span class="comment">{{comment}}</span>
+
+          <div class="option-col" [class.focusing]="isFocusing" *ngIf="isMine$|async">
+            <button mat-icon-button color="primary" [matMenuTriggerFor]="optionsMenu" (click)="openOptionsMenu()"
+              (menuClosed)="optionsMenuClosed()">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="social">
+          <div class="operations">
+            <button mat-icon-button matTooltip="Like" matTooltipPosition="below" class="like-btn"
+              (click)="onClickLike()">
+              <mat-icon class="material-symbols-outlined" [class.filled]="isLiked$|async">thumb_up</mat-icon>
+            </button>
+            <span class="ms-1" class="count">{{likesCount}}</span>
+
+            <button mat-icon-button matTooltip="Dislike" matTooltipPosition="below" class="dislike-btn"
+              (click)="onClickDislike()">
+              <mat-icon class="material-symbols-outlined" [class.filled]="isDisliked$|async">thumb_down</mat-icon>
+            </button>
+
+            <button mat-button *ngIf="(isAuthenticated$|async) && (isUserReady$|async)" class="rounded-pill reply-btn"
+              (click)="reply()">Reply</button>
+          </div>
+        </div>
+
+        <div class="reply-adder" *ngIf="isReplying">
+          <app-video-comment-adder [parentCommentId]="commentId" [small]="true" (cancel)="cancelReply()"
+            label="Add a reply" #replyAdder>
+          </app-video-comment-adder>
+        </div>
+      </ng-container>
+
+      <ng-template #editor>
+        <app-video-comment-editor [commentId]="commentId" [comment]="comment" (cancel)="cancelEdit()"
+          #commentEditor></app-video-comment-editor>
+      </ng-template>
+    </div>
+
+
+    <div class="replies-container">
+      <ng-container *ngIf="hasReply">
+        <button mat-button color="accent" class="rounded-pill show-replies-btn" (click)="toggleShowReplies()">
+          <mat-icon *ngIf="!(showingReplies)">arrow_drop_down</mat-icon>
+          <mat-icon *ngIf="showingReplies">arrow_drop_up</mat-icon>
+          <span>{{repliesCount}} {{repliesCount > 1 ? 'replies' : 'reply'}}</span>
+        </button>
+
+        <ng-container *ngIf="showingReplies;">
+          <div class="replies">
+            <ng-container *ngIf="!(loadingReplies$|async); else loadingReplies">
+              <ng-container *ngFor="let reply of (replies$|async); trackBy: trackCommentClient">
+                <app-video-comment-block [commentClient]="reply" [small]="true"></app-video-comment-block>
+              </ng-container>
+            </ng-container>
+
+            <ng-template #loadingReplies>
+              <div class="pending-container">
+                <mat-spinner></mat-spinner>
+              </div>
+            </ng-template>
+          </div>
+
+          <ng-container *ngIf="!(loadingReplies$|async)">
+            <div class="show-more-replies" *ngIf="hasMoreReply$|async">
+              <button mat-button color="accent" class="rounded-pill" (click)="showMoreReplies()">
+                <mat-icon>subdirectory_arrow_right</mat-icon>
+                <span>Show more replies</span>
+              </button>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="((hasNewReply$|async)??0) >0">
+      <div class="replies">
+        <ng-container *ngFor="let reply of (newReplies$|async); trackBy: trackCommentClient">
+          <app-video-comment-block [commentClient]="reply" [small]="true"></app-video-comment-block>
+        </ng-container>
+      </div>
+    </ng-container>
+
+  </div>
+
+
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <ng-template matMenuContent let-row="row">
+
+    <button mat-menu-item (click)="edit()">
+      <mat-icon class="material-symbols-outlined menu-item-icon">edit</mat-icon>
+      <span>Edit</span>
+    </button>
+
+    <button mat-menu-item (click)="deleteComment()">
+      <mat-icon class="material-symbols-outlined menu-item-icon">delete</mat-icon>
+      <span>Delete</span>
+    </button>
+
+  </ng-template>
+</mat-menu>

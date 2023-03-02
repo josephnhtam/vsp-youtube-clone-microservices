@@ -1,0 +1,54 @@
+<div class="tab-container">
+  <div class="customization-container">
+
+    <div class="component-container">
+      <div class="section-header">
+        <h3 class="label">Video spotlight</h3>
+        <p class="desc"> Add a video to the top of your channel homepage.</p>
+      </div>
+
+      <app-edit-video-spotlight [(unsubscribedSpotlightVideoId)]="unsubscribedSpotlightVideoId"
+        [(subscribedSpotlightVideoId)]="subscribedSpotlightVideoId"></app-edit-video-spotlight>
+    </div>
+
+    <div class="component-container">
+      <div class="section-header">
+        <h3 class="label">Featured sections</h3>
+        <p class="desc">Customize the layout of your channel homepage with up to {{maxSectionsCount}} sections.</p>
+
+        <button mat-button color="accent" class="add-section-btn" [matMenuTriggerFor]="addSectionMenu">
+          <mat-icon mat class="material-symbols-outlined">add</mat-icon>
+          <span>ADD SECTION</span>
+        </button>
+      </div>
+
+      <app-channel-section-previews-list [(sections)]="sections"></app-channel-section-previews-list>
+    </div>
+
+  </div>
+</div>
+
+<mat-menu #addSectionMenu="matMenu">
+  <div class="add-section-menu-label"><span>Videos</span></div>
+
+  <button class="add-section-menu-item" mat-menu-item [disabled]="!canAddVideosSection()" (click)="addVideoSection()">
+    <span>Videos</span>
+  </button>
+
+  <div class="add-section-menu-label"><span>Playlists</span></div>
+
+  <button class="add-section-menu-item" mat-menu-item [disabled]="!canAddSinglePlaylistSection()"
+    (click)="addSinglePlaylistSection()">
+    <span>Single playlist</span>
+  </button>
+
+  <button class="add-section-menu-item" mat-menu-item [disabled]="!canAddCreatedPlaylistsSection()"
+    (click)="addCreatedPlaylistsSection()">
+    <span>Created playlists</span>
+  </button>
+
+  <button class="add-section-menu-item" mat-menu-item [disabled]="!canAddMultiplePlaylistsSection()"
+    (click)="addMultiplePlaylistsSection()">
+    <span>Multiple playlists</span>
+  </button>
+</mat-menu>

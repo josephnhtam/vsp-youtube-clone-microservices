@@ -1,0 +1,43 @@
+h1 {
+  padding: 23px 0 0 32px;
+  margin-bottom: 16px;
+  line-height: 32px;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  z-index: 20;
+}
+
+::ng-deep .customization-container .mat-tab-labels .mat-tab-label:last-child {
+  opacity: unset !important;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.invalid-icon {
+  margin-left: 6px;
+  color: var(--danger-color)
+}
+
+.customization-container {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* ::ng-deep .customization-container .mat-tab-label {
+  min-width: 0;
+  padding: 0 32px;
+} */

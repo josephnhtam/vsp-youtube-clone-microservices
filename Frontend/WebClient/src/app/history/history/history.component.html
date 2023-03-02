@@ -1,0 +1,33 @@
+<div class="history-container">
+  <div class="layout">
+    <div class="content-container">
+      <div class="title-container">
+        <div class="title">Watch history</div>
+      </div>
+      <div class="dates-container" *ngIf="(isLoaded$|async)">
+        <ng-container *ngFor="let dateTime of (historyDateTimes$|async)">
+          <app-user-watch-history [dateTime]="dateTime"></app-user-watch-history>
+        </ng-container>
+
+        <ng-container *ngIf="noRecordsFound$|async">
+          <div class="no-videos-container">
+            This list has no videos.
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="pending-container"
+        *ngIf="!(noRecordsFound$|async) && (!(isLoaded$|async) || (isLoadingMoreRecords$|async))">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div class="bottom-section" #bottomSection></div>
+    </div>
+
+    <div class="header-container">
+      <ng-scrollbar style="overscroll-behavior: contain;" [autoHeightDisabled]="false">
+        <app-history-header></app-history-header>
+      </ng-scrollbar>
+    </div>
+  </div>
+</div>

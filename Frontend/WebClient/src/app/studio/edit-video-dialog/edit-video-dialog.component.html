@@ -1,0 +1,18 @@
+<div class="content">
+  <div class="title-row">
+    <h2 class="title">{{dialogTitle$|async}}</h2>
+    <button mat-icon-button (click)="close()">
+      <mat-icon mat>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="content-body">
+    <ng-container *ngIf="!(readyToEdit$|async) ; else editVideo">
+      <app-upload-video (fileToUpload)="uploadFile($event)" [fileAccepted]="file != null"></app-upload-video>
+    </ng-container>
+
+    <ng-template #editVideo>
+      <app-edit-video [videoClient]="videoClient$!"></app-edit-video>
+    </ng-template>
+  </div>
+</div>

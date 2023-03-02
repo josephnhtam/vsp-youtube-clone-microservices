@@ -1,0 +1,18 @@
+<div class="feed-container">
+  <div class="title-container">
+    <ng-content select=[title]></ng-content>
+  </div>
+
+  <div class="empty-content-container" *ngIf="videos.length == 0">
+    <ng-content select=[empty-content]></ng-content>
+  </div>
+
+  <div *ngIf="videos.length > 0"
+    class="videos-container w-100 row row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 justify-content-start">
+
+    <ng-container *ngFor="let video of videos">
+      <app-video-grid-item class="col mini-mode" [video]="video" [hideUserThumbnail]="true"></app-video-grid-item>
+    </ng-container>
+
+  </div>
+</div>

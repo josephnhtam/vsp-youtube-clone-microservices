@@ -1,0 +1,169 @@
+.add-to-playlist-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.title-row {
+  flex-grow: 0;
+  display:flex;
+  align-items: center;
+  padding: 16px 24px 0 24px;
+}
+
+.title-row h3{
+  margin: 0;
+  flex-grow: 1;
+}
+
+.title-row button{
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  margin: 0 16px 0 16px;
+  padding: 16px 8px 16px 8px;
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.playlist-row:last-child {
+  
+  margin-bottom: 0;
+}
+
+.playlist-title {
+  flex: 1 1 auto;
+  margin-left: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.add-to-playlist-container {
+  height: 100%;
+}
+
+::ng-deep .add-to-playlist-dialog .mat-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  height: auto;
+}
+
+::ng-deep .add-to-playlist-container .mat-checkbox-inner-container{
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+::ng-deep .add-to-playlist-container app-add-to-playlist-dialog {
+  height: 100%;
+  display: block;
+}
+
+::ng-deep .add-to-playlist-container .mat-checkbox-label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+::ng-deep .add-to-playlist-container .mat-checkbox-label mat-icon {
+  transform: scale(0.8);
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep .add-to-playlist-container .mat-checkbox-layout {
+  display: flex !important;
+  align-items: center !important;
+  width: 100%;
+}
+
+.playlist-visibility-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  width: 100%;
+}
+
+::ng-deep .create-playlist-btn .mat-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.create-playlist-btn { 
+  width: 100%;
+  padding: 6px 24px 6px 24px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.create-playlist-btn-icon {
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-playlist-btn mat-icon {
+  width: 100%;
+  height: 100%;
+  line-height: 20px;
+  transform: translateX(-2px);
+
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.create-playlist-container {
+  padding: 16px 24px 12px 24px;
+  width: 100%;
+}
+
+.create-playlist-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-playlist-container .actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.create-playlist-fields .mat-form-field {
+  margin-bottom: 12px;
+}
+
+.create-playlist-fields .mat-form-field:last-child {
+  margin-bottom: 0;
+}
+
+.create-playlist-container .mat-form-field {
+  width: 100%;
+}

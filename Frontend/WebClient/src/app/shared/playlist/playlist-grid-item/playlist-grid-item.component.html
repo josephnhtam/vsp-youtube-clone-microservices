@@ -1,0 +1,55 @@
+<div class="playlist-grid-item-container" [class.loaded]="playlistInfo!=null" (mouseenter)="mouseEnter()"
+  (mouseleave)="mouseLeave()">
+  <a class="clickable" [routerLink]="getViewLink()" [queryParams]="getQueryParams()"></a>
+
+  <div class="thumbnail-container aspect-ratio-16-9" [class.placeholder]="isPlaceholder">
+    <div class="thumbnail" *ngIf="playlistInfo!=null && !!thumbnailUrl">
+      <img crossorigin [src]="thumbnailUrl">
+    </div>
+
+    <div class="playlist-cover" *ngIf="playlistInfo!=null">
+      <div class="items-count-container">
+        <span>{{itemsCount}}</span>
+        <mat-icon class="material-symbols-outlined">playlist_play</mat-icon>
+      </div>
+    </div>
+
+    <div class="play-all-cover" [class.show]="mouseover" *ngIf="playlistInfo!=null">
+      <div class="play-all">
+        <mat-icon>play_arrow</mat-icon><span>PLAY ALL</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="details">
+    <div class="icon-col" *ngIf="!hideUser && !hideUserThumbnail">
+      <app-user-thumbnail [userThumbnailData]="creatorProfile" [size]="36"></app-user-thumbnail>
+    </div>
+
+    <div class="desc-col">
+      <p class="title" [class.placeholder]="isPlaceholder">
+        <span *ngIf="playlistInfo">{{ title }}</span>
+      </p>
+
+      <div class="desc">
+        <a class="author" *ngIf="!hideUser" [class.placeholder]="isPlaceholder" [routerLink]="channelLink">
+          <span *ngIf="playlistInfo"> {{ creatorProfile?.displayName }}</span>
+        </a>
+
+        <div class="update-date" *ngIf="!hideUpdateDate">
+          Updated {{updateDate}}
+        </div>
+
+        <div class="visibility" *ngIf="!hideVisibility && (isMine$|async)">
+          <mat-icon class="material-symbols-outlined">{{visibilityIcon}}</mat-icon>
+          <span>{{visibility}}</span>
+        </div>
+
+        <a class="view-full-playlist" [routerLink]="getPlaylistList()" [queryParams]="getPlaylistQueryParams()">
+          View full playlist
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

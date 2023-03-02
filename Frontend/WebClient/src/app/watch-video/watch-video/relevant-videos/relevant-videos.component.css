@@ -1,0 +1,42 @@
+.videos-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+app-video-row-small {
+  margin-bottom: 12px;
+}
+
+app-video-row-small:last-child {
+  margin-bottom: 0;
+}
+
+.bottom-section {
+  position: absolute;
+  height: 50px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.pending-container{
+  width: 100%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner svg {
+  width: 35px !important;
+  height: 35px !important;
+}

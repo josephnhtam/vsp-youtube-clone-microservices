@@ -1,0 +1,106 @@
+<section class="library-container">
+  <div class="layout">
+    <div class="content-container">
+
+      <div class="pending-container" *ngIf="!isLoaded">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <app-library-videos-feed class="feed" [videos]="userWatchRecordVideos!" *ngIf="userWatchRecordVideos && isLoaded">
+        <div title class="title">
+          <mat-icon class="material-symbols-outlined">history</mat-icon>
+          <span>History</span>
+
+          <div class="tools">
+            <button mat-button color="accent" class="rounded-pill" routerLink="/history">
+              See all
+            </button>
+          </div>
+        </div>
+
+        <div empty-content class="empty-content">
+          Videos that you watch will be shown here.
+        </div>
+      </app-library-videos-feed>
+
+      <app-library-videos-feed class="feed" [videos]="waterLaterPlaylistVideos!"
+        *ngIf="waterLaterPlaylistVideos && isLoaded">
+        <div title class="title">
+          <mat-icon class="material-symbols-outlined">schedule</mat-icon>
+          <span>Watch later</span>
+          <span class="count" *ngIf="watchLaterCount>0">{{watchLaterCount}}</span>
+
+          <div class="tools">
+            <button mat-button color="accent" class="rounded-pill" routerLink="/playlist" [queryParams]="{'list':'WL'}">
+              See all
+            </button>
+          </div>
+        </div>
+
+        <div empty-content class="empty-content">
+          Save videos to watch later. Your list will be shown right here.
+        </div>
+      </app-library-videos-feed>
+
+      <app-library-playlists-feed class="feed" [playlistInfos]="playlistInfos!" *ngIf="playlistInfos && isLoaded"
+        [hasMore]="hasMorePlaylistInfos" [loadingMore]="loadingMorePlaylistInfos"
+        (onLoadMore)="loadMorePlaylistInfos()">
+        <div title class="title">
+          <mat-icon class="material-symbols-outlined">playlist_play</mat-icon>
+          <span>Playlists</span>
+          <span class="count" *ngIf="playlistsCount>0">{{playlistsCount}}</span>
+        </div>
+
+        <div empty-content class="empty-content">
+          Use the thumbs-up icon to like videos. Your list will be shown right here.
+        </div>
+      </app-library-playlists-feed>
+
+      <app-library-videos-feed class="feed" [videos]="likedPlaylistVideos!" *ngIf="likedPlaylistVideos && isLoaded">
+        <div title class="title">
+          <mat-icon class="material-symbols-outlined">thumb_up</mat-icon>
+          <span>Liked videos</span>
+          <span class="count" *ngIf="likedCount>0">{{likedCount}}</span>
+
+          <div class="tools">
+            <button mat-button color="accent" class="rounded-pill" routerLink="/playlist" [queryParams]="{'list':'LL'}">
+              See all
+            </button>
+          </div>
+        </div>
+
+        <div empty-content class="empty-content">
+          Use the thumbs-up icon to like videos. Your list will be shown right here.
+        </div>
+      </app-library-videos-feed>
+
+    </div>
+
+    <div class="user-profile-container">
+      <app-user-profile-thumbnail class="user-thumbnail" [userId]="(userId$|async)!"
+        [size]="80"></app-user-profile-thumbnail>
+
+      <div class="username" [class.placeholder]="!(userDisplayName$|async)">
+        {{userDisplayName$|async}}
+      </div>
+
+      <div class="metadata-container">
+        <div class="metadata">
+          <div class="metadata-name">Subscriptions</div>
+          <div class="metadata-value" [class.placeholder]="subscriptionsCount==null">{{subscriptionsCount}}</div>
+        </div>
+
+        <div class="metadata">
+          <div class="metadata-name">Uploads</div>
+          <div class="metadata-value" [class.placeholder]="uploadsCount==null">{{uploadsCount}}</div>
+        </div>
+
+        <div class="metadata">
+          <div class="metadata-name">Likes</div>
+          <div class="metadata-value" [class.placeholder]="likesCount==null">{{likesCount}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

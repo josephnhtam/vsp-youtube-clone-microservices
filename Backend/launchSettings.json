@@ -1,0 +1,68 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "adminer": "StartWithoutDebugging",
+        "apigateway": "StartDebugging",
+        "community.api": "StartDebugging",
+        "elasticsearch": "StartWithoutDebugging",
+        "history.api": "StartDebugging",
+        "identityprovider": "StartDebugging",
+        "kibana": "StartWithoutDebugging",
+        "library.api": "StartDebugging",
+        "mongo": "StartWithoutDebugging",
+        "mongo-express": "StartWithoutDebugging",
+        "pgadmin": "StartWithoutDebugging",
+        "postgres": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging",
+        "redis-commander": "StartWithoutDebugging",
+        "search.api": "StartDebugging",
+        "storage.api": "StartDebugging",
+        "subscriptions.api": "StartDebugging",
+        "users.api": "StartDebugging",
+        "videomanager.api": "StartDebugging",
+        "videomanager.signalrhub": "StartDebugging",
+        "videoprocessor.application": "StartDebugging",
+        "videostore.api": "StartDebugging",
+        "jaeger": "StartWithoutDebugging",
+        "logstash": "StartWithoutDebugging",
+        "webstatus": "StartDebugging"
+      }
+    },
+    "Start Infrastructure": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "adminer": "StartWithoutDebugging",
+        "apigateway": "DoNotStart",
+        "community.api": "DoNotStart",
+        "elasticsearch": "StartWithoutDebugging",
+        "history.api": "DoNotStart",
+        "identityprovider": "DoNotStart",
+        "kibana": "StartWithoutDebugging",
+        "library.api": "DoNotStart",
+        "mongo": "StartWithoutDebugging",
+        "mongo-express": "StartWithoutDebugging",
+        "pgadmin": "StartWithoutDebugging",
+        "postgres": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging",
+        "redis": "StartWithoutDebugging",
+        "redis-commander": "StartWithoutDebugging",
+        "search.api": "DoNotStart",
+        "storage.api": "DoNotStart",
+        "subscriptions.api": "DoNotStart",
+        "users.api": "DoNotStart",
+        "videomanager.api": "DoNotStart",
+        "videomanager.signalrhub": "DoNotStart",
+        "videoprocessor.application": "DoNotStart",
+        "videostore.api": "DoNotStart",
+        "jaeger": "StartWithoutDebugging",
+        "logstash": "StartWithoutDebugging",
+        "webstatus": "DoNotStart"
+      }
+    }
+  }
+}

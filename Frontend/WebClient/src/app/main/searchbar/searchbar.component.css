@@ -1,0 +1,36 @@
+.search-btn {
+  padding: 0 18px;
+  border-radius: 0 25px 25px 0;
+}
+
+.search-btn:hover {
+  background-color: var(--highlight-color);
+}
+
+.search-btn:active {
+  background-color: var(--press-color);
+}
+
+.search-group {
+  max-width: 600px;
+  padding: 0 15px;
+}
+
+.search-input {
+  border-radius: 25px 0 0 25px;
+}
+
+.search-input:focus {
+  box-shadow: none;
+}
+
+.searchbar-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host {
+  height: 100%;
+}

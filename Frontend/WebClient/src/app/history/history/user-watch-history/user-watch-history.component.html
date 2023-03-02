@@ -1,0 +1,11 @@
+<div class="history-container">
+  <div class="title">
+    {{dateString}}
+  </div>
+
+  <div class="records-container">
+    <ng-container *ngFor="let record of (historyRecords$|async)">
+      <app-user-watch-record-row [record]="record"></app-user-watch-record-row>
+    </ng-container>
+  </div>
+</div>

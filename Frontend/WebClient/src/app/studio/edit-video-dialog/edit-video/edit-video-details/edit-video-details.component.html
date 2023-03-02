@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="details-content col-xl-7">
+
+    <h2>Details</h2>
+
+    <form class="details-form" [formGroup]="infoFormGroup">
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>Title</mat-label>
+        <input type="text" matInput formControlName="title" placeholder="Add a title that describes your video"
+          [maxlength]="100">
+        <mat-error *ngIf="hasError(infoFormGroup.get('title'))">
+          Please enter a valid title
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 mt-2" appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea formControlName="description" style="resize: none; height: 125px" matInput
+          placeholder="Tell viewers about your video" [maxlength]="5000"></textarea>
+      </mat-form-field>
+    </form>
+
+    <ng-container *ngIf="!(isProcessingFailed$|async)">
+      <h3 class="mb-2">Thumbnail</h3>
+      <p class="text-tint-500">Select a picture that shows what's in your video. A good thumbnail stands out and
+        draws viewers'
+        attention.</p>
+
+      <div class="thumbnails-container">
+        <div class="thumbnails">
+          <!-- <div class="thumbnail thumbnail-upload">
+          <div class="thumbnail-upload-icon">
+            <mat-icon class="material-symbols-outlined">add_photo_alternate</mat-icon>
+            <span>Upload thumbnail</span>
+          </div>
+        </div> -->
+
+          <ng-container *ngIf="!(areVideoThumbnailsProcessed$|async); else thumbnailsProcessed">
+            <div matTooltip="Auto-generating" class="thumbnail"></div>
+            <div matTooltip="Auto-generating" class="thumbnail"></div>
+            <div matTooltip="Auto-generating" class="thumbnail"></div>
+          </ng-container>
+
+          <ng-template #thumbnailsProcessed>
+            <ng-container *ngFor="let thumbnail of (videoThumbnails$|async); let i = index">
+              <div class="thumbnail" [class.thumbnail-selected]="thumbnailIndex == i">
+                <img class="thumbnail-img" [src]="thumbnail.url" (click)="selectThumbnail(i)" />
+              </div>
+            </ng-container>
+          </ng-template>
+
+        </div>
+      </div>
+    </ng-container>
+
+    <h3 class="mb-2">Tags</h3>
+    <p class="text-tint-500">Tags can be useful if content in your video is commonly misspelled. Otherwise, tags play a
+      minimal role in helping viewers find your video.</p>
+
+    <div class="tags-container">
+      <mat-form-field class="tags-chip-list" appearance="fill" hintLabel="Enter a comma after each tag">
+        <mat-chip-list #chipList aria-label="Tag selection">
+          <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+            {{tag.keyword}}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input placeholder="New tag..." [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-hint align="end"><span [class.text-danger]="!isTagsInputValid()">{{infoFormGroup.get("tags")?.value?.length
+            || 0}}</span>/500</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="video-content col-xl-5">
+    <div class="video-preview">
+
+      <ng-container *ngIf="!(isProcessingFailed$|async); else videoProcessingFailed">
+        <ng-container *ngIf="!(videoPreviewAvailable$|async); else videoPreview">
+          <div class="video-container">
+            <div class="video-empty">
+              <div class="video">
+                <div class="video-status-container">
+                  <ng-container *ngIf="isVideoUploaded$|async; else waitingForUserUpload">
+                    Processing video...
+                  </ng-container>
+                  <ng-template #waitingForUserUpload>
+                    Uploading video...
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #videoPreview>
+          <div class="video-container">
+            <div [style]="getVideoStyle$()|async">
+              <div class="video">
+                <app-video-player [tryAutoPlay]="false" [autoRefresh]="false" [inlineProgressBar]="false"
+                  [showQualitySelector]="false" [videoResources]="(videoPreviewResource$|async)!">
+                </app-video-player>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+      <ng-template #videoProcessingFailed>
+        <div class="video-container">
+          <div class="video-empty">
+            <div class="video">
+              <div class="video-status-container">
+                Processing failed
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ul class="video-info-container" *ngIf="hasOriginalVideoFileName$|async">
+        <li class="video-info">
+          <div class="video-info-topic">Filename</div>
+          <div class="video-info-content">{{originalVideoFileName$|async}}</div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

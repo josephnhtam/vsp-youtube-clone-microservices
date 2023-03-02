@@ -1,0 +1,43 @@
+﻿using EventBus;
+using MediatR;
+using VideoManager.API.Application.Commands;
+using VideoManager.API.Application.IntegrationEvents.Users;
+
+namespace VideoManager.API.Application.IntegrationEventHandlers.Users {
+    public class UserProfileCreatedOrUpdatedIntegrationEventHandler :
+        IntegrationEventHandler<UserProfileCreatedOrUpdatedIntegrationEvent, UserProfileCreatedOrUpdatedIntegrationEventQueue> {
+
+        private readonly IMediator _mediator;
+        private readonly ILogger<UserProfileCreatedOrUpdatedIntegrationEventHandler> _logger;
+
+        public UserProfileCreatedOrUpdatedIntegrationEventHandler (
+            IMediator mediator, ILogger<UserProfileCreatedOrUpdatedIntegrationEventHandler> logger) {
+            _mediator = mediator;
+            _logger = logger;
+        }
+
+        public override async Task Handle (UserProfileCreatedOrUpdatedIntegrationEvent integrationEvent,
+            IIncomingIntegrationEventProperties properties, IIncomingIntegrationEventContext context) {
+
+            var userProfile = integrationEvent.UserProfile;
+
+            _logger.LogInformation("Obtained user profile ({UserId})", userProfile.Id);
+
+            await _mediator.Send(
+                new CreateOrUpdateUserProfileCommand(
+                    userProfile.Id,
+                    userProfile.DisplayName,
+                    userProfile.Handle,
+                    userProfile.ThumbnailUrl,
+                    userProfile.Version,
+                    true));
+        }
+
+    }
+
+    public class UserProfileCreatedOrUpdatedIntegrationEventQueue : IntegrationEventQueue {
+        public override void OnQueueCreating (IServiceProvider services, IIntegrationEventQueueProperties properties) {
+            properties.QueueName = "VideoManager." + properties.QueueName;
+        }
+    }
+}

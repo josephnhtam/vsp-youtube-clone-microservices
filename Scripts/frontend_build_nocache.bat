@@ -1,0 +1,1 @@
+docker build -t vspclient -f ../Frontend/WebClient/docker/Dockerfile --no-cache ../Frontend/WebClient

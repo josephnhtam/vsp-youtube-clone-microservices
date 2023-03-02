@@ -1,0 +1,13 @@
+<section class="section-row-container">
+  <div class="section-title-container">
+    <a class="title" [routerLink]="['../videos']">Uploads</a>
+
+    <a *ngIf="canPlayAll()" mat-flat-button [routerLink]="['/watch', videoId]" [queryParams]="{list:playlistId}">
+      <mat-icon>play_arrow</mat-icon><span>Play all</span>
+    </a>
+  </div>
+
+  <div class="slider-container" *ngIf="!!section.videos">
+    <app-channel-section-row [items]="$any(section.videos)" [hideUser]="true"></app-channel-section-row>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+<div class="playlists-browser-item-container">
+  <mat-checkbox [(ngModel)]="selected">
+    <div class="content">
+      <div class="thumbnail">
+        <img crossorigin [src]="thumbnailUrl">
+
+        <div class="playlist-cover">
+          <div class="items-count-container">
+            <span>{{itemsCount}}</span>
+            <mat-icon class="material-symbols-outlined">playlist_play</mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="title">
+        <div class="title-content">
+          <span>
+            {{playlistInfo.title}}
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </mat-checkbox>
+</div>

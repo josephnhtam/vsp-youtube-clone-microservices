@@ -1,0 +1,17 @@
+<app-channel-section-preview-base (onRemoved)="onRemoved.emit()">
+
+  <span title *ngIf="!pending">{{title}} ({{ playlistInfos?.length??0 }})</span>
+
+  <span content *ngIf="!pending && playlistInfos?.length==0">No playlist</span>
+
+  <div class="playlists-container" content *ngIf="!pending && playlistInfos?.length??0>0">
+    <app-playlist-preview *ngFor="let info of playlistInfos" [playlistInfo]="info"></app-playlist-preview>
+  </div>
+
+  <ng-container options>
+    <button mat-menu-item (click)="edit()">
+      <mat-icon class="material-symbols-outlined">edit</mat-icon>
+      <span>Edit section contents</span>
+    </button>
+  </ng-container>
+</app-channel-section-preview-base>

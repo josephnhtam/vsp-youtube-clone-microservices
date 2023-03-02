@@ -1,0 +1,23 @@
+<div class="library-actions" *ngIf="!isLoaded; else libraryOp">
+  <div class="placeholder"></div>
+</div>
+
+<ng-template #libraryOp>
+  <div class="library-actions">
+    <button [disabled]="!(isAuthenticated$|async) || !(isUserReady$|async)" mat-flat-button class="btn-bg like-btn"
+      (click)="voteLike()">
+      <mat-icon class="material-symbols-outlined" [class.fill]="isLiked">thumb_up</mat-icon><span
+        class="likes-count">{{likesCount|nFormatter:1}}</span>
+    </button>
+
+    <button [disabled]="!(isAuthenticated$|async) || !(isUserReady$|async)" mat-flat-button class="btn-bg dislike-btn"
+      (click)="voteDislike()">
+      <mat-icon class="material-symbols-outlined" [class.fill]="isDisliked">thumb_down</mat-icon>
+    </button>
+
+    <button [disabled]="!(isAuthenticated$|async) || !(isUserReady$|async)" mat-flat-button
+      class="ms-2 btn-bg rounded-pill" (click)="addToPlaylist()">
+      <mat-icon class="material-symbols-outlined">playlist_add</mat-icon><span class="ms-1">Save</span>
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,59 @@
+<div class="video-spotlight">
+  <div class="icon-container">
+    <div class="icon">
+      <mat-icon class="material-symbols-outlined">{{icon}}</mat-icon>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <h2 class="title">
+      {{title}}
+    </h2>
+
+    <ng-container *ngIf="!pending">
+      <p class="desc" *ngIf="!video">
+        {{description}}
+      </p>
+
+      <div class="video-container" *ngIf="!!video">
+        <div class="video-thumbnail">
+          <img crossorigin alt="video thumbnail" [src]="thumbnailUrl">
+        </div>
+
+        <div class="video-desc">
+          <div class="video-title-header">Video title</div>
+          <div class="video-title">{{video.title}}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="!pending">
+    <div class="empty-action-container" *ngIf="!video">
+      <button *ngIf="!video" mat-button color="accent" class="add-btn" (click)="chooseVideo()">
+        <span>ADD</span>
+      </button>
+    </div>
+
+    <div class="action-container" *ngIf="!!video">
+      <button *ngIf="!!video" mat-icon-button matTooltip="Options" matTooltipPosition="below"
+        [matMenuTriggerFor]="optionsMenu">
+        <mat-icon class="material-symbols">more_vert</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <ng-template matMenuContent let-row="row">
+
+    <button mat-menu-item (click)="chooseVideo()">
+      <span>Change video</span>
+    </button>
+
+    <button mat-menu-item (click)="removeVideo()">
+      <span>Remove video</span>
+    </button>
+
+  </ng-template>
+</mat-menu>

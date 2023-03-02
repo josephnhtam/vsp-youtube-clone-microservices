@@ -1,0 +1,132 @@
+.message-container {
+  display: flex;
+  padding: 16px 0 16px 0;
+  position: relative;
+}
+
+.message-container:hover {
+  background-color: var(--tint-50);
+}
+
+.header-container {
+  flex: 0 0 64px;
+  display: flex;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.checked-indicator-container {
+  width: 16px;
+  height: 48px;
+}
+
+.sender-thumbnail-container {
+  width: 48px;
+  height: 48px;
+}
+
+.content-container {
+  flex: 1;
+  margin-left: 16px;
+  pointer-events: none;
+}
+
+.thumbnail-container {
+  flex: 0 0 86px;
+  margin-left: 16px;
+  pointer-events: none;
+}
+
+.options-container {
+  flex: 0 0 44px;
+  display: flex;
+  justify-content: center;
+}
+
+.thumbnail {
+  position: relative;
+  width: 100%;
+}
+
+.thumbnail-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.thumbnail-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.message {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.date {
+  color: var(--tint-700);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.options-container button {
+  color: var(--tint-600);
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.options-container:hover button {
+  opacity: 1;
+}
+
+.focusing button {
+  opacity: 1 !important;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.option-icon {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 32
+}
+
+.clickable {
+  position: absolute;
+  top: 0;
+  left:0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  color: rebeccapurple;
+}
+
+.checked-indicator-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.checked-indicator {
+  height: 5px;
+  width: 5px;
+  background-color: var(--accent-500);
+  border-radius: 50%;
+  display: inline-block;
+}

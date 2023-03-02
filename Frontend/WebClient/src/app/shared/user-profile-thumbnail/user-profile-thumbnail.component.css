@@ -1,0 +1,7 @@
+.thumbnail-loading {
+  border-radius: 50%;
+  background-color: var(--tint-200);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

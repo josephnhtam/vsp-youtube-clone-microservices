@@ -1,0 +1,66 @@
+<div class="row-container" [class.loaded]="video!=null" [class.hidden]="isHidden" (mouseenter)="mouseEnter()"
+  (mouseleave)="mouseLeave()">
+  <a *ngIf="!isHidden && !!video" class="clickable" [routerLink]="['/watch', video.id]"></a>
+
+  <div class="thumbnail-container aspect-ratio-16-9" [class.placeholder]="isPlaceholder">
+    <div class="thumbnail" *ngIf="video!=null && !!thumbnailUrl">
+      <img crossorigin [src]="thumbnailUrl">
+    </div>
+
+    <div class="length" *ngIf="video!=null && !isHidden">
+      {{length}}
+    </div>
+
+    <div class="thumbnail preview-thumbnail" [class.loaded]="previewThumbnailLoaded && mouseover"
+      *ngIf="previewThumbnailUrl!=null">
+      <img crossorigin [src]="previewThumbnailUrl" (load)="previewThumbnailLoaded = true" *ngIf="mouseover">
+    </div>
+  </div>
+
+  <div class="desc-col">
+    <p class="title" [class.placeholder]="isPlaceholder">
+      {{ title }}
+    </p>
+
+    <div class="stats" [class.placeholder]="isPlaceholder" *ngIf="!isHidden">
+      <ng-container *ngIf="video!=null">
+        <span>{{ viewsCount|nFormatter:1 }} views</span><span class="metadata-date">{{
+          createDate }}</span>
+      </ng-container>
+    </div>
+
+    <div class="author-container" *ngIf="!isHidden">
+      <div class="author-thumbnail">
+        <app-user-thumbnail [userThumbnailData]="creatorProfile" [size]="24"></app-user-thumbnail>
+      </div>
+      <a class="author" [class.placeholder]="isPlaceholder" [routerLink]="channelLink">{{ creatorProfile?.displayName
+        }}</a>
+    </div>
+
+    <div class="desc" [class.placeholder]="isPlaceholder">
+      {{ description }}
+    </div>
+  </div>
+
+  <div class="option-col" [class.focusing]="focusing">
+    <button mat-icon-button color="primary" *ngIf="!isPlaceholder" (click)="removeVideo()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" *ngIf="!isPlaceholder && !isHidden" [matMenuTriggerFor]="optionsMenu"
+      (click)="openOptionsMenu()" (menuClosed)="optionsMenuClosed()">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <ng-template matMenuContent let-row="row">
+
+    <button mat-menu-item (click)="addToPlaylist()">
+      <mat-icon class="material-symbols-outlined">playlist_add</mat-icon>
+      <span>Save to playlist</span>
+    </button>
+
+    <!-- <div class="menu-separator"></div> -->
+  </ng-template>
+</mat-menu>

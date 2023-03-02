@@ -1,0 +1,23 @@
+<div class="uploader-container">
+  <div class="header-bar">
+    <div class="title-bar" (click)="minimized=!minimized">
+      <span>{{title$|async}}</span>
+      <mat-icon class="material-symbols-outlined">{{minimized?'expand_more':'expand_less'}}</mat-icon>
+    </div>
+
+    <div class="header-bar-btn" *ngIf="canClose$|async" (click)="close()">
+      <mat-icon class="material-symbols-outlined">close</mat-icon>
+    </div>
+
+    <mat-progress-bar class="progress-bar" mode="determinate" [value]="uploadingProgress$|async" color="accent"
+      *ngIf="isUploading$|async"></mat-progress-bar>
+  </div>
+
+  <div class="processes-container" *ngIf="!minimized">
+    <ng-scrollbar [autoHeightDisabled]="false">
+      <ng-container *ngFor="let token of uploadTokens">
+        <app-upload-process-row [uploadToken]="token"></app-upload-process-row>
+      </ng-container>
+    </ng-scrollbar>
+  </div>
+</div>

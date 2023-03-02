@@ -1,0 +1,33 @@
+
+.over-sidebar-container {
+  width: 240px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebar-container {
+  width: 100%;
+  height: calc(100% - var(--toolbar-height));
+}
+
+.toolbar-container {
+  padding: 0 16px;
+  background-color: var(--bg-color);
+  height: var(--toolbar-height);
+  width: 100%;
+}
+
+.main-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+}
+
+.main-icon {
+  object-fit: cover;
+  width: 28px;
+  height: auto;
+  cursor: pointer;
+}

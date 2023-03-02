@@ -1,0 +1,12 @@
+<div class="playlists-browser-container">
+  <div class="title">
+    <span>Your playlists</span>
+  </div>
+
+  <div class="playlists-browser">
+    <ng-container *ngFor="let info of playlistInfos">
+      <app-playlists-browser-item [isSelected]="isSelected(info.id)" [playlistInfo]="info"
+        (selectionChange)="selectionChange(info, $event)"></app-playlists-browser-item>
+    </ng-container>
+  </div>
+</div>

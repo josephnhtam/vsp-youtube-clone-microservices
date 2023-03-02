@@ -1,0 +1,41 @@
+<div class="featured-container">
+  <ng-container *ngIf="!(pending$|async) && (sections$|async)!.length>0">
+    <div class="sections-container">
+      <ng-container *ngFor="let section of sections$|async">
+        <div class="section-container">
+          <ng-container [ngSwitch]="section.type">
+            <ng-container *ngSwitchCase="-1">
+              <app-spotlight-video-section-row [section]="$any(section)"></app-spotlight-video-section-row>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="0">
+              <app-videos-section-row [userId]="channel.id" [section]="$any(section)"></app-videos-section-row>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="1">
+              <app-created-playlists-section-row [section]="$any(section)"></app-created-playlists-section-row>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="2">
+              <app-single-playlist-section-row [section]="$any(section)"></app-single-playlist-section-row>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="4">
+              <app-multiple-playlists-section-row [section]="$any(section)"></app-multiple-playlists-section-row>
+            </ng-container>
+
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <div class="empty-container" *ngIf="!(pending$|async) && (sections$|async)!.length==0">
+    <span>This channel doesn't have any content.</span>
+  </div>
+
+  <div class="pending-container" *ngIf="(pending$|async)">
+    <mat-spinner></mat-spinner>
+  </div>
+
+</div>

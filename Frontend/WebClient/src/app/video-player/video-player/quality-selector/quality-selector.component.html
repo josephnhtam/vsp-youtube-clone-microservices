@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="quality-selected" (click)="togglePopup()">
+    {{currentQualityOption?.label}}
+  </div>
+
+  <div class="quality-options-menu" *ngIf="showingPopup">
+    <div *ngFor="let videoResource of videoResources" class="quality-option"
+      (click)="selectQuality(videoResource.height)">
+      {{videoResource.label}}</div>
+  </div>
+</div>

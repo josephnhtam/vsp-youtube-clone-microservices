@@ -1,0 +1,25 @@
+<div class="notifications-dialog-container">
+  <div class="title-row">
+    <h2 class="title">Notifications</h2>
+  </div>
+
+  <div class="main-container">
+    <div class="loading-container" *ngIf="!(loaded$|async) && (pending$|async)">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <ng-scrollbar style="overscroll-behavior: contain;">
+      <div class="content">
+        <ng-container *ngFor="let message of messages$|async">
+          <app-notification-message [message]="message" [menuTrigger]="menuTrigger"></app-notification-message>
+        </ng-container>
+
+        <div class="pending-container" *ngIf="(loaded$|async) && (pending$|async)">
+          <mat-spinner></mat-spinner>
+        </div>
+
+        <div class="bottom-section" #bottomSection></div>
+      </div>
+    </ng-scrollbar>
+  </div>
+</div>

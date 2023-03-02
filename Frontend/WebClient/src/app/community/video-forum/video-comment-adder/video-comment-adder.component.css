@@ -1,0 +1,63 @@
+.add-comment-container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.icon-col {
+  flex: 0;
+  padding-top: 8px;
+}
+
+.small .icon-col {
+  padding-top: 14px;
+}
+
+.add-comment-col {
+  flex: 1;
+  width: auto;
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.small .add-comment-col{
+  margin-left: 12px;
+}
+
+.add-comment-col .mat-form-field {
+  width: 100%;
+}
+
+.commit-comment-container {
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(-8px);
+}
+
+/* .add-comment-container.small {
+  transform: translateY(-4px);
+} */
+
+.add-comment-container ::ng-deep .mat-form-field {
+  font-size: 14px;
+}
+
+.pending-container{
+  width: 100%;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner svg {
+  width: 35px !important;
+  height: 35px !important;
+}

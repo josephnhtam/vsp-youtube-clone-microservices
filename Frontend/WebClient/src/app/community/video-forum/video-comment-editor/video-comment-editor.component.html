@@ -1,0 +1,22 @@
+<div class="edit-comment-container">
+  <ng-container *ngIf="!(pending$|async); else pending">
+    <form [formGroup]="commentForm" class="edit-comment-col" #formDirective="ngForm">
+      <mat-form-field floatLabel="never" [style.fontSize]="8" appearance="legacy">
+        <textarea formControlName="comment" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" #comment="matInput" #commentEl (focus)="focusingComment=true"></textarea>
+      </mat-form-field>
+
+      <div class="commit-comment-container">
+        <button mat-flat-button disableRipple class="rounded-pill me-2 basic-btn-press"
+          (click)="cancelEditing()">Cancel</button>
+        <button mat-flat-button color="accent" class="rounded-pill" (click)="editComment()">Save</button>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #pending>
+    <div class="pending-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</div>

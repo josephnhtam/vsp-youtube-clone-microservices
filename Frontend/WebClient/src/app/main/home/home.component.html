@@ -1,0 +1,22 @@
+<section class="container-fluid home-container pt-4 ps-xl-5 pe-xl-5 position-relative">
+  <div class="content-container">
+    <div
+      class="w-100 m-0 row row-cols-xxxxl-6 row-cols-xxxl-5 row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-1 justify-content-start">
+
+      <ng-container *ngIf="isLoaded$|async">
+        <ng-container *ngFor="let video of (searchResults$|async)">
+          <app-video-grid-item class="col" [video]="video"></app-video-grid-item>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="!(isLoaded$|async) || (isLoadingMoreResults$|async)">
+        <ng-container *ngFor="let i of [].constructor(pageSize)">
+          <app-video-grid-item class="col"></app-video-grid-item>
+        </ng-container>
+      </ng-container>
+
+    </div>
+
+    <div class="bottom-section" #bottomSection></div>
+  </div>
+</section>

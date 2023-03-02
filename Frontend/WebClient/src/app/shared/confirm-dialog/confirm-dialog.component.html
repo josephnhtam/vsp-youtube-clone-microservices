@@ -1,0 +1,16 @@
+<div class="dialog-container">
+  <h1 class="title" *ngIf="title">{{title}}</h1>
+
+  <div class="content" *ngIf="content" [innerHTML]="content"></div>
+  <div class="content-comp-container" #contentContainer></div>
+
+  <div class="btn-container">
+    <button mat-button class="rounded-pill" [mat-dialog-close]="false">
+      <span>{{cancelBtnText}}</span>
+    </button>
+
+    <button mat-button color="accent" class="rounded-pill" [mat-dialog-close]="true">
+      <span>{{confirmBtnText}}</span>
+    </button>
+  </div>
+</div>

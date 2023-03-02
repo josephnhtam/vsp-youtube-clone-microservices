@@ -1,0 +1,24 @@
+<div class="channel-container" #container (scroll)="onScroll()">
+  <div class="banner-container" *ngIf="!!(bannerUrl$|async)">
+    <div class="banner" #banner>
+      <div class="banner-offset" [style]="bannerOffsetStyle">
+        <img crossorigin alt="banner" [src]="bannerUrl$|async">
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <div class="channel-info-container" #info>
+      <app-channel-info [channel]="(channel$|async)!"></app-channel-info>
+    </div>
+
+    <nav mat-tab-nav-bar [tabPanel]="tabPanel" #navbar>
+      <a mat-tab-link *ngFor="let nav of navs" (click)="navigate(nav)"
+        [active]="activeLink == nav.link">{{nav.label}}</a>
+    </nav>
+
+    <mat-tab-nav-panel #tabPanel>
+      <router-outlet (deactivate)="resetScroll()"></router-outlet>
+    </mat-tab-nav-panel>
+  </div>
+</div>

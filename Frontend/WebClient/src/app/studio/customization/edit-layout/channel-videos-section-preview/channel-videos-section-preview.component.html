@@ -1,0 +1,9 @@
+<app-channel-section-preview-base (onRemoved)="onRemoved.emit()">
+  <span title *ngIf="!pending">Videos ({{ getVideoResponse?.totalCount??0}})</span>
+  <span content *ngIf="!pending && getVideoResponse?.totalCount==0">This section will appear when a public video has
+    been uploaded</span>
+
+  <div class="videos-container" content *ngIf="!pending && getVideoResponse?.totalCount??0>0">
+    <app-video-preview *ngFor="let video of getVideoResponse?.videos" [video]="video"></app-video-preview>
+  </div>
+</app-channel-section-preview-base>

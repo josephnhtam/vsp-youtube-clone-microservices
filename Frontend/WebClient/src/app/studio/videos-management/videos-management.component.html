@@ -1,0 +1,156 @@
+<div class="videos-container">
+  <div class="loading-shade" *ngIf="isFetchingVideos$|async">
+    <mat-spinner *ngIf="isFetchingVideos$|async"></mat-spinner>
+  </div>
+
+  <div class="table-container">
+
+    <table mat-table [dataSource]="(videoClients$|async)!" class="table" matSort matSortActive="date"
+      matSortDisableClear matSortDirection="desc">
+
+      <!-- Video Column -->
+      <ng-container matColumnDef="video">
+        <th mat-header-cell *matHeaderCellDef>
+          Video
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="video-cell">
+            <div class="video-thumbnail-container" (click)="editVideo(row)">
+              <img *ngIf="getVideoThumbnailUrl(row.video)" [src]="getVideoThumbnailUrl(row.video)">
+
+              <div class="length" *ngIf="!!getVideoLength(row.video)">
+                {{getVideoLength(row.video)}}
+              </div>
+            </div>
+
+            <div class="video-title-container">
+              <div class="video-title" (click)="editVideo(row)">{{row.video!.title}}</div>
+
+              <div class="video-desc-container hide-on-hover">
+                <div class="video-desc">
+                  <div *ngIf="!!getStatus$(row); else desc" class="status" [ngClass]="getStatusClass(row)">
+                    <mat-icon *ngIf="!!getStatusIcon(row)"
+                      class="material-symbols-outlined">{{getStatusIcon(row)}}</mat-icon>
+                    <span>{{getStatus$(row)|async}}</span>
+                  </div>
+
+                  <ng-template #desc>
+                    {{ row.video!.description == ''? 'Add description' : row.video!.description}}
+                  </ng-template>
+                </div>
+              </div>
+
+              <div class="video-operations-container">
+                <div class="video-operations show-on-hover">
+                  <button mat-icon-button matTooltip="Edit" matTooltipPosition="below" (click)="editVideo(row)">
+                    <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                  </button>
+                  <a mat-icon-button matTooltip="View" matTooltipPosition="below" [disabled]="!canViewVideo(row)"
+                    [routerLink]="getViewVideoLink(row)" target="_blank">
+                    <mat-icon class="material-symbols-outlined">smart_display</mat-icon>
+                  </a>
+                  <button mat-icon-button matTooltip="Options" matTooltipPosition="below"
+                    [matMenuTriggerFor]="optionsMenu" [matMenuTriggerData]="{row: row}" (click)="openOptionsMenu(row)"
+                    (menuClosed)="optionsMenuClosed()">
+                    <mat-icon class="material-symbols">more_vert</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Visibility Column -->
+      <ng-container matColumnDef="visibility">
+        <th mat-header-cell *matHeaderCellDef>
+          Visibility
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="d-flex">
+            <mat-icon class="material-symbols-outlined visibility-icon">{{getVisibilityIcon(row.video)}}
+            </mat-icon>
+            <span>{{getVisibilityText(row.video)}}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+          Date
+        </th>
+        <td mat-cell *matCellDef="let row">{{row.video!.createDate | date}}</td>
+      </ng-container>
+
+      <!-- Views Column -->
+      <ng-container matColumnDef="views">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear class="text-end">
+          Views
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-end">{{row.video!.metrics.viewsCount}}</td>
+      </ng-container>
+
+      <!-- Comments Column -->
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef class="text-end">
+          Comments
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-end">{{row.video!.metrics.commentsCount}}</td>
+      </ng-container>
+
+      <!-- Likes Column -->
+      <ng-container matColumnDef="likes">
+        <th mat-header-cell *matHeaderCellDef class="text-end">
+          Likes (vs. dislikes)
+        </th>
+        <td mat-cell *matCellDef="let row" class="text-end">
+          <div class="likes-container">
+            <ng-container
+              *ngIf="row.video!.metrics.likesCount>0 || row.video!.metrics.dislikesCount>0; else noVotingMetrics">
+
+              <span class="likes-percentage">{{getLikesPercentage(row) | number : '1.1-1'}}%</span>
+
+              <span class="likes-count">{{row.video!.metrics.likesCount}} likes</span>
+
+              <mat-progress-bar mode="determinate" [value]="getLikesPercentage(row)"></mat-progress-bar>
+
+            </ng-container>
+            <ng-template #noVotingMetrics>
+              –
+            </ng-template>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns" class="video-row" [class.focused]="row==focusedRow">
+      </tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="totalVideosCount$|async" [pageSizeOptions]="pageSizeOptions"
+    aria-label="Select page of videos">
+  </mat-paginator>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <ng-template matMenuContent let-row="row">
+    <button mat-menu-item (click)="editVideo(row)">
+      <mat-icon class="material-symbols-outlined">edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <a mat-menu-item [disabled]="!canViewVideo(row)" [routerLink]="getViewVideoLink(row)" target="_blank">
+      <mat-icon class="material-symbols-outlined">smart_display</mat-icon>
+      <span>View</span>
+    </a>
+    <button mat-menu-item [disabled]="!canViewVideo(row)" (click)="addToPlaylist(row)">
+      <mat-icon class="material-symbols-outlined">playlist_add</mat-icon>
+      <span>Save to playlist</span>
+    </button>
+    <button mat-menu-item [disabled]="!canUnregisterVideo(row)" (click)="unregisterVideo(row)">
+      <mat-icon class="material-symbols-outlined">delete</mat-icon>
+      <span>Delete forever</span>
+    </button>
+  </ng-template>
+</mat-menu>

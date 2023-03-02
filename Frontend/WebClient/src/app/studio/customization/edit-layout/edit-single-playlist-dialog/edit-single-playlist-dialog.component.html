@@ -1,0 +1,20 @@
+<div class="dialog-container">
+  <div class="title-row">
+    <h2 class="title">Choose a playlist</h2>
+    <button mat-icon-button (click)="close()">
+      <mat-icon mat>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="content-body">
+      <div
+        class="playlist-container row row-cols-xxl-6 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-start m-0">
+        <ng-container *ngFor="let info of playlistInfos">
+          <app-playlist-grid-selector [playlistInfo]="info" class="col"
+            (selected)="select(info)"></app-playlist-grid-selector>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

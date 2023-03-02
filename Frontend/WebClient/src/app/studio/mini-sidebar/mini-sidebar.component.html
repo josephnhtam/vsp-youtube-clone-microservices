@@ -1,0 +1,30 @@
+<div class="sidebar-container">
+  <ul class="nav-container">
+    <li>
+      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <div>
+          <mat-icon class="material-symbols-outlined">home</mat-icon>
+          <span class="btn-text">Home</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/studio/videos" routerLinkActive="active">
+        <div>
+          <mat-icon class="material-symbols-outlined">video_library</mat-icon>
+          <span class="btn-text">Content</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/studio/editing" routerLinkActive="active">
+        <div>
+          <mat-icon class="material-symbols-outlined">auto_fix</mat-icon>
+          <span class="btn-text">Customization</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

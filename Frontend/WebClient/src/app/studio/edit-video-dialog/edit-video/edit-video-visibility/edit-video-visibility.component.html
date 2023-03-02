@@ -1,0 +1,13 @@
+<h2>Visibility</h2>
+<p>Choose who can see your video</p>
+
+<mat-radio-group class="visibility-group" [(ngModel)]="visibility">
+  <mat-radio-button [value]="0">Private</mat-radio-button>
+  <span class="info">Only you can watch your video</span>
+
+  <mat-radio-button [value]="1">Unlisted</mat-radio-button>
+  <span class="info">Anyone with the video link can watch your video</span>
+
+  <mat-radio-button [value]="2">Public</mat-radio-button>
+  <span class="info">Everyone can watch your video</span>
+</mat-radio-group>

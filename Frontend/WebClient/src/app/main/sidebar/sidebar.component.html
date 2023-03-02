@@ -1,0 +1,124 @@
+<div class="sidebar-container">
+  <ul class="nav-container">
+    <li>
+      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <div>
+          <mat-icon class="material-symbols-outlined">home</mat-icon> <span class="btn-text">Home</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/subscriptions" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">subscriptions</mat-icon> <span
+            class="btn-text">Subscriptions</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+
+  <ul class="nav-container">
+    <li>
+      <a mat-button routerLink="/library" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">video_library</mat-icon> <span class="btn-text">Library</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/history" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">history</mat-icon> <span class="btn-text">History</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/studio/videos" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">smart_display</mat-icon> <span class="btn-text">Your videos</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/playlist" [queryParams]="{'list':'WL'}" routerLinkActive="active"
+        [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">schedule</mat-icon> <span class="btn-text">Watch later</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/playlist" [queryParams]="{'list':'LL'}" routerLinkActive="active"
+        [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">thumb_up</mat-icon> <span class="btn-text">Liked videos</span>
+        </div>
+      </a>
+    </li>
+
+    <ng-container *ngFor="let info of (playlistInfos$|async)">
+      <li>
+        <a mat-button routerLink="/playlist" [queryParams]="{'list':info.id}" routerLinkActive="active"
+          [disabled]="!(isUserReady$|async)">
+          <div>
+            <mat-icon class="material-symbols-outlined">playlist_play</mat-icon> <span
+              class="btn-text">{{info.title}}</span>
+          </div>
+        </a>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="(canShowMorePlaylistInfos$|async)">
+      <li>
+        <button mat-button (click)="showMorePlaylists = !showMorePlaylists" routerLinkActive="active"
+          [disabled]="!(isUserReady$|async)">
+          <div *ngIf="!showMorePlaylists">
+            <mat-icon class="material-symbols-outlined">expand_more</mat-icon> <span class="btn-text">Show more</span>
+          </div>
+
+          <div *ngIf="showMorePlaylists">
+            <mat-icon class="material-symbols-outlined">expand_less</mat-icon> <span class="btn-text">Show less</span>
+          </div>
+        </button>
+      </li>
+    </ng-container>
+  </ul>
+
+  <ul class="nav-container" *ngIf="(subscriptionInfos$|async)!.length > 0">
+    <li class="subtitle">
+      Subscriptions
+    </li>
+
+    <ng-container *ngFor="let info of (subscriptionInfos$|async)">
+      <li>
+        <a mat-button [disabled]="!(isUserReady$|async)" [routerLink]="getUserChannelLink(info.userProfile)"
+          routerLinkActive="active">
+          <div>
+            <app-user-thumbnail [userThumbnailData]="info.userProfile" [size]="24"></app-user-thumbnail> <span
+              class="btn-text">{{info.userProfile.displayName}}</span>
+          </div>
+        </a>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="(canShowMoreSubscriptionInfos$|async)">
+      <li>
+        <button mat-button (click)="showMoreSubscriptions = !showMoreSubscriptions" [disabled]="!(isUserReady$|async)">
+          <div *ngIf="!showMoreSubscriptions">
+            <mat-icon class="material-symbols-outlined">expand_more</mat-icon> <span class="btn-text">Show
+              {{hiddenSubscriptionInfosCount$|async}} more</span>
+          </div>
+
+          <div *ngIf="showMoreSubscriptions">
+            <mat-icon class="material-symbols-outlined">expand_less</mat-icon> <span class="btn-text">Show less</span>
+          </div>
+        </button>
+      </li>
+    </ng-container>
+  </ul>
+</div>

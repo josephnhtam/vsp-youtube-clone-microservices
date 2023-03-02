@@ -1,0 +1,13 @@
+@import "../../../../node_modules/@videogular/ngx-videogular/fonts/videogular.css";
+
+.controls {
+  display: flex;
+  align-items: center;
+}
+
+.slash-text {
+  color: white;
+  font-weight: 800;
+  transform: scale(1.5) translateY(-1px);
+  user-select: none;
+}

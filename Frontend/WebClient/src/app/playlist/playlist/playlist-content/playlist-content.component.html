@@ -1,0 +1,19 @@
+<div class="playlist" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListAutoScrollStep]="15">
+  <div class="playlist-item" *ngFor="let item of items; let i = index" cdkDrag (cdkDragStarted)="dragStarted()"
+    (cdkDragReleased)="dragReleased()">
+    <div class="drag-handle" cdkDragHandle [class.draggable]="isDraggable$|async">
+      <mat-icon *ngIf="isDraggable$|async; else indexLabel">drag_handle</mat-icon>
+      <ng-template #indexLabel><span class="index-label">{{i+1}}</span></ng-template>
+    </div>
+    <app-playlist-item [index]="i" [playlistItem]="item" [playlistId]="playlistId" [movable]="(isDraggable$|async)!"
+      [isReadonly]="(isReadonly$|async)!"></app-playlist-item>
+  </div>
+</div>
+
+<div *ngIf="(loadingMoreVideos$|async)">
+  <div class="pending-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+
+<div #bottomSection></div>

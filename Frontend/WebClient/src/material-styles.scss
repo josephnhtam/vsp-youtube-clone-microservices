@@ -1,0 +1,53 @@
+@use '@angular/material'as mat;
+@include mat.core();
+
+$primary-palette: (50: #f5f5f5,
+  100: #e8e8e8,
+  200: #d9d9d9,
+  300: #c4c4c4,
+  400: #9d9d9d,
+  500: #7b7b7b,
+  600: #555555,
+  700: #434343,
+  800: #262626,
+  900: #000000,
+  A100: #0f0f0f,
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100:white));
+
+$secondary-palette: (50: #e3f2fd,
+  100: #bbdefb,
+  200: #90cbf9,
+  300: #63b6f6,
+  400: #40a6f6,
+  500: #1b97f4,
+  600: #1889e6,
+  700: #1277d3,
+  800: #0d66c1,
+  900: #0448a2,
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white));
+
+$default-primary: mat.define-palette($primary-palette, A100, 300, 900);
+$default-secondary: mat.define-palette($secondary-palette, 700, 300, 900);
+
+$default-theme: mat.define-light-theme((color: (primary: $default-primary, accent: $default-secondary)));
+
+@include mat.all-component-themes($default-theme);

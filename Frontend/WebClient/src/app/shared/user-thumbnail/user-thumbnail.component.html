@@ -1,0 +1,23 @@
+<ng-container *ngIf="!hasHyperlink; else hyperlink">
+  <div class="thumbnail" [ngStyle]="sizeStyle">
+    <ng-container *ngIf="userThumbnailData?.thumbnailUrl; else userLetter">
+      <img [src]="userThumbnailData?.thumbnailUrl" (error)="failedToLoadThumbnail()" />
+    </ng-container>
+
+    <ng-template #userLetter>
+      {{userDisplayNameLetter}}
+    </ng-template>
+  </div>
+</ng-container>
+
+<ng-template #hyperlink>
+  <a class="thumbnail" [ngStyle]="sizeStyle" [routerLink]="channelLink">
+    <ng-container *ngIf="userThumbnailData?.thumbnailUrl; else userLetter">
+      <img [src]="userThumbnailData?.thumbnailUrl" />
+    </ng-container>
+
+    <ng-template #userLetter>
+      {{userDisplayNameLetter}}
+    </ng-template>
+  </a>
+</ng-template>

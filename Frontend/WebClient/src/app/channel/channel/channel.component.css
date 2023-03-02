@@ -1,0 +1,98 @@
+.channel-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.banner-container {
+  width: 100%;
+  position: relative;
+}
+
+.banner-container::before {
+  content: "";
+  width: 1px;
+  display: block;
+  height: 0;
+  padding-bottom: 16%
+}
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.banner-offset {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transform: translateY(-50%);
+  user-select: none;
+  pointer-events: none;
+}
+
+.content-container {
+  width: 100%;
+}
+
+.content-container nav{
+  position: sticky;
+  position: -webkit-sticky;
+  background-color: var(--bg-color);
+  z-index: 1000;
+  top: 0;
+}
+
+.test {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-color: red;
+}
+
+.channel-info-container {
+  display: flex;
+  justify-content: center;
+}
+
+app-channel-info {
+  width: 95%;
+  max-width: 1284px;
+}
+
+::ng-deep .channel-container .content-container .mat-tab-list {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .channel-container .content-container .mat-tab-links {
+  width: 100%;
+  max-width: 1284px;
+}
+
+::ng-deep .channel-container .mat-tab-link-container a:hover {
+  color: var(--tint-color);
+  opacity: 0.8;
+}
+
+::ng-deep .channel-container .mat-tab-link {
+  min-width: 0;
+  padding: 0 32px;
+}

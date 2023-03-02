@@ -1,0 +1,22 @@
+<div class="section-row-container">
+  <button mat-icon-button class="swipe-btn prev-btn" (click)="swipePrev()"
+    *ngIf="!isBeginning"><mat-icon>chevron_left</mat-icon></button>
+
+  <swiper [slidesPerView]="slideCount" [slidesPerGroup]="slideCount" [spaceBetween]="4" [loop]="false"
+    [loopFillGroupWithBlank]="true" [allowTouchMove]="true" [threshold]="5" [longSwipesRatio]="0" #swiper
+    (transitionStart)="transitionStart()">
+
+    <ng-template swiperSlide *ngFor="let item of items">
+      <app-video-grid-item *ngIf="!isPlaylist(item)" class="col mini-mode" [video]="$any(item)"
+        [hideUserThumbnail]="true" [hideUser]="hideUser"></app-video-grid-item>
+
+      <app-playlist-grid-item *ngIf="isPlaylist(item)" class="col mini-mode" [playlistInfo]="$any(item)"
+        [hideUserThumbnail]="true" [hideUser]="hideUser" [hideUpdateDate]="hideUpdateDate"
+        [hideVisibility]="hideVisibility"></app-playlist-grid-item>
+    </ng-template>
+
+  </swiper>
+
+  <button mat-icon-button class="swipe-btn next-btn" (click)="swipeNext()"
+    *ngIf="!isEnd"><mat-icon>chevron_right</mat-icon></button>
+</div>

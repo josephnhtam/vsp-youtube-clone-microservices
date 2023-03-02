@@ -1,0 +1,71 @@
+@page
+@model IdentityProvider.Pages.Login.Index
+@{
+    ViewData["Title"] = "Login";
+}
+
+<main class="form w-100 m-auto">
+    <form class="d-flex flex-column align-items-stretch w-100" asp-page="/Account/Login/Index" method="post">
+        <input type="hidden" asp-for="Input.ReturnUrl" />
+
+        <h1 class="h3 mb-3 fw-normal text-center">LOGIN</h1>
+
+        <div class="text-danger text-center mb-1">
+            <partial name="_ValidationSummary" />
+        </div>
+
+        @if (Model.View.EnableLocalLogin) {
+            <div class="inputs w-100 mb-2">
+
+                <div class="form-floating" bis_skin_checked="1">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="Username" asp-for="Input.Username" autofocus>
+                    <label for="floatingInput">Username</label>
+                </div>
+
+                <div class="form-floating" bis_skin_checked="1">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" asp-for="Input.Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+
+            </div>
+        }
+
+        <div class="w-100 px-2">
+            @if (Model.View.EnableLocalLogin) {
+                <div class="w-100">
+                    <button class="w-100 btn btn btn-primary rounded-pill" name="Input.Button" value="login">Sign in</button>
+                    <button class="w-100 btn btn btn-danger rounded-pill mt-2" name="Input.Button" value="cancel">Cancel</button>
+                </div>
+            }
+
+            <div class="external-login-container w-100">
+                @if (Model.View.EnableLocalLogin && Model.View.VisibleExternalProviders.Any()) {
+                    <div class="w-100 my-2">
+                        <div class="separator-container">
+                            <div class="separator"></div><span>OR</span>
+                            <div class="separator"></div>
+                        </div>
+                    </div>
+                }
+
+                @foreach (var provider in Model.View.VisibleExternalProviders) {
+                    <div class="w-100">
+                        <a class="w-100 btn btn btn-secondary rounded-pill"
+                       asp-page="/ExternalLogin/Challenge"
+                       asp-route-scheme="@provider.AuthenticationScheme"
+                       asp-route-returnUrl="@Model.Input.ReturnUrl">
+                            Sign in with @provider.DisplayName
+                        </a>
+                    </div>
+                }
+            </div>
+
+            @if (Model.View.EnableLocalLogin) {
+                <div class="w-100 d-flex justify-content-center mt-3">
+                    <span>Don't have account?</span><a asp-page-handler="Register" asp-route-returnUrl="@Model.Input.ReturnUrl" class="link-primary text-decoration-none ms-2">Sign up here</a>
+                </div>
+            }
+        </div>
+
+    </form>
+</main>

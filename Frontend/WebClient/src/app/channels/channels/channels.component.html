@@ -1,0 +1,16 @@
+<section class="channels-container">
+  <div class="content-container">
+
+    <ng-container *ngIf="isLoaded$|async">
+      <ng-container *ngFor="let subscription of (subscriptions$|async)">
+        <app-channel-row [subscription]="subscription"></app-channel-row>
+      </ng-container>
+    </ng-container>
+
+    <div class="pending-container" *ngIf="(initializing$|async) || (loadingMoreSubscriptions$|async)">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="bottom-section" #bottomSection></div>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+<div class="process-container" [class.editable]="canEdit$|async">
+  <div class="edit-container">
+    <button mat-icon-button class="btn" [disabled]="!(canEdit$|async)" (click)="edit()">
+      <mat-icon class="material-symbols-outlined">edit</mat-icon>
+    </button>
+  </div>
+
+  <div class="file-name" [matTooltip]="(fileName$|async)!" matTooltipPosition="below" (click)="edit()">
+    {{fileName$|async}}
+  </div>
+
+  <div class="status" (click)="edit()">
+    {{status$|async}}
+  </div>
+
+  <div class="operation-container">
+    <button mat-icon-button class="btn" (click)="cancel()" *ngIf="canCancel$|async">
+      <mat-icon class="material-symbols-outlined">close</mat-icon>
+    </button>
+    <mat-icon class="complete-icon material-symbols-outlined" *ngIf="isComplete$|async">done</mat-icon>
+  </div>
+</div>

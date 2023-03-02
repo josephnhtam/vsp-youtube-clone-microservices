@@ -1,0 +1,31 @@
+<div class="create-user-profile-container">
+  <div class="title-row">
+    How you'll appear
+  </div>
+
+  <div class="content">
+    <div class="thumbnail-upload-container">
+      <img class="thumbnail" src="../../../assets/icon/unnamed.png" *ngIf="!thumbnailUrl; else showThumbnail">
+      <ng-template #showThumbnail>
+        <img class="thumbnail" [src]="thumbnailUrl">
+      </ng-template>
+
+      <input hidden (change)="onThumbnailFileSelected($event)" #fileInput type="file"
+        [accept]="allowedThumbnailExtensions">
+      <button mat-button color="accent" class="rounded-pill" [disabled]="formGroup.disabled"
+        (click)="fileInput.click()">Upload picture</button>
+    </div>
+
+    <form class="info-container" [formGroup]="formGroup">
+      <mat-form-field appearance="standard">
+        <mat-label>Name</mat-label>
+        <input matInput #nameInput maxlength="50" formControlName="displayName">
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="footer">
+    <button mat-button color="accent" class="rounded-pill" (click)="submit()" [disabled]="formGroup.disabled">Create
+      user</button>
+  </div>
+</div>

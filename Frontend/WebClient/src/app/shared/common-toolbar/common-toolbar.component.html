@@ -1,0 +1,27 @@
+<div class="toolbar-container d-flex justify-content-between align-items-center">
+  <div class="start d-flex align-items-center justify-content-start">
+    <div class="sidebar-toggle-btn" [hidden]="showMiniSidebar || isSidebarHidden">
+      <button mat-icon-button (click)="toggleMiniGuide()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <div class="menu-btn" [hidden]="!showMiniSidebar && !isSidebarHidden">
+      <button mat-icon-button (click)="toggleMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
+    <a class="main-icon-container" routerLink="/">
+      <img class="main-icon" src="assets/icon/icon.png">
+    </a>
+  </div>
+
+  <div class="flex-grow-1 h-100">
+    <ng-content class="flex-grow-1" select=[center]></ng-content>
+  </div>
+
+  <div>
+    <ng-content select=[end]></ng-content>
+  </div>
+</div>

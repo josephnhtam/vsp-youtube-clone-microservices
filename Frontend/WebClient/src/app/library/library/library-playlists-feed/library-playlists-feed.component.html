@@ -1,0 +1,25 @@
+<div class="feed-container">
+  <div class="title-container">
+    <ng-content select=[title]></ng-content>
+  </div>
+
+  <div class="empty-content-container" *ngIf="playlistInfos.length == 0">
+    <ng-content select=[empty-content]></ng-content>
+  </div>
+
+  <div *ngIf="playlistInfos.length > 0"
+    class="playlists-container w-100 row row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 justify-content-start">
+
+    <ng-container *ngFor="let playlistInfo of playlistInfos">
+      <app-playlist-grid-item class="col mini-mode" [playlistInfo]="playlistInfo"
+        [hideUserThumbnail]="true"></app-playlist-grid-item>
+    </ng-container>
+
+  </div>
+
+  <div class="load-more-container" *ngIf="hasMore">
+    <button mat-button class="rounded-pill load-more-btn" (click)="loadMore()" [disabled]="loadingMore">
+      Show more
+    </button>
+  </div>
+</div>

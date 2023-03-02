@@ -1,0 +1,81 @@
+ul {
+  list-style: none;
+  padding: 0 0;
+}
+
+.sidebar-container {
+  width: 100%;
+  padding: 0 15px 0 0;
+}
+
+.nav-container {
+  padding: 12px 12px 12px 12px;
+  margin: 0;
+  border-bottom: 1px solid var(--tint-100);
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 250,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.btn-text {
+  padding-left: 20px;
+  max-width: 150px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-container:last-child {
+  border-bottom: none;
+} 
+
+.nav-container .mat-button {
+  width: 100%;
+}
+
+.nav-container .mat-button div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.mat-button {
+  padding-left: 12px;
+  border-radius: 8px;
+  height: 40px;
+  color: var(--primary-color);
+}
+
+::ng-deep .sidebar-container .mat-button-wrapper {
+  display: block;
+  height: 100% !important;
+}
+
+.subtitle {
+  padding: 6px 12px 4px 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.active .material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 500,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.active .btn-text {
+  font-weight: 500;
+}
+
+.active {
+  background-color: var(--tint-50);
+}

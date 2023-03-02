@@ -1,0 +1,1 @@
+docker build -t vspclient -f ../Frontend/WebClient/docker/Dockerfile ../Frontend/WebClient

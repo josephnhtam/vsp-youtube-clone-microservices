@@ -1,0 +1,21 @@
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.videos-container {
+  width: 100%;
+  /* margin: 4px 0; */
+  display: flex;
+}
+
+app-video-preview {
+  margin-right: 6px;
+}
+
+app-video-preview:last-child {
+  margin-right: 0;
+}

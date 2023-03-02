@@ -1,0 +1,49 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+}
+
+.title {
+  margin: 0 24px 16px 24px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.content {
+  margin: 0 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--tint-600);
+}
+
+.btn-container {
+  margin-top: 22px;
+  padding: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-container button {
+  margin-left: 8px;
+}
+
+::ng-deep .dialog-container .content .note {
+  margin-top: 8px;
+}
+
+::ng-deep .confirm-dialog .mat-dialog-container {
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  height: auto;
+}
+/* 
+::ng-deep .confirm-dialog .mat-checkbox-inner-container{
+  width: 20px;
+  height: 20px;
+  margin: 0;
+} */

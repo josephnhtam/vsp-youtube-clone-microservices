@@ -1,0 +1,63 @@
+<div class="add-to-playlist-container">
+  <div class="title-row">
+    <h3>Save to...</h3>
+    <button mat-icon-button (click)="close()">
+      <mat-icon mat>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="content">
+
+    <ng-container *ngFor="let playlist of playlists">
+      <mat-checkbox #checkbox class="playlist-row" [ngModel]="playlist.isAdded"
+        (change)="toggleAddingVideoToPlaylist(playlist.id, checkbox.checked)"><span
+          class="playlist-title">{{playlist.title}}</span>
+        <div class="playlist-visibility-icon">
+          <mat-icon class="material-symbols-outlined">{{getVisibilityIcon(playlist.visibility)}}</mat-icon>
+        </div>
+      </mat-checkbox>
+    </ng-container>
+
+  </div>
+
+  <div class="footer">
+
+    <ng-container *ngIf="!isCreatePlaylistOpened; else creatingPlaylist">
+      <button class="create-playlist-btn" mat-button (click)="openCreatePlaylist()">
+        <div class="create-playlist-btn-icon">
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+        </div>
+        <span>Create new playlist</span>
+      </button>
+    </ng-container>
+
+    <ng-template #creatingPlaylist>
+      <form class="create-playlist-container" [formGroup]="createPlaylistFormGroup" (ngSubmit)="createPlaylist()">
+
+        <div class="create-playlist-fields">
+          <mat-form-field appearance="legacy">
+            <mat-label>Name</mat-label>
+            <input matInput #input maxlength="50" placeholder="Enter playlist name..." formControlName="name">
+            <mat-hint align="end">{{ input?.value?.length ?? 0}}/50</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Privacy</mat-label>
+            <mat-select formControlName="visibility">
+              <mat-option [value]="2">Public</mat-option>
+              <mat-option [value]="1">Unlisted</mat-option>
+              <mat-option [value]="0">Private</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="actions">
+          <button type="submit" mat-button color="accent" class="rounded-pill">
+            Create
+          </button>
+        </div>
+      </form>
+    </ng-template>
+
+  </div>
+</div>

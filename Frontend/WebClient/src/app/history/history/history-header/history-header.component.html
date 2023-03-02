@@ -1,0 +1,37 @@
+<div class="header-container">
+  <form (ngSubmit)="search(form)" #form="ngForm">
+    <mat-form-field appearance="fill" class="search-field">
+      <input matInput placeholder="Search watch history" name="query" ngModel>
+      <button mat-icon-button matPrefix type="submit">
+        <mat-icon class="material-symbols-outlined">search</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+
+  <!-- <div class="divider"></div> -->
+
+  <button mat-button class="btn" (click)="clearWatchHistory()">
+    <div>
+      <mat-icon class="material-symbols-outlined">delete</mat-icon> <span class="btn-text">Clear all watch
+        history</span>
+    </div>
+  </button>
+
+  <ng-container *ngIf="!recordUserWatchHistoryEnabled; else watchHistoryOn">
+    <button mat-button class="btn" (click)="turnOnWatchHistory()">
+      <div>
+        <mat-icon class="material-symbols-outlined">play_circle</mat-icon> <span class="btn-text">Turn on watch
+          history</span>
+      </div>
+    </button>
+  </ng-container>
+
+  <ng-template #watchHistoryOn>
+    <button mat-button class="btn" (click)="pauseWatchHistory()">
+      <div>
+        <mat-icon class="material-symbols-outlined">pause_circle</mat-icon> <span class="btn-text">Pause watch
+          history</span>
+      </div>
+    </button>
+  </ng-template>
+</div>

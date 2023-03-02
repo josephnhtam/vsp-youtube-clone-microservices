@@ -1,0 +1,19 @@
+<div class="playlist-container" cdkScrollable #container>
+
+  <div class="header-container">
+    <div class="scrollable-header-container">
+      <ng-scrollbar style="overscroll-behavior: contain;">
+        <app-playlist-header [playlistId]="(playlistId$|async)!"></app-playlist-header>
+      </ng-scrollbar>
+    </div>
+
+    <div class="unscrollable-header-container">
+      <app-playlist-header [playlistId]="(playlistId$|async)!"></app-playlist-header>
+    </div>
+  </div>
+
+  <div class="content" cdkScrollable #content>
+    <app-playlist-content [draggable]="(draggable$|async)!" [playlistId]="(playlistId$|async)!"></app-playlist-content>
+  </div>
+
+</div>

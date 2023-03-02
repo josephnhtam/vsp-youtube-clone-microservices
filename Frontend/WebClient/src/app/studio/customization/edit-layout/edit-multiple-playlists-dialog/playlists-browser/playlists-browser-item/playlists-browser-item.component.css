@@ -1,0 +1,107 @@
+:host {
+  width: 100%;
+}
+
+.playlists-browser-item-container {
+  height: 50px;
+  width: 100%;
+  border-bottom: 1px solid var(--tint-100);
+}
+
+.mat-checkbox {
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  display: block;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .playlists-browser-item-container .mat-checkbox-layout {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+}
+
+::ng-deep .playlists-browser-item-container .mat-checkbox-label {
+  height: 100%;
+  width: 100%;
+  padding-left: 24px;
+}
+
+.thumbnail {
+  position: relative;
+  width: 66px;
+  height: 37px;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playlist-cover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.items-count-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.items-count-container span {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.items-count-container mat-icon {
+  font-size: 13px;
+  font-weight: 400;
+  width: 13px;
+  height: 13px;
+  transform: translateX(1px);
+}
+
+.title {
+  margin-left: 12px;
+  height:100%;
+  width:100%;
+  position: relative;
+}
+
+.title-content {
+  position: absolute;
+  top: 0;
+  left:0;
+  right:0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title-content span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

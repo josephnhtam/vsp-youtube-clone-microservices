@@ -1,0 +1,475 @@
+version: '3.4'
+
+services:
+  postgres:
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    restart: always
+    ports:
+      - 8080:8080
+
+  pgadmin:
+    restart: always
+    ports:
+      - 8081:80
+    volumes:
+      - pgadmin-data:/root/.pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+  rabbitmq:
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  mongo:
+    hostname: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", 'rs.initiate()' ]
+      interval: 10s 
+    command: [ "--replSet", "dbrs", "--bind_ip_all" ]
+
+  mongo-express:
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017,mongo:27017/?replicaSet=dbrs
+    depends_on:
+      - mongo
+
+  elasticsearch:
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xmx2g
+    ports:
+      - 9200:9200
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    restart: always
+
+  logstash:
+    restart: always
+    environment:
+      - ES_JAVA_OPTS=-Xmx1g
+    volumes:
+      - ./Infrastructure/Logstash/pipeline:/usr/share/logstash/pipeline:ro,z
+    depends_on:
+      - elasticsearch
+    ports:
+      - 9600:9600
+      - 9250:9250
+
+  kibana:
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ES_JAVA_OPTS=-Xmx512m
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+
+  redis:
+    restart: always
+    ports:
+      - 6379:6379
+    command: [ "redis-server", "--appendonly", "yes" ]
+    volumes:
+      - redis-data:/data
+
+  redis-commander:
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - HTTP_USER=root
+      - HTTP_PASSWORD=secret
+    ports:
+      - 8083:8081
+    depends_on:
+      - redis
+
+  jaeger:
+    restart: always
+    ports:
+      - 5575:5565/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 14250:14250
+      - 9411:9411
+
+  videoprocessor.application:
+    deploy:
+      resources:
+        limits:
+          cpus: "8"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://storage.api
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=VideoProcessorDb;User Id=admin;Password=example
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__ThumbnailUpload=http://storage.api/api/v1/ImageStorage/Internal
+      - Urls__VideoUpload=http://storage.api/api/v1/ImageStorage/Internal
+      - ClientCredentials__Authority=http://identityprovider
+      - ClientCredentials__ClientId=m2m
+      - ClientCredentials__ClientSecret=secret
+      - ClientCredentials__Scope=vsp_m2m_api
+      - VideoProcessorConfiguration__MaxConcurrentProcessingtLimit=4
+      - VideoGeneratorConfiguration__FFmpegThreadsCount=4
+      - VideoGeneratorConfiguration__UseHardwareAcceleration=false
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15200:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+      - storage.api
+      - identityprovider
+
+  videostore.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=VideoStoreDb;User Id=admin;Password=example
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15300:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  videomanager.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=VideoManagerDb;User Id=admin;Password=example
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15000:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  videomanager.signalrhub:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15050:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  users.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15400:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - mongo
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  subscriptions.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=SubscriptionsDb;User Id=admin;Password=example
+      - ConnectionStrings__Redis=redis:6379
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15800:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  storage.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=StorageDb;User Id=admin;Password=example
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - Cors__Origins__0=http://localhost:4200
+      - Cors__Origins__1=http://host.docker.internal:4200
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 14200:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - storage-data:/VideoSharingPlatform/Storage
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  search.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ElasicsearchConfiguration__Uri=http://elasticsearch:9200
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15700:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  library.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - ConnectionStrings__Redis=redis:6379
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15600:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - mongo
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  identityprovider:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=IdentityDb;User Id=admin;Password=example
+      - Cors__Origins__0=http://localhost:4200
+      - Cors__Origins__1=http://host.docker.internal:4200
+      - ClientsUrl__spa-signin__0=http://localhost:4200/signin-callback
+      - ClientsUrl__spa-signin__1=http://docker.internal.host:4200/signin-callback
+      - ClientsUrl__spa-signout__0=http://localhost:4200/signout-callback
+      - ClientsUrl__spa-signout__1=http://docker.internal.host:4200/signout-callback
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15100:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - postgres
+      - redis
+
+  history.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - ConnectionStrings__Redis=redis:6379
+      - ElasicsearchConfiguration__Uri=http://elasticsearch:9200
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 15900:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - elasticsearch
+      - mongo
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  community.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - StorageConfiguration__BaseUri=http://localhost:14200
+      - ConnectionStrings__PostgreSQL=Server=postgres;Port=5432;Database=CommunityDb;User Id=admin;Password=example
+      - RabbitMQConfiguration__HostName=rabbitmq
+      - Urls__IdentityProvider=http://identityprovider
+      - JaegerExporterOptions__AgentHost=jaeger
+    ports:
+      - 15500:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+      - identityprovider
+
+  apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Cors__Origins__0=http://localhost:4200
+      - Cors__Origins__1=http://host.docker.internal:4200
+      - Urls__Community=http://community.api
+      - Urls__History=http://history.api
+      - Urls__Library=http://library.api
+      - Urls__Search=http://search.api
+      - Urls__Subscriptions=http://subscriptions.api
+      - Urls__Users=http://users.api
+      - Urls__VideoManager=http://videomanager.api
+      - Urls__VideoManagerSignalR=http://videomanager.signalrhub
+      - Urls__VideoStore=http://videostore.api
+      - JaegerExporterOptions__AgentHost=jaeger
+      - Logstash__Uri=http://logstash:9250
+    ports:
+      - 16000:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - community.api
+      - history.api
+      - library.api
+      - search.api
+      - subscriptions.api
+      - users.api
+      - videomanager.api
+      - videomanager.signalrhub
+      - videostore.api
+      - identityprovider
+
+  webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - HealthChecksUI__HealthChecks__0__Name=Storage
+      - HealthChecksUI__HealthChecks__0__Uri=http://storage.api/hc
+      - HealthChecksUI__HealthChecks__1__Name=VideoManager
+      - HealthChecksUI__HealthChecks__1__Uri=http://videomanager.api/hc
+      - HealthChecksUI__HealthChecks__2__Name=VideoManagerSignalRHub
+      - HealthChecksUI__HealthChecks__2__Uri=http://videomanager.signalrhub/hc
+      - HealthChecksUI__HealthChecks__3__Name=IdentityProvider
+      - HealthChecksUI__HealthChecks__3__Uri=http://identityprovider/hc
+      - HealthChecksUI__HealthChecks__4__Name=VideoProcessor
+      - HealthChecksUI__HealthChecks__4__Uri=http://videoprocessor.application/hc
+      - HealthChecksUI__HealthChecks__5__Name=VideoStore
+      - HealthChecksUI__HealthChecks__5__Uri=http://videostore.api/hc
+      - HealthChecksUI__HealthChecks__6__Name=Community
+      - HealthChecksUI__HealthChecks__6__Uri=http://community.api/hc
+      - HealthChecksUI__HealthChecks__7__Name=Library
+      - HealthChecksUI__HealthChecks__7__Uri=http://library.api/hc
+      - HealthChecksUI__HealthChecks__8__Name=Search
+      - HealthChecksUI__HealthChecks__8__Uri=http://search.api/hc
+      - HealthChecksUI__HealthChecks__9__Name=Subscriptions
+      - HealthChecksUI__HealthChecks__9__Uri=http://subscriptions.api/hc
+      - HealthChecksUI__HealthChecks__10__Name=History
+      - HealthChecksUI__HealthChecks__10__Uri=http://history.api/hc
+      - HealthChecksUI__HealthChecks__11__Name=APIGateway
+      - HealthChecksUI__HealthChecks__11__Uri=http://apigateway/hc
+    ports:
+      - 16050:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - community.api
+      - history.api
+      - library.api
+      - search.api
+      - subscriptions.api
+      - users.api
+      - videomanager.api
+      - videomanager.signalrhub
+      - videostore.api
+      - identityprovider
+      - videoprocessor.application
+      - apigateway

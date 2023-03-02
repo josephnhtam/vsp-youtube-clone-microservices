@@ -1,0 +1,18 @@
+.view-btn {
+  transform: translateX(-16px);
+}
+
+.view {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  margin-right: 2px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}

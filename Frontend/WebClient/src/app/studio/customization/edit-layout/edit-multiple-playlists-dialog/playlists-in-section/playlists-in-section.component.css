@@ -1,0 +1,122 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.playlists-in-section-container {
+  height: 100%;
+  width: 100%;
+}
+
+.title {
+  height: 50px;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid var(--tint-100);
+}
+
+.playlists-in-section {
+  height: calc(100% - 50px);
+  width: 100%;
+  overflow-y: auto;
+}
+
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.playlist.cdk-drop-list-dragging .playlist:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-handle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  cursor: grab;
+}
+
+.drag-handle:not(.draggable) {
+  pointer-events: none;
+}
+
+.cdk-drag-preview {
+  background-color: var(--tint-50);
+  box-sizing: border-box;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.playlist {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+}
+
+.playlist:hover {
+  background-color: var(--tint-50);
+}
+
+.playlist-title {
+  height:100%;
+  width:100%;
+  position: relative;
+}
+
+.playlist-title-content {
+  position: absolute;
+  top: 0;
+  left:0;
+  right:0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.playlist-title-content span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.remove-btn {
+  width: 30px;
+  height: 30px;
+  margin-right: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+.playlist:hover .remove-btn {
+  opacity: 1;
+}
+
+.remove-btn .mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  transform: translateY(-2px);
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}

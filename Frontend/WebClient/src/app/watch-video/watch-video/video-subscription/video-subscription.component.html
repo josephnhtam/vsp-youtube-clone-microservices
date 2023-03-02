@@ -1,0 +1,52 @@
+<div class="d-flex">
+  <app-user-thumbnail [userThumbnailData]="video.creatorProfile" [size]="40"></app-user-thumbnail>
+
+  <div class="author-col">
+    <a class="author" [matTooltip]="video.creatorProfile.displayName" matTooltipPosition="above"
+      [routerLink]="channelLink">
+      {{video.creatorProfile.displayName}}</a>
+
+    <div class="subscribers placeholder" *ngIf="!isLoaded; else subscribers"></div>
+
+    <ng-template #subscribers>
+      <p class="subscribers">
+        {{subscribersCount}} {{subscribersCount>1?'subscribers':'subscriber'}}
+      </p>
+    </ng-template>
+  </div>
+
+  <div class="subscribe-actions" *ngIf="!isLoaded; else subscribeOp">
+    <div class="placeholder"></div>
+  </div>
+
+  <ng-template #subscribeOp>
+
+    <div class="subscribe-actions" *ngIf="canSubscribe$()|async">
+      <button [disabled]="!(isAuthenticated$|async) || !(isUserReady$|async)" mat-flat-button
+        [color]="isSubscribed? '' : 'accent'" class="rounded-pill" [class.btn-bg]="isSubscribed"
+        (click)="switchSubscription()">{{isSubscribed?
+        'Subscribed' : 'Subscribe'}}</button>
+
+      <ng-container *ngIf="isSubscribed && (isAuthenticated$|async) && (isUserReady$|async)">
+        <button class="mx-1" mat-icon-button color="primary" [matMenuTriggerFor]="notificationMenu">
+          <mat-icon mat class="material-symbols-outlined" [class.fill]="isEnhancedNotification">{{
+            isNoneNotification? 'notifications_off' :
+            'notifications' }}</mat-icon>
+        </button>
+      </ng-container>
+
+    </div>
+  </ng-template>
+</div>
+
+<mat-menu class="notification-menu" #notificationMenu="matMenu">
+  <button mat-menu-item [class.active]="isEnhancedNotification" (click)="changeToEnhancedNotification()">
+    <mat-icon>notifications</mat-icon>All
+  </button>
+  <button mat-menu-item [class.active]="isNormalNotification" (click)="changeToNormalNotification()">
+    <mat-icon class="material-symbols-outlined">notifications</mat-icon>Personalized
+  </button>
+  <button mat-menu-item [class.active]="isNoneNotification" (click)="changeToNoneNotification()">
+    <mat-icon class="material-symbols-outlined">notifications_off</mat-icon>None
+  </button>
+</mat-menu>

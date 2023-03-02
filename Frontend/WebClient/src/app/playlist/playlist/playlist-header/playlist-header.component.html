@@ -1,0 +1,139 @@
+<div class="header" [ngStyle]="backgroundStyle">
+
+  <img class="blurred-image" [src]="featuredVideoThumbnailUrl$|async" *ngIf="(featuredVideoThumbnailUrl$|async)!=null">
+
+  <div class="header-gradient" [ngStyle]="gradientBackgroundStyle"></div>
+
+  <div class="thumbnail-container aspect-ratio-16-9">
+    <div class="thumbnail">
+      <img crossorigin (load)="thumbnailLoaded()" [src]="featuredVideoThumbnailUrl$|async"
+        *ngIf="(featuredVideoThumbnailUrl$|async)" #ThumbnailImage>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!editingTitle">
+    <div class="title-container">
+      {{title$|async}}
+    </div>
+
+    <div class="edit-title-btn-container">
+      <button mat-icon-button *ngIf="canEdit$|async" (click)="editTitle()">
+        <mat-icon class="material-symbols-outlined edit-icon">edit</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+
+  <form class="edit-title-container" [formGroup]="editTitleFormGroup" #formDirective="ngForm" *ngIf="editingTitle"
+    (ngSubmit)="saveTitle()">
+    <mat-form-field floatLabel='auto' [style.fontSize]="8" appearance="legacy">
+      <mat-label>Title</mat-label>
+      <input formControlName="title" matInput #title="matInput" #titleEl>
+      <mat-hint align="end">{{ title?.value?.length ?? 0}}/50</mat-hint>
+    </mat-form-field>
+
+    <div class="edit-title-commit-container">
+      <button mat-button class="rounded-pill me-1" (click)="cancelEditTitle()">Cancel</button>
+      <button mat-button class="rounded-pill" type="submit">Save</button>
+    </div>
+  </form>
+
+  <div class="author-container"><a class="author"
+      [routerLink]=" channelLink$|async">{{(creatorProfile$|async)?.displayName}}</a></div>
+
+  <div class=" visibility-container">
+    <div *ngIf="!(canEdit$|async); else editableVisibility">{{(visibility$|async)}}</div>
+
+    <ng-template #editableVisibility>
+      <div class="visibility-selector-container">
+        <div class="visibility-selector" [matMenuTriggerFor]="visibilityMenu">{{(visibility$|async)}}<mat-icon
+            class="material-symbols-outlined dropdown-icon">expand_more</mat-icon>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="metadata-container"><span>{{videosCount$|async}}
+      {{(videosCount$|async)!>1?'videos':'video'}}</span><span>Last updated on
+      {{updateDate$|async}}</span></div>
+
+  <div class="action-container" *ngIf="hasAction">
+    <button mat-icon-button [matMenuTriggerFor]="optionsMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+
+  <div class="watch-container">
+    <button mat-flat-button (click)="playAll()">
+      <mat-icon>play_arrow</mat-icon><span>Play all</span>
+    </button>
+
+    <button mat-flat-button (click)="playShuffle()">
+      <mat-icon>shuffle</mat-icon><span>Shuffle</span>
+    </button>
+  </div>
+
+  <ng-container *ngIf="(description$|async) != null; else emptyDescription">
+    <ng-container *ngIf="!editingDesc">
+      <div class="description-container">
+        {{(description$|async)?.length ?? 0 > 0 ? (description$|async) : 'No description' }}
+      </div>
+
+      <div class="edit-description-btn-container" *ngIf="canEdit$|async">
+        <button mat-icon-button (click)="editDesc()">
+          <mat-icon class="material-symbols-outlined edit-icon">edit</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+
+    <form class="edit-description-container" [formGroup]="editDescFormGroup" #formDirective="ngForm" *ngIf="editingDesc"
+      (ngSubmit)="saveDesc()">
+      <mat-form-field floatLabel='auto' [style.fontSize]="8" appearance="legacy">
+        <mat-label>Description</mat-label>
+        <textarea formControlName="description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" #desc="matInput" #descEl></textarea>
+        <mat-hint align="end">{{ desc?.value?.length ?? 0}}/5000</mat-hint>
+      </mat-form-field>
+
+      <div class="edit-title-commit-container">
+        <button mat-button class="rounded-pill me-1" (click)="cancelEditDesc()">Cancel</button>
+        <button mat-button class="rounded-pill" type="submit">Save</button>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #emptyDescription>
+    <div class="description-container"></div>
+  </ng-template>
+
+</div>
+
+<mat-menu #visibilityMenu="matMenu">
+  <div class="menu">
+    <button mat-menu-item (click)="saveVisibility(2)"><mat-icon
+        class="material-symbols-outlined">public</mat-icon>Public</button>
+    <button mat-menu-item (click)="saveVisibility(1)"><mat-icon
+        class="material-symbols-outlined">link</mat-icon>Unlisted</button>
+    <button mat-menu-item (click)="saveVisibility(0)"><mat-icon
+        class="material-symbols-outlined">lock</mat-icon>Private</button>
+  </div>
+</mat-menu>
+
+<mat-menu #optionsMenu="matMenu">
+  <div class="menu">
+    <button mat-menu-item (click)="deletePlaylist()" *ngIf="(isMine$|async)"><mat-icon
+        class="material-symbols-outlined">delete</mat-icon>Delete
+      playlist</button>
+
+    <button mat-menu-item (click)="createPlaylistRef()" [disabled]="(isMine$|async)"
+      *ngIf="!(hasPlaylistRef$|async) && !(isMine$|async)"><mat-icon
+        class="material-symbols-outlined">library_add</mat-icon>Save playlist to
+      library</button>
+
+    <button mat-menu-item (click)="removePlaylistRef()" [disabled]="(isMine$|async)"
+      *ngIf="(hasPlaylistRef$|async) && !(isMine$|async)"><mat-icon
+        class="material-symbols-outlined">library_add_check</mat-icon>Remove
+      playlist
+      from
+      library</button>
+  </div>
+</mat-menu>

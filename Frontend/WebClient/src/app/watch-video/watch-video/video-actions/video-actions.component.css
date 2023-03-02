@@ -1,0 +1,73 @@
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button .mat-icon {
+  font-size: 20px;
+}
+
+.like-btn {
+  border-radius: 100px 0 0 100px;
+  position: relative;
+}
+
+.library-actions {
+  flex: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.like-btn::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  right: 0%;
+  border-right: 1px solid var(--tint-300);
+}
+
+.dislike-btn {
+  border-radius: 0 100px 100px 0;
+}
+
+.btn-bg {
+  background-color: var(--tint-100);
+}
+
+.library-actions .placeholder {
+  min-width: 200px;
+  min-height: 20px;
+}
+
+.placeholder {
+  background-color: var(--tint-100);
+  cursor: unset;
+}
+
+.library-actions button .mat-icon {
+  transform: translateY(2px);
+}
+
+.mat-icon.fill {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.likes-count {
+  margin: 0 5px 0 10px;
+  font-size: 14px;
+}
+
+.mat-icon.fill {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}

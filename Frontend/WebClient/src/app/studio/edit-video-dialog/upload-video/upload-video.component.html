@@ -1,0 +1,14 @@
+<div class="drop-area" appDragAndDrogFile (fileDragOver)="onFileDragOver($event)" (fileDropped)="onFileDropped($event)">
+
+  <div class="upload-circle" [class.active]="dragOver || fileAccepted" [class.unclickable]="fileAccepted"
+    (click)="openFileInput()">
+    <mat-icon class="upload-icon">file_upload</mat-icon>
+  </div>
+
+  <p class="upload-text">Drag and drop video files to upload</p>
+
+  <button class="upload-btn" mat-flat-button color="accent" [disabled]="fileAccepted" (click)="openFileInput()">SELECT
+    FILES</button>
+  <input hidden (change)="onFileSelected($event)" #fileInput type="file" multiple="multiple"
+    [accept]="acceptedExtensions">
+</div>

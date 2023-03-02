@@ -1,0 +1,15 @@
+<div class="channel-playlists-container">
+  <div class="header-container">
+    <app-channel-playlists-view-selector [channel]="channel" [view]="view"
+      [sectionId]="targetSection?.id??null"></app-channel-playlists-view-selector>
+  </div>
+
+  <div class="playlists-container">
+    <ng-container [ngSwitch]="view">
+      <app-channel-playlists-overview *ngSwitchCase="0" [channel]="channel"></app-channel-playlists-overview>
+      <app-channel-playlists-view *ngSwitchCase="1" [channel]="channel" [sectionId]="null"></app-channel-playlists-view>
+      <app-channel-playlists-view *ngSwitchCase="2" [channel]="channel"
+        [sectionId]="targetSection?.id??null"></app-channel-playlists-view>
+    </ng-container>
+  </div>
+</div>

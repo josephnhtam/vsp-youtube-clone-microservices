@@ -1,0 +1,12 @@
+<div class="image-uploader-container">
+  <ng-container *ngIf="!fileAccepted; else changeImage">
+    <button class="upload-btn" mat-button color="accent" (click)="openFileInput()">UPLOAD</button>
+  </ng-container>
+
+  <ng-template #changeImage>
+    <button class="upload-btn" mat-button color="accent" (click)="openFileInput()">CHANGE</button>
+    <button mat-button (click)="removeFile()">REMOVE</button>
+  </ng-template>
+</div>
+
+<input hidden (change)="onFileSelected($event)" #fileInput type="file" [accept]="acceptedExtensions">

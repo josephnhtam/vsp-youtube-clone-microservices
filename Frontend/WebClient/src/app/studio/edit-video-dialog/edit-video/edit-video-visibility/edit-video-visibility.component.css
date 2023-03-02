@@ -1,0 +1,10 @@
+.visibility-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info {
+  margin: 0 0 10px 28px;
+  color: var(--tint-500);
+}

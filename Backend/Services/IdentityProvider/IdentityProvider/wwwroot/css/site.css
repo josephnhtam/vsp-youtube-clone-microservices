@@ -1,0 +1,70 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	align-items: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #f5f5f5;
+}
+
+.form {
+	max-width: 330px;
+	padding: 15px;
+}
+
+.form .form-floating:focus-within {
+	z-index: 2;
+}
+
+.form .inputs div:not(:last-child,:first-child) input {
+	border-radius: 0;
+	margin-bottom: -1px;
+}
+
+.form .inputs div:first-child input {
+	margin-bottom: -1px;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.form .inputs div:last-child input {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.separator-container {
+	display: flex;
+	align-items: center;
+}
+
+.separator {
+	border-bottom: 1px solid #555555;
+}
+
+.separator-container .separator {
+	flex-grow: 1;
+}
+
+.separator-container span {
+	color: #555555;
+	flex-grow: 0;
+	padding: 0 8px;
+}
+
+.validation-summary-errors ul {
+	padding: 0;
+	margin-bottom: 8px;
+	list-style: none;
+}
+
+.validation-summary-errors ul li {
+	margin-bottom: 2px;
+}
+
+.validation-summary-errors ul li:last-child {
+	margin-bottom: 0;
+}

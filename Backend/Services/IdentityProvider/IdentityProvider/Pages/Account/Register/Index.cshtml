@@ -1,0 +1,57 @@
+﻿@page
+@model IdentityProvider.Pages.Account.Register.IndexModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<main class="form w-100 m-auto">
+    <form class="d-flex flex-column align-items-stretch w-100" asp-page="/Account/Register/Index" method="post">
+        <input hidden asp-for="Input.ReturnUrl" />
+
+        <h1 class="h3 mb-3 fw-normal text-center">REGISTER</h1>
+
+        <div class="text-danger text-center mb-1">
+            <partial name="_ValidationSummary" />
+        </div>
+
+        <div class="inputs w-100">
+             
+            <div class="form-floating" bis_skin_checked="1">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Username" asp-for="Input.Username">
+                <label for="floatingInput">Username</label>
+            </div>
+
+            <div class="form-floating" bis_skin_checked="1">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Nickname" asp-for="Input.Nickname">
+                <label for="floatingInput">Nickname</label>
+            </div>
+
+            <div class="form-floating" bis_skin_checked="1">
+                <input type="email" class="form-control" id="floatingInput" placeholder="Email address" asp-for="Input.Email">
+                <label for="floatingInput">Email Address</label>
+            </div>
+
+            <div class="form-floating" bis_skin_checked="1">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" asp-for="Input.Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <div class="form-floating" bis_skin_checked="1">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" asp-for="Input.ConfirmPassword">
+                <label for="floatingPassword">Confirm Password</label>
+            </div>
+
+        </div>
+
+        <div class="w-100 px-2 mt-2">
+            <div class="w-100">
+                <button class="w-100 btn btn btn-primary rounded-pill" type="submit">Sign up</button>
+            </div>
+
+            <div class="w-100 d-flex justify-content-center mt-2">
+                <a asp-page-handler="ReturnToLogin" asp-route-returnUrl="@Model.Input.ReturnUrl" class="link-primary text-decoration-none ms-2">Already have an account?</a>
+            </div>
+        </div>
+
+    </form>
+</main>

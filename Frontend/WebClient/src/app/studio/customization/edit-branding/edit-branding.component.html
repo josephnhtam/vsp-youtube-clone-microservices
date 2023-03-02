@@ -1,0 +1,47 @@
+<div class="tab-container">
+  <div class="customization-container">
+    <h3 class="customization-title">Picture</h3>
+    <p class="customization-desc">Your profile picture will appear where your channel is presented on YouTube, like next
+      to your videos and comments
+    </p>
+    <div class="preview-uploader-container">
+      <div class="preview-container">
+        <img class="thumbnail" src="assets/icon/unnamed.png" *ngIf="!thumbnailUrl; else showThumbnail">
+        <ng-template #showThumbnail>
+          <img class="thumbnail" [src]="thumbnailUrl">
+        </ng-template>
+      </div>
+      <div class="desc-uploader-container">
+        <p class="customization-desc">It’s recommended to use a picture that’s at least 98 x 98 pixels and 4MB or less.
+          Use a PNG or GIF (no
+          animations) file. Make sure your picture follows the YouTube Community Guidelines.</p>
+        <div class="uploader">
+          <app-image-uploader [fileAccepted]="thumbnailAccepted" [allowedMimeTypes]="thumbnailMimeTypes"
+            [acceptedExtensions]="thumbnailExtensions" [maxSize]="thumbnailMaxSize"
+            (fileToUpload)="setThumbnailToUpload($event)" (fileRemoved)="thumbnailRemoved()"></app-image-uploader>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="customization-container">
+    <h3 class="customization-title">Banner</h3>
+    <p class="customization-desc">This image will appear across the top of your channel
+    </p>
+    <div class="preview-uploader-container">
+      <div class="preview-container">
+        <img class="banner" [src]="bannerUrl" *ngIf="bannerUrl">
+      </div>
+      <div class="desc-uploader-container">
+        <p class="customization-desc">For the best results on all devices, use an image that’s at least 2048 x 1152
+          pixels
+          and 6MB or less.</p>
+        <div class="uploader">
+          <app-image-uploader [fileAccepted]="bannerAccepted" [allowedMimeTypes]="bannerMimeTypes"
+            [acceptedExtensions]="bannerExtensions" [maxSize]="bannerMaxSize" (fileToUpload)="setBannerToUpload($event)"
+            (fileRemoved)="bannerRemoved()"></app-image-uploader>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

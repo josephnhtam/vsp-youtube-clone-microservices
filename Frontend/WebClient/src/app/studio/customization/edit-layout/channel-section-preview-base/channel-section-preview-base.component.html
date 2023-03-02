@@ -1,0 +1,27 @@
+<div class="section-container">
+  <div class="content-container">
+    <div class="title"><ng-content select=[title]></ng-content></div>
+
+    <div class="content"><ng-content select=[content]></ng-content></div>
+  </div>
+
+  <div class="options" [class.focusing]="focusing">
+    <button mat-icon-button matTooltip="Options" matTooltipPosition="below" [matMenuTriggerFor]="optionsMenu"
+      (click)="openOptionsMenu()" (menuClosed)="optionsMenuClosed()">
+      <mat-icon class="material-symbols">more_vert</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <ng-template matMenuContent let-row="row">
+
+    <ng-content select=[options]></ng-content>
+
+    <button mat-menu-item (click)="removeSection()">
+      <mat-icon class="material-symbols-outlined">delete</mat-icon>
+      <span>Remove section</span>
+    </button>
+
+  </ng-template>
+</mat-menu>

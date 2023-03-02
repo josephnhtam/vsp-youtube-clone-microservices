@@ -1,0 +1,6 @@
+<app-user-thumbnail [hasHyperlink]="hasHyperlink" [size]="size" [userThumbnailData]="(userThunmbnailData$|async)!"
+  *ngIf="(userThunmbnailData$|async); else placeholder"></app-user-thumbnail>
+
+<ng-template #placeholder>
+  <div class="thumbnail-loading" [ngStyle]="sizeStyle"></div>
+</ng-template>

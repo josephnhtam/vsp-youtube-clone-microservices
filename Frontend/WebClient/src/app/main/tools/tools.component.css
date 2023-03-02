@@ -1,0 +1,63 @@
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 280,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.mat-icon {
+  transform: scale(1.05);
+}
+
+.mat-icon-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height:40px;
+}
+
+.tools-container {
+  display: flex;
+  gap: 12px;
+}
+
+.tool-placeholder-container {
+  width: 40px;
+  height:40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tool-placeholder {
+  background-color: var(--tint-200);
+  border-radius: 50%;
+  width:32px;
+  height:32px;
+}
+
+::ng-deep .notifications-menu {
+  border-radius: 12px !important;
+  max-width: 80vw !important;
+  max-height: 80vh !important;
+  width: 480px;
+  height: 642px;
+}
+
+::ng-deep .notifications-menu .mat-menu-content {
+  height: 100%;
+  width: 100%;
+  padding: 0 !important;
+}
+
+.notifications-content-container {
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep .notification-btn .mat-badge-content {
+  right: -6px !important;
+  top: -6px !important;
+}

@@ -1,0 +1,139 @@
+.history-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.layout {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  position: relative;
+  grid-auto-rows: min-content;
+}
+
+.content-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+::ng-deep .history-container .layout .ng-scroll-content {
+  height: 100%;
+}
+
+::ng-deep .history-container .layout .header-container .ng-scroll-content {
+  height: auto;
+}
+
+.header-container {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.content-container {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  padding: 24px 24px;
+}
+
+@media (min-width: 992px) {
+  .layout {
+    display: grid;
+    grid-template-columns: auto 445px;
+    grid-template-rows: auto;
+  }
+
+  .content-container {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    height: 100%;
+  }
+
+  .header-container {
+    position: fixed;
+    margin-right: 45px;
+    right: 0;
+    width: 400px;
+    height: calc(100vh - var(--toolbar-height));
+    overflow-y: auto;
+  }
+}
+
+/* End of Layout */
+
+.header-container {
+  pointer-events: none;
+}
+
+.bottom-section {
+  position: absolute;
+  height: 50px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.dates-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.title {
+  max-width: 845px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.4px;
+}
+
+.pending-container{
+  width: 100%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+app-user-watch-history {
+  max-width: 845px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+app-user-watch-history:last-child {
+  margin-bottom: 0;
+}
+
+.no-videos-container {
+  max-width: 845px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 24px 0;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner svg {
+  width: 35px !important;
+  height: 35px !important;
+}

@@ -1,0 +1,28 @@
+<div class="add-comment-container" [class.small]="small">
+  <ng-container *ngIf="!(pending$|async); else pending">
+    <div class="icon-col">
+      <app-user-profile-thumbnail [userId]="(userId$|async)!" [size]="small?24:40"></app-user-profile-thumbnail>
+    </div>
+
+    <form [formGroup]="commentForm" class="add-comment-col" #formDirective="ngForm">
+      <mat-form-field [floatLabel]="small ? 'never' : 'auto'" [style.fontSize]="8" appearance="legacy">
+        <mat-label>{{ label }}</mat-label>
+        <textarea formControlName="comment" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" [maxLength]="5000" #comment="matInput" #commentEl
+          (focus)="focusingComment= true"></textarea>
+      </mat-form-field>
+
+      <div class="commit-comment-container" *ngIf="comment.ngControl?.touched || focusingComment || small">
+        <button mat-flat-button disableRipple class="rounded-pill me-2 basic-btn-press"
+          (click)="cancelComment()">Cancel</button>
+        <button mat-flat-button color="accent" class="rounded-pill" (click)="addComment()">Comment</button>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-template #pending>
+    <div class="pending-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</div>

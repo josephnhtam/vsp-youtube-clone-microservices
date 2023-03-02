@@ -1,0 +1,57 @@
+<div class="channel-row-container">
+
+  <div class="thumbnail-container">
+    <app-user-thumbnail [userThumbnailData]="subscription.userProfile" [size]="136"></app-user-thumbnail>
+  </div>
+
+  <div class="details-container">
+    <div class="details-content">
+      <a class="channel" [routerLink]="channelLink">
+        {{subscription.userProfile.displayName}}
+      </a>
+      <div class="stats detail">
+        {{subscription.userProfile.subscribersCount}}
+        {{subscription.userProfile.subscribersCount>1?'subscribers':'subscriber'}}
+      </div>
+      <div class="desc detail">
+        {{subscription.userProfile.description}}
+      </div>
+    </div>
+  </div>
+
+  <div class="action-container">
+    <ng-container *ngIf="!isSubscribed; else subscribed">
+      <button mat-flat-button color="accent" class="rounded-pill" (click)="subscribe()">Subscribe</button>
+    </ng-container>
+
+    <ng-template #subscribed>
+      <button mat-flat-button class="rounded-pill btn-bg subscribed-btn" [matMenuTriggerFor]="subscriptionMenu">
+
+        <mat-icon mat class="material-symbols-outlined" [class.fill]="isEnhancedNotification">{{
+          isNoneNotification? 'notifications_off' :
+          'notifications' }}</mat-icon>
+
+        <span>Subscribed</span>
+
+        <mat-icon mat class="material-symbols-outlined">expand_more</mat-icon>
+
+      </button>
+    </ng-template>
+
+  </div>
+</div>
+
+<mat-menu class="subscription-menu" #subscriptionMenu="matMenu">
+  <button mat-menu-item [class.active]="isEnhancedNotification" (click)="changeToEnhancedNotification()">
+    <mat-icon>notifications</mat-icon>All
+  </button>
+  <button mat-menu-item [class.active]="isNormalNotification" (click)="changeToNormalNotification()">
+    <mat-icon class="material-symbols-outlined">notifications</mat-icon>Personalized
+  </button>
+  <button mat-menu-item [class.active]="isNoneNotification" (click)="changeToNoneNotification()">
+    <mat-icon class="material-symbols-outlined">notifications_off</mat-icon>None
+  </button>
+  <button mat-menu-item (click)="unsubscribe()">
+    <mat-icon class="material-symbols-outlined">person_remove</mat-icon>Unsubscribe
+  </button>
+</mat-menu>

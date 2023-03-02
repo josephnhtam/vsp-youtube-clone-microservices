@@ -1,0 +1,10 @@
+<div class="edit-video-splotlight-container">
+  <app-video-spotlight [videoId]="unsubscribedSpotlightVideoId"
+    (videoIdChange)="setUnsubscribedSpotlightVideoId($event)" icon="movie"
+    title="Channel trailer for people who haven't subscribed"
+    description="Share a preview of your channel shown with people who haven’t subscribed yet."></app-video-spotlight>
+
+  <app-video-spotlight [videoId]="subscribedSpotlightVideoId" (videoIdChange)="setSubscribedSpotlightVideoId($event)"
+    icon="movie_filter" title="Featured video for returning subscribers"
+    description="Highlight a video for your subscribers to watch."></app-video-spotlight>
+</div>

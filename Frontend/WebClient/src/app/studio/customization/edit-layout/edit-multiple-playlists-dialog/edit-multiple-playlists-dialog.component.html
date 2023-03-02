@@ -1,0 +1,33 @@
+<div class="dialog-container">
+  <form class="title-row" [formGroup]="formGroup">
+    <mat-form-field appearance="standard" floatLabel="always">
+      <mat-label>Title</mat-label>
+      <input formControlName="title" matInput #nameInput placeholder="Add section title" maxlength="50">
+    </mat-form-field>
+  </form>
+
+  <div class="content">
+    <div class="content-body">
+      <div class="playlists-browser">
+        <app-playlists-browser *ngIf="playlistsInSection!=null"
+          [(playlistsInSection)]="playlistsInSection"></app-playlists-browser>
+      </div>
+
+      <div class="playlists-in-section">
+        <app-playlists-in-section *ngIf="playlistsInSection!=null"
+          [(playlistsInSection)]="playlistsInSection"></app-playlists-in-section>
+      </div>
+    </div>
+
+    <div class="footer">
+      <button mat-button color="accent" (click)="close()">
+        <span>CANCEL</span>
+      </button>
+
+      <button mat-button color="accent" [disabled]="!valid()" (click)="done()">
+        <span>DONE</span>
+      </button>
+    </div>
+
+  </div>
+</div>

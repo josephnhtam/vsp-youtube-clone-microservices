@@ -1,0 +1,10 @@
+<button mat-flat-button class="rounded-pill view-btn" [matMenuTriggerFor]="playlistsMenu">
+  <span class="view">{{selectedView.displayName}}</span>
+  <mat-icon class="material-symbols-outlined">expand_more</mat-icon>
+</button>
+
+<mat-menu #playlistsMenu="matMenu">
+  <ng-container *ngFor="let selection of viewSelections">
+    <button mat-menu-item (click)="selectView(selection)">{{selection.displayName}}</button>
+  </ng-container>
+</mat-menu>

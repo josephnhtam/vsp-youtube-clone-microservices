@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure.Elasticsearch\Infrastructure.Elasticsearch.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure.MongoDb\Infrastructure.MongoDb.csproj" />
+    <ProjectReference Include="..\History.Domain\History.Domain.csproj" />
+    <PackageReference Include="MongoDB.Driver.Core.Extensions.DiagnosticSources" Version="1.3.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.3.2" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0-rc.4" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.13" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.13" />
+  </ItemGroup>
+
+</Project>

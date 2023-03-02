@@ -1,0 +1,67 @@
+<div class="watch-container" #container>
+  <div class="layout">
+    <!-- <div class="row row-cols-1 row-cols-lg-2 justify-content-between"> -->
+
+    <section class="video-container">
+      <div [style]="getVideoStyle$()|async" class="video-size-container">
+        <div class="video" #videoContainer>
+          <ng-container *ngIf="(isVideoAvailable$|async); else videoProcessing">
+            <app-video-player type="video/mp4" [videoResources]="(videoResources$|async)!" [loop]="loop"
+              [thumbnailUrl]="(thumbnailUrl$|async)!" (played)="onVideoPlayed()" (ended)="onVideoEnded()"
+              #videoPlayer></app-video-player>
+
+          </ng-container>
+
+          <ng-template #videoProcessing>
+            <div class="video-processing">
+              <mat-icon class="material-symbols-outlined">error</mat-icon><span>We're processing this video. Check
+                back later.</span>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div *ngIf="isProcessing$|async" class="video-processing-footer">This video is still being processed. Video
+        quality may improve once processing is complete.</div>
+    </section>
+
+    <section *ngIf="hasPlaylist" class="playlist-container"
+      [style]="afterViewInit?playlistStyle:'max-height:0;opacity:0'">
+      <app-video-playlist [videoId]="(video$|async)!.id" [shuffle]="initialShuffle" #playlistComp></app-video-playlist>
+    </section>
+
+    <div class="details-container">
+      <section class="details">
+        <h2 class="title">{{(video$|async)?.title}}</h2>
+
+        <div class="metadata-container">
+          <app-video-subscription [video]="(video$|async)!"></app-video-subscription>
+          <app-video-actions [watchComp]="this"></app-video-actions>
+        </div>
+      </section>
+
+      <section class="desc-container">
+        <div class="desc-container-click" (click)="toggleDesc()" *ngIf="!moreDesc"></div>
+        <p class="desc-header">{{(viewsCount$|async)!|nFormatter:1}} views&nbsp;&nbsp;{{createDate$|async}}</p>
+        <p class="desc" [class.more-desc]="moreDesc">{{(video$|async)?.description}}</p>
+
+        <p class="desc-footer" *ngIf="!moreDesc">
+          Show more
+        </p>
+
+        <p class="desc-footer desc-show-less" (click)="toggleDesc()" *ngIf="moreDesc">
+          Show less
+        </p>
+      </section>
+    </div>
+
+    <section class="relevance-videos-container" [class.has-playlist]="hasPlaylist">
+      <app-relevant-videos [video]="(video$|async)!" [autoLoadMore]="width > 992"></app-relevant-videos>
+    </section>
+
+    <section class="comments-container">
+      <app-video-forum [videoId]="(video$|async)?.id!" [rootPageSize]="10" [commentPageSize]="10"
+        [showLoadMoreRootCommentsButton]="width <= 992"></app-video-forum>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+:host {
+  width: 100%;
+}
+
+.channel-playlists-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.playlists-container{
+  width: 100%;
+  max-width: 1284px;
+  margin-top: 24px;
+}
+
+app-playlist-grid-item {
+  padding: 0 2px 0 2px !important;
+}
+
+.bottom-section {
+  position: absolute;
+  height: 100px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.pending-container {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner svg {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.empty-container {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}

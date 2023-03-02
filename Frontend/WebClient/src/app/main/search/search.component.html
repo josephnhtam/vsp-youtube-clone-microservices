@@ -1,0 +1,34 @@
+<div class="search-container" #container>
+  <div class="no-result-container" *ngIf="noResultsFound$|async">
+    <span class="no-result-text">No results found</span>
+  </div>
+
+  <div class="content">
+    <section class="result-container position-relative" *ngIf="!(noResultsFound$|async)">
+      <div class="result">
+        <div class="video-row-container">
+
+          <ng-container *ngIf="isLoaded$|async">
+            <ng-container *ngFor="let item of (searchResults$|async)">
+              <app-video-row *ngIf="isItemVideo(item)" [video]="asVideo(item)" class="col"></app-video-row>
+            </ng-container>
+          </ng-container>
+
+          <!-- <ng-container *ngIf="!(isLoaded$|async) || (isLoadingMoreResults$|async)">
+        <ng-container *ngFor="let i of [].constructor(pageSize)">
+          <app-video-row class="col"></app-video-row>
+        </ng-container>
+        </ng-container> -->
+
+          <div class="pending-container"
+            *ngIf="!(noResultsFound$|async) && (!(isLoaded$|async) || (isLoadingMoreResults$|async))">
+            <mat-spinner></mat-spinner>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="bottom-section" #bottomSection></div>
+  </div>
+</div>

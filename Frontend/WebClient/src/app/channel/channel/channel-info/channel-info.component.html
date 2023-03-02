@@ -1,0 +1,79 @@
+<div class="channel-content-container">
+  <div class="thumbnail-container">
+    <app-user-thumbnail [hasHyperlink]="false" [size]="80"
+      [userThumbnailData]="channel.userProfile"></app-user-thumbnail>
+  </div>
+
+  <div class="channel-info-container">
+    <div class="display-name-container">
+      {{channel.userProfile.displayName}}
+    </div>
+
+    <div class="desc" *ngIf="!!channel.userProfile.handle">
+      @{{channel.userProfile.handle}}
+    </div>
+
+    <div class="subscribers-container">
+      <ng-container *ngIf="isLoaded">
+        <div class="desc" *ngIf="subscribersCount > 0">
+          {{subscribersCount}} {{subscribersCount > 1 ? 'subscribers' : 'subscriber'}}
+        </div>
+
+        <div class="desc" *ngIf="subscribersCount == 0">
+          No subscribers
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="action-container">
+
+    <ng-container *ngIf="isMine$|async">
+      <button mat-flat-button color="accent" class="action-btn rounded-pill" routerLink="/studio/editing">
+        <span>Customize channel</span>
+      </button>
+
+      <a mat-flat-button color="accent" class="action-btn rounded-pill" routerLink="/studio/videos">
+        <span>Manage videos</span>
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoaded && (canSubscribe$()|async)">
+      <ng-container *ngIf="!isSubscribed; else subscribed">
+        <button mat-flat-button color="accent" class="action-btn rounded-pill" (click)="subscribe()"
+          [disabled]="!(isAuthenticated$|async) || !(isUserReady$|async)">Subscribe</button>
+      </ng-container>
+
+      <ng-template #subscribed>
+        <button mat-flat-button class="action-btn rounded-pill btn-bg subscribed-btn"
+          [matMenuTriggerFor]="subscriptionMenu">
+
+          <mat-icon mat class="material-symbols-outlined" [class.fill]="isEnhancedNotification">{{
+            isNoneNotification? 'notifications_off' :
+            'notifications' }}</mat-icon>
+
+          <span>Subscribed</span>
+
+          <mat-icon mat class="material-symbols-outlined">expand_more</mat-icon>
+
+        </button>
+      </ng-template>
+    </ng-container>
+
+  </div>
+</div>
+
+<mat-menu class="subscription-menu" #subscriptionMenu="matMenu">
+  <button mat-menu-item [class.active]="isEnhancedNotification" (click)="changeToEnhancedNotification()">
+    <mat-icon>notifications</mat-icon>All
+  </button>
+  <button mat-menu-item [class.active]="isNormalNotification" (click)="changeToNormalNotification()">
+    <mat-icon class="material-symbols-outlined">notifications</mat-icon>Personalized
+  </button>
+  <button mat-menu-item [class.active]="isNoneNotification" (click)="changeToNoneNotification()">
+    <mat-icon class="material-symbols-outlined">notifications_off</mat-icon>None
+  </button>
+  <button mat-menu-item (click)="unsubscribe()">
+    <mat-icon class="material-symbols-outlined">person_remove</mat-icon>Unsubscribe
+  </button>
+</mat-menu>

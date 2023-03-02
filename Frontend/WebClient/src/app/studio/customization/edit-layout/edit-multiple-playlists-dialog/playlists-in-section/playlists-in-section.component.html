@@ -1,0 +1,28 @@
+<div class="playlists-in-section-container" cdkScrollable>
+  <div class="title">
+    <span>Playlists in section</span>
+  </div>
+
+  <div class="playlists-in-section" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListAutoScrollStep]="15">
+
+    <div class="playlist" *ngFor="let info of playlistsInSection; let i = index" cdkDrag>
+      <div class="drag-handle" cdkDragHandle [class.draggable]="true">
+        <mat-icon>drag_handle</mat-icon>
+      </div>
+
+      <div class="playlist-title">
+        <div class="playlist-title-content">
+          <span>
+            {{info.title}}
+          </span>
+        </div>
+      </div>
+
+      <button mat-icon-button class="remove-btn" (click)="remove(info.id)">
+        <mat-icon class="material-symbols-outlined">delete</mat-icon>
+      </button>
+    </div>
+
+  </div>
+
+</div>

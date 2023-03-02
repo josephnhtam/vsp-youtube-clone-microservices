@@ -1,0 +1,40 @@
+<section class="draft-content">
+  <div class="stepper">
+    <mat-stepper color="accent" [linear]="true" [@.disabled]="true" #stepper>
+      <!-- <mat-step [stepControl]="firstFormGroup"> -->
+      <mat-step label="Details" [stepControl]="infoFormGroup">
+        <app-edit-video-details #details [videoClient]="videoClient$" [infoFormGroup]="infoFormGroup">
+        </app-edit-video-details>
+      </mat-step>
+      <mat-step label="Visibility" [stepControl]="visibilityFormGroup">
+        <app-edit-video-visibility #visibility [videoClient]="videoClient$" [visibilityFormGroup]="visibilityFormGroup">
+        </app-edit-video-visibility>
+      </mat-step>
+    </mat-stepper>
+  </div>
+
+  <div class="footer">
+    <div class="process">
+      <div>
+        <mat-icon class="material-symbols-outlined" [class.inProgress]="isVideoBeingUploaded$|async"
+          [class.complete]="isVideoUploaded$|async">upgrade</mat-icon>
+      </div>
+      <div>
+        <mat-icon class="material-symbols-outlined" [class.inProgress]="isVideoSdBeingProcessed$|async"
+          [class.complete]="isVideoSdProcessed$|async">sd
+        </mat-icon>
+      </div>
+      <div class="status">
+        {{ statusText$ | async }}
+      </div>
+    </div>
+
+    <div class="button-list">
+      <button *ngIf="stepper.selectedIndex > 0" mat-flat-button (click)="stepper.previous()">BACK</button>
+      <button *ngIf="stepper.selectedIndex != (stepper.steps.length-1)" mat-flat-button color="accent"
+        (click)="stepper.next()">NEXT</button>
+      <button *ngIf="stepper.selectedIndex == (stepper.steps.length-1)" mat-flat-button color="accent"
+        (click)="save()">SAVE</button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,58 @@
+::ng-deep .header-container .mat-form-field-flex {
+  padding: 4px 0 4px 0 !important;
+  align-items: center;
+  background-color: transparent !important;
+}
+
+::ng-deep .header-container .mat-form-field-infix {
+  padding: 4px 4px 4px 8px !important;
+  border-width: 0 !important;
+}
+
+::ng-deep .header-container .mat-input-element::placeholder {
+  color: var(--primary-color) !important;
+}
+
+.header-container {
+  width: 100%;
+  padding: 24px 28px 0 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.header-container {
+  pointer-events: auto;
+}
+
+.search-field {
+  width: 250px;
+  margin-bottom: 4px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.btn-text {
+  padding-left: 12px;
+  font-weight: 400;
+}
+
+.btn {
+  padding: 0 24px 0 16px;
+  border-radius: 50px;
+  width: auto;
+  margin-bottom: 16px;
+}
+
+.btn div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: auto;
+}

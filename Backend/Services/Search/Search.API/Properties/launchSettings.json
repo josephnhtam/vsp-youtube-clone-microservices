@@ -1,0 +1,35 @@
+{
+	"profiles": {
+		"Search.API": {
+			"commandName": "Project",
+			"launchUrl": "swagger",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"dotnetRunMessages": true,
+			"applicationUrl": "http://localhost:15700"
+		},
+		"IIS Express": {
+			"commandName": "IISExpress",
+			"launchUrl": "swagger",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		},
+		"Docker": {
+			"commandName": "Docker",
+			"launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+			"publishAllPorts": true,
+			"useSSL": true
+		}
+	},
+	"$schema": "https://json.schemastore.org/launchsettings.json",
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:17490",
+			"sslPort": 44325
+		}
+	}
+}

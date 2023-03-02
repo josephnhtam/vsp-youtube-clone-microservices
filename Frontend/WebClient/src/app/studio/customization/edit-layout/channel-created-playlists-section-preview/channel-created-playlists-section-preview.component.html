@@ -1,0 +1,12 @@
+<app-channel-section-preview-base (onRemoved)="onRemoved.emit()">
+
+  <span title *ngIf="!pending">Created playlists ({{ getPlaylistInfosResponse?.totalCount??0}})</span>
+
+  <span content *ngIf="!pending && getPlaylistInfosResponse?.totalCount==0">This section will appear when there's a
+    public playlist</span>
+
+  <div class="playlists-container" content *ngIf="!pending && getPlaylistInfosResponse?.totalCount??0>0">
+    <app-playlist-preview *ngFor="let info of getPlaylistInfosResponse?.infos"
+      [playlistInfo]="info"></app-playlist-preview>
+  </div>
+</app-channel-section-preview-base>

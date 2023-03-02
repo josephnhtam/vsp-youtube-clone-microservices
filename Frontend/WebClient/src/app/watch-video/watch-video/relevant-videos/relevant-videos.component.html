@@ -1,0 +1,15 @@
+<div class="videos-container">
+
+  <ng-container *ngIf="isLoaded$|async">
+    <ng-container *ngFor="let item of (searchResults$|async)">
+      <app-video-row-small *ngIf="isItemVideo(item)" [video]="asVideo(item)" class="col"></app-video-row-small>
+    </ng-container>
+  </ng-container>
+
+  <div class="pending-container loading-container"
+    *ngIf="!(noResultsFound$|async) && (!(isLoaded$|async) || (isLoadingMoreResults$|async))">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="bottom-section" #bottomSection></div>
+</div>

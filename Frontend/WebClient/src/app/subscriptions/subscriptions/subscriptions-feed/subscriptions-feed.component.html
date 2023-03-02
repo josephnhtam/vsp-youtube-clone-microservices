@@ -1,0 +1,22 @@
+<div class="feed-container">
+  <div class="title-container">
+    <div class="title">
+      {{title}}
+    </div>
+
+    <div class="tools" *ngIf="isTop">
+      <a mat-button color="accent" class="rounded-pill" routerLink="/channels">
+        Manage
+      </a>
+    </div>
+  </div>
+
+  <div
+    class="videos-container w-100 row row-cols-xxl-6 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-start">
+
+    <ng-container *ngFor="let video of videoGroup.videos">
+      <app-video-grid-item class="col mini-mode" [video]="video" [hideUserThumbnail]="true"></app-video-grid-item>
+    </ng-container>
+
+  </div>
+</div>

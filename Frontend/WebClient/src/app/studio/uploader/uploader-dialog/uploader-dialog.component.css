@@ -1,0 +1,124 @@
+::ng-deep .uploader-dialog {
+  margin: 48px;
+}
+
+::ng-deep .uploader-dialog .mat-dialog-container {
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  height: auto;
+}
+
+::ng-deep .uploader-dialog .mat-checkbox-inner-container {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+::ng-deep .uploader-dialog .ng-scroll-content {
+  width: 100%;
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.uploader-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-bar {
+  width: 100%;
+  height: 56px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  background-color: var(--tint-800);
+  position: relative;
+}
+
+.title-bar {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 8px;
+  cursor: pointer;
+  color: var(--tint-10);
+  user-select: none;
+}
+
+.title-bar .mat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--tint-300);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-bar:hover .mat-icon {
+  color: var(--tint-10);
+}
+
+.title-bar:active .mat-icon {
+  color: var(--tint-400);
+}
+
+.header-bar-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--tint-300);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-bar-btn:hover {
+  color: var(--tint-10)
+}
+
+.header-bar-btn:active {
+  color: var(--tint-400)
+}
+
+.processes-container {
+  min-height: 40px;
+  max-height: 200px;
+}
+
+.progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+}
+
+::ng-deep .uploader-container .processes-container .ng-scrollbar {
+  max-height: 200px;
+}
+
+::ng-deep .uploader-container .progress-bar .mat-progress-bar-buffer {
+  transition: 0 !important;
+}
+
+::ng-deep .uploader-container .progress-bar .mat-progress-bar {
+  transition: 0 !important;
+}
+
+app-upload-process-row {
+  display: block;
+  height: 40px;
+  width: 100%;
+}

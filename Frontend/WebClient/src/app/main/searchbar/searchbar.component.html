@@ -1,0 +1,8 @@
+<div class="searchbar-container">
+  <form class="input-group search-group flex-nowrap" (ngSubmit)="search(form)" #form="ngForm">
+    <input type="text" class="form-control search-input" placeholder="Search" name="query" ngModel>
+    <button type="submit" class="input-group-text search-btn" matTooltip="Search">
+      <mat-icon>search</mat-icon>
+    </button>
+  </form>
+</div>

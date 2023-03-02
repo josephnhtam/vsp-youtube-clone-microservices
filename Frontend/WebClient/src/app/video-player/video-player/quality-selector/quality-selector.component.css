@@ -1,0 +1,83 @@
+app-quality-selector {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  height: 50px;
+  cursor: pointer;
+  color: white;
+  line-height: 50px;
+}
+
+app-quality-selector .container {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  padding: 0;
+}
+
+app-quality-selector select.quality-selector {
+  width: 80px;
+  border: none;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: transparent;
+  font-size: 16px;
+}
+
+app-quality-selector select.quality-selector::-ms-expand {
+  display: none;
+}
+
+app-quality-selector select.quality-selector option {
+  color: #000;
+}
+
+app-quality-selector .quality-selected {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+app-quality-selector .vg-icon-closed_caption:before {
+  width: 100%;
+}
+
+app-quality-selector .quality-options-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  display:flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1000;
+  line-height: 40px;
+}
+
+app-quality-selector .quality-option{
+  text-align: center;
+  text-transform: uppercase;
+  background-color: rgba(0,0,0,0.5);
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+app-quality-selector .quality-option:hover {
+  background-color: rgb(102, 102, 102, 0.5);
+}
+
+.controls.hide app-quality-selector {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s;
+}

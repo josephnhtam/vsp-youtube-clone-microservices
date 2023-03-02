@@ -1,0 +1,34 @@
+<mat-drawer-container class="main-container" [hasBackdrop]="true">
+  <mat-drawer #drawer mode="over" [autoFocus]="false">
+    <app-over-sidebar (onClose)="drawer.close()">
+      <app-sidebar></app-sidebar>
+    </app-over-sidebar>
+  </mat-drawer>
+
+  <header class="toolbar">
+    <app-common-toolbar [forceHideSidebar]="false" (onToggleMenu)="drawer.toggle()" #toolbar>
+      <app-tools end></app-tools>
+    </app-common-toolbar>
+  </header>
+
+  <div class="body" [class.mini-sidebar-active]="toolbar.miniSidebar" [class.sidebar-hidden]="toolbar.isSidebarHidden">
+    <nav class="sidebar">
+      <div class="sidebar-content">
+        <ng-scrollbar style=" overscroll-behavior: contain;">
+          <app-sidebar></app-sidebar>
+        </ng-scrollbar>
+      </div>
+    </nav>
+
+    <nav class="sidebar mini-sidebar">
+      <div class="sidebar-content">
+        <app-mini-sidebar></app-mini-sidebar>
+      </div>
+    </nav>
+
+    <main class="main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+</mat-drawer-container>

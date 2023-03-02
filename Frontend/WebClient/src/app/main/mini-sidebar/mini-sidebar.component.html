@@ -1,0 +1,46 @@
+<div class="sidebar-container">
+  <ul class="nav-container">
+    <li>
+      <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <div>
+          <mat-icon class="material-symbols-outlined">home</mat-icon>
+          <span class="btn-text">Home</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/subscriptions" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">subscriptions</mat-icon> <span
+            class="btn-text">Subscriptions</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/library" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">video_library</mat-icon> <span class="btn-text">Library</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/history" routerLinkActive="active" [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">history</mat-icon> <span class="btn-text">History</span>
+        </div>
+      </a>
+    </li>
+
+    <li>
+      <a mat-button routerLink="/playlist" [queryParams]="{'list':'WL'}" routerLinkActive="active"
+        [disabled]="!(isUserReady$|async)">
+        <div>
+          <mat-icon class="material-symbols-outlined">schedule</mat-icon> <span class="btn-text">Watch later</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

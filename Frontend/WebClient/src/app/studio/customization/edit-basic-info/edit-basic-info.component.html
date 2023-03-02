@@ -1,0 +1,31 @@
+<div class="tab-container">
+  <form [formGroup]="formGroup" class="customization-container">
+
+    <h3 class="label">Name</h3>
+    <p class="desc">Choose a channel name that represents you and your content. Changes made to your name and picture
+      are visible only on YouTube and not other Google services.</p>
+    <mat-form-field appearance="fill">
+      <input formControlName="displayName" matInput #nameInput maxlength="50" placeholder="Enter channel name">
+      <mat-hint align="end">{{nameInput.value.length}}/50</mat-hint>
+    </mat-form-field>
+
+
+    <h3 class="label">Handle</h3>
+    <p class="desc">Choose your unique handle by adding letters and numbers.</p>
+    <mat-form-field [hintLabel]="(handleHint$|async)!" appearance="fill">
+      <input formControlName="handle" matInput #handleInput maxlength="30" placeholder="Set your handle">
+      <mat-hint align="end">{{handleInput.value.length}}/30</mat-hint>
+    </mat-form-field>
+
+    <h3 class="label">Description</h3>
+    <mat-form-field [hintLabel]="(handleHint$|async)!" appearance="fill">
+
+      <textarea formControlName="description" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="6" #desc="matInput"
+        placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places."></textarea>
+
+      <mat-hint align="end">{{desc.value.length}}/1000</mat-hint>
+    </mat-form-field>
+
+  </form>
+</div>

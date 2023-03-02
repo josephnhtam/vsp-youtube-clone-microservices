@@ -1,0 +1,37 @@
+.feed-container {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:host {
+  width: 100%;
+  max-width: 1320px;
+  padding: 0 18px;
+}
+
+.title-container {
+  margin-top: 24px;
+  position: relative;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  flex-grow: 1;
+}
+
+.tools {
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+}
+
+.videos-container {
+  margin: 18px 0 0 0 !important;
+}
+
+app-video-grid-item {
+  padding: 0 2px 0 2px !important;
+}

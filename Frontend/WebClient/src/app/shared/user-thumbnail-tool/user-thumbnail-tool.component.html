@@ -1,0 +1,22 @@
+<ng-container *ngIf="isAuthenticated$|async; else signin">
+  <button mat-icon-button color="primary" matTooltip="Account" [matMenuTriggerFor]="accountMenu">
+    <app-user-profile-thumbnail [userId]="(userId$|async)!" [size]="32"></app-user-profile-thumbnail>
+  </button>
+</ng-container>
+
+<ng-template #signin>
+  <button mat-icon-button color="primary" matTooltip="Account" (click)="onClickSignin()">
+    <mat-icon mat class="material-symbols-outlined">account_circle</mat-icon>
+  </button>
+</ng-template>
+
+<mat-menu #accountMenu="matMenu" class="account-menu">
+  <a mat-menu-item [disabled]="!(channelLink$|async)" [routerLink]="channelLink$|async">
+    <mat-icon class="material-symbols-outlined menu-icon">account_box</mat-icon>
+    <span>Your channel</span>
+  </a>
+  <button mat-menu-item (click)="onClickSignout()">
+    <mat-icon class="material-symbols-outlined menu-icon">logout</mat-icon>
+    <span>Sign out</span>
+  </button>
+</mat-menu>

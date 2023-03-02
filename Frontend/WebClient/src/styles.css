@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+:root {
+  --primary-color: #0f0f0f;
+  --bg-color: #ffffff;
+  --bg-1-color: #ffffff;
+  --hover-color: #e8e8e8;
+  --highlight-color: #e4e4e3;
+  --press-color: #d9d9d9;
+  --toolbar-height: 56px;
+  --sidebar-width: 250px;
+  --mini-sidebar-width: 72px;
+  --tint-10: #fafafafa;
+  --tint-50: #f5f5f5;
+  --tint-100: #e8e8e8;
+  --tint-200: #d9d9d9;
+  --tint-300: #c4c4c4;
+  --tint-400: #9d9d9d;
+  --tint-500: #7b7b7b;
+  --tint-600: #555555;
+  --tint-700: #434343;
+  --tint-800: #262626;
+  --tint-900: #000000;
+  --accent-50: #e3f2fd;
+  --accent-100: #bbdefb;
+  --accent-200: #90cbf9;
+  --accent-300: #63b6f6;
+  --accent-400: #40a6f6;
+  --accent-500: #1b97f4;
+  --accent-600: #1889e6;
+  --accent-700: #1277d3;
+  --accent-800: #0d66c1;
+  --accent-900: #0448a2;
+  --header-title-row-height: 52px;
+  --warning-text-color: #0f0f0f;
+  --warning-bg-color: #f5d562;
+  --danger-color: #dc3b45;
+  --success-color: #047857;
+}
+
+.text-tint-50 {
+  color: var(--tint-50);
+}
+
+.text-tint-100 {
+  color: var(--tint-100);
+}
+
+.text-tint-200 {
+  color: var(--tint-200);
+}
+
+.text-tint-300 {
+  color: var(--tint-300);
+}
+
+.text-tint-400 {
+  color: var(--tint-400);
+}
+
+.text-tint-500 {
+  color: var(--tint-500);
+}
+
+.text-tint-600 {
+  color: var(--tint-600);
+}
+
+.text-tint-700 {
+  color: var(--tint-700);
+}
+
+.text-tint-800 {
+  color: var(--tint-800);
+}
+
+.text-tint-900 {
+  color: var(--tint-900);
+}
+
+.bg-tint-50 {
+  background-color: var(--tint-50);
+}
+
+.bg-tint-100 {
+  background-color: var(--tint-100);
+}
+
+.bg-tint-200 {
+  background-color: var(--tint-200);
+}
+
+.bg-tint-300 {
+  background-color: var(--tint-300);
+}
+
+.bg-tint-400 {
+  background-color: var(--tint-400);
+}
+
+.bg-tint-500 {
+  background-color: var(--tint-500);
+}
+
+.bg-tint-600 {
+  background-color: var(--tint-600);
+}
+
+.bg-tint-700 {
+  background-color: var(--tint-700);
+}
+
+.bg-tint-800 {
+  background-color: var(--tint-800);
+}
+
+.bg-tint-900 {
+  background-color: var(--tint-900);
+}
+
+.text-accent-50 {
+  color: var(--tint-50);
+}
+
+.text-accent-100 {
+  color: var(--tint-100);
+}
+
+.text-accent-200 {
+  color: var(--tint-200);
+}
+
+.text-accent-300 {
+  color: var(--tint-300);
+}
+
+.text-accent-400 {
+  color: var(--tint-400);
+}
+
+.text-accent-500 {
+  color: var(--tint-500);
+}
+
+.text-accent-600 {
+  color: var(--tint-600);
+}
+
+.text-accent-700 {
+  color: var(--tint-700);
+}
+
+.text-accent-800 {
+  color: var(--tint-800);
+}
+
+.text-accent-900 {
+  color: var(--tint-900);
+}
+
+.bg-accent-50 {
+  background-color: var(--tint-50);
+}
+
+.bg-accent-100 {
+  background-color: var(--tint-100);
+}
+
+.bg-accent-200 {
+  background-color: var(--tint-200);
+}
+
+.bg-accent-300 {
+  background-color: var(--tint-300);
+}
+
+.bg-accent-400 {
+  background-color: var(--tint-400);
+}
+
+.bg-accent-500 {
+  background-color: var(--tint-500);
+}
+
+.bg-accent-600 {
+  background-color: var(--tint-600);
+}
+
+.bg-accent-700 {
+  background-color: var(--tint-700);
+}
+
+.bg-accent-800 {
+  background-color: var(--tint-800);
+}
+
+.bg-accent-900 {
+  background-color: var(--tint-900);
+}
+
+body {
+  color: var(--primary-color);
+  font-size: 16px;
+  font-weight: 400;
+  font-family: Roboto, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.button {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+.button:hover {
+  color: var(--primary-color);
+  background-color: var(--hover-color);
+}
+
+.button:active {
+  transition: all 0.5s
+}
+
+.mat-tooltip {
+  font-size: 0.75rem !important;
+}
+
+.mat-icon-button:hover .mat-button-focus-overlay {
+  opacity: 0.08 !important;
+}
+
+.ng-scroll-viewport {
+  overscroll-behavior: contain !important;
+}
+
+.aspect-ratio-16-9::before {
+  content: "";
+  width: 1px;
+  display: block;
+  height: 0;
+  padding-bottom: 56.25%
+}
+
+.basic-btn-press:active {
+  background-color: var(--tint-200);
+}

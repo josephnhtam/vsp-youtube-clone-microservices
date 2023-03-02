@@ -1,0 +1,62 @@
+<div class="item-container">
+  <a *ngIf="!isHidden" class="clickable" [routerLink]="['/watch', playlistItem.video.id]"
+    [queryParams]="{list:playlistId,index:index}"></a>
+
+  <div class="thumbnail-container" [class.hidden]="isHidden">
+    <div class="thumbnail">
+      <img *ngIf="!!thumbnailUrl" [src]="thumbnailUrl">
+    </div>
+
+    <div class="length" *ngIf="!isHidden">
+      {{length}}
+    </div>
+  </div>
+
+  <div class="content" [class.hidden]="isHidden">
+    <div class="title">
+      {{title}}
+    </div>
+    <div class="metadata" *ngIf="!isHidden">
+      <a class="author" [routerLink]="channelLink">{{creatorDisplayName}}</a> • <span>{{viewsCount}}
+        {{viewsCount > 1 ? 'views' : 'view'}}</span>
+      • <span>{{createDate}}</span>
+    </div>
+  </div>
+
+  <div class="options" [class.focusing]="focusing" *ngIf="!isReadonly || !isHidden">
+    <button mat-icon-button matTooltip="Options" matTooltipPosition="below" [matMenuTriggerFor]="optionsMenu"
+      (click)="openOptionsMenu()" (menuClosed)="optionsMenuClosed()">
+      <mat-icon class="material-symbols">more_vert</mat-icon>
+    </button>
+  </div>
+
+  <mat-menu #optionsMenu="matMenu">
+    <ng-template matMenuContent let-row="row">
+
+      <button mat-menu-item (click)="addToPlaylist()">
+        <mat-icon class="material-symbols-outlined">playlist_add</mat-icon>
+        <span>Save to playlist</span>
+      </button>
+
+      <ng-container *ngIf="!isReadonly">
+        <div class="menu-separator" *ngIf="!isHidden"></div>
+
+        <button mat-menu-item (click)="remove()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          <span>Remove from {{playlistTitle$|async}}</span>
+        </button>
+
+        <ng-container *ngIf="movable && !isHidden">
+          <button mat-menu-item (click)="moveToTop()">
+            <mat-icon class="material-symbols-outlined">vertical_align_top</mat-icon>
+            <span>Move to top</span>
+          </button>
+          <button mat-menu-item (click)="moveToBottom()">
+            <mat-icon class="material-symbols-outlined">vertical_align_bottom</mat-icon>
+            <span>Move to bottom</span>
+          </button>
+        </ng-container>
+      </ng-container>
+
+    </ng-template>
+  </mat-menu>

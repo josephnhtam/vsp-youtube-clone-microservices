@@ -1,0 +1,148 @@
+version: '3.4'
+
+services:
+  postgres:
+    container_name: ${DOCKER_REGISTRY-}postgres
+    image: postgres:14.7-alpine
+
+  adminer:
+    container_name: ${DOCKER_REGISTRY-}adminer
+    image: adminer
+
+  pgadmin:
+    container_name: ${DOCKER_REGISTRY-}pgadmin
+    image: dpage/pgadmin4
+
+  rabbitmq:
+    container_name: ${DOCKER_REGISTRY-}rabbitmq
+    image: rabbitmq:3.9.28-management-alpine
+
+  mongo:
+    container_name: ${DOCKER_REGISTRY-}mongo
+    image: mongo:6.0.3
+
+  mongo-express:
+    container_name: ${DOCKER_REGISTRY-}mongo-express
+    image: mongo-express
+
+  elasticsearch:
+    container_name: ${DOCKER_REGISTRY-}elasticsearch
+    build:
+      context: .
+      dockerfile: ./Infrastructure/Elasticsearch/Dockerfile
+
+  kibana:
+    container_name: ${DOCKER_REGISTRY-}kibana
+    image: docker.elastic.co/kibana/kibana:7.11.0
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.11.0
+
+  redis:
+    container_name: ${DOCKER_REGISTRY-}redis
+    image: redis:alpine3.17
+
+  redis-commander:
+    container_name: ${DOCKER_REGISTRY-}redis-commander
+    image: rediscommander/redis-commander:latest
+    depends_on:
+      - redis
+
+  jaeger:
+    container_name: ${DOCKER_REGISTRY-}jaeger
+    image: jaegertracing/all-in-one:1
+
+  videoprocessor.application:
+    image: ${DOCKER_REGISTRY-}videoprocessorapplication
+    build:
+      context: .
+      dockerfile: Services/VideoProcessor/VideoProcessor.Application/Dockerfile
+
+  videostore.api:
+    image: ${DOCKER_REGISTRY-}videostoreapi
+    build:
+      context: .
+      dockerfile: Services/VideoStore/VideoStore.API/Dockerfile
+
+  videomanager.api:
+    image: ${DOCKER_REGISTRY-}videomanagerapi
+    build:
+      context: .
+      dockerfile: Services/VideoManager/VideoManager.API/Dockerfile
+
+  videomanager.signalrhub:
+    image: ${DOCKER_REGISTRY-}videomanagersignalrhub
+    build:
+      context: .
+      dockerfile: Services/VideoManager/VideoManager.SignalRHub/Dockerfile
+
+  users.api:
+    image: ${DOCKER_REGISTRY-}usersapi
+    build:
+      context: .
+      dockerfile: Services/Users/Users.API/Dockerfile
+
+  subscriptions.api:
+    image: ${DOCKER_REGISTRY-}subscriptionsapi
+    build:
+      context: .
+      dockerfile: Services/Subscriptions/Subscriptions.API/Dockerfile
+
+  storage.api:
+    image: ${DOCKER_REGISTRY-}storageapi
+    build:
+      context: .
+      dockerfile: Services/Storage/Storage.API/Dockerfile
+
+  search.api:
+    image: ${DOCKER_REGISTRY-}searchapi
+    build:
+      context: .
+      dockerfile: Services/Search/Search.API/Dockerfile
+
+  library.api:
+    image: ${DOCKER_REGISTRY-}libraryapi
+    build:
+      context: .
+      dockerfile: Services/Library/Library.API/Dockerfile
+
+  identityprovider:
+    image: ${DOCKER_REGISTRY-}identityproviderapi
+    build:
+      context: .
+      dockerfile: Services/IdentityProvider/IdentityProvider/Dockerfile
+
+  history.api:
+    image: ${DOCKER_REGISTRY-}historyapi
+    build:
+      context: .
+      dockerfile: Services/History/History.API/Dockerfile
+
+  community.api:
+    image: ${DOCKER_REGISTRY-}communityapi
+    build:
+      context: .
+      dockerfile: Services/Community/Community.API/Dockerfile
+
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: Services/ApiGateway/Dockerfile
+
+  webstatus:
+    image: ${DOCKER_REGISTRY-}webstatus
+    build:
+      context: .
+      dockerfile: Services/WebStatus/WebStatus/Dockerfile
+
+volumes:
+  pgdata:
+  pgadmin-data:
+  rabbitmq-data:
+  mongo-data:
+  es-data:
+  kibana-data:
+  redis-data:
+  storage-data:
+

@@ -1,0 +1,20 @@
+<div class="about-container">
+  <div class="content-container">
+
+    <div class="main-container">
+      <section class="section-container" *ngIf="description">
+        <div class="section-title">Description</div>
+        <div class="section-content">{{description}}</div>
+      </section>
+    </div>
+
+    <div class="stats-container" *ngIf="!statsPending">
+      <div class="stats-title">Stats</div>
+      <div class="stats-col">Joined {{joinDate}}</div>
+      <div class="stats-col" *ngIf="viewsCount>0">
+        <span>{{viewsCount.toLocaleString()}} {{viewsCount>1?'views':'view'}}</span>
+      </div>
+    </div>
+
+  </div>
+</div>

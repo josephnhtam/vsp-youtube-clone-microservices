@@ -1,0 +1,11 @@
+<section class="section-row-container">
+  <div class="section-title-container">
+    <a class="title" [routerLink]="['../playlists']" [queryParams]="{view:'created'}">
+      Created playlists
+    </a>
+  </div>
+  <div class="slider-container" *ngIf="!!section.playlists">
+    <app-channel-section-row [items]="$any(section.playlists)" [hideUser]="true"
+      [hideVisibility]="true"></app-channel-section-row>
+  </div>
+</section>

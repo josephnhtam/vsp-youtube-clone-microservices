@@ -1,0 +1,48 @@
+<div class="message-container">
+  <a class="clickable" *ngIf="!!viewLink" [routerLink]="viewLink" (click)="onClick()"></a>
+
+  <div class="header-container">
+    <div class="checked-indicator-container">
+      <div class="checked-indicator" *ngIf="!checked"></div>
+    </div>
+
+    <div class="sender-thumbnail-container">
+      <app-user-thumbnail [size]="48" [userThumbnailData]="senderThumbnailData"
+        [hasHyperlink]="false"></app-user-thumbnail>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <div class="message">
+      {{contentMessage}}
+    </div>
+    <div class="date">
+      {{date}}
+    </div>
+  </div>
+
+  <div class="thumbnail-container">
+    <div class="thumbnail aspect-ratio-16-9">
+      <div class="thumbnail-content">
+        <img [src]="thumbnailUrl" alt="thumbnail" (error)="failedToLoadThumbnail()">
+      </div>
+    </div>
+  </div>
+
+  <div class="options-container" [class.focusing]="focusing">
+    <button mat-icon-button [matMenuTriggerFor]="optionsMenu" (click)="focusing=true" (menuClosed)="focusing=false">
+      <mat-icon class="material-symbols-outlined option-icon">more_vert</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <button mat-menu-item (click)="hideMessage()">
+    <mat-icon class="material-symbols-outlined">visibility_off</mat-icon>
+    <span>Hide this notification</span>
+  </button>
+  <button mat-menu-item (click)="turnOffNotification()">
+    <mat-icon class="material-symbols-outlined">notifications_off</mat-icon>
+    <span>Turn off all from {{senderDisplayName}}</span>
+  </button>
+</mat-menu>

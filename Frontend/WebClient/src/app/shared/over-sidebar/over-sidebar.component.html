@@ -1,0 +1,21 @@
+<div class="over-sidebar-container">
+  <div class="toolbar-container d-flex justify-content-between align-items-center">
+    <div class="start d-flex align-items-center justify-content-start">
+      <div class="menu-btn">
+        <button mat-icon-button (click)="close()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <a class="main-icon-container" routerLink="/">
+        <img class="main-icon" src="assets/icon/icon.png">
+      </a>
+    </div>
+  </div>
+
+  <div class="sidebar-container">
+    <ng-scrollbar style=" overscroll-behavior: contain;" [autoHeightDisabled]="false">
+      <ng-content></ng-content>
+    </ng-scrollbar>
+  </div>
+</div>

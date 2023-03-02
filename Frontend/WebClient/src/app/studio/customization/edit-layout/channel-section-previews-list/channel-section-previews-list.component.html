@@ -1,0 +1,33 @@
+<div class="sections-list" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListAutoScrollStep]="15">
+
+  <div class="section-item" *ngFor="let section of sections; let i = index" cdkDrag>
+    <div class="drag-handle" cdkDragHandle [class.draggable]="true">
+      <mat-icon>drag_handle</mat-icon>
+    </div>
+
+    <ng-container [ngSwitch]="section.type">
+
+      <ng-container *ngSwitchCase="0">
+        <app-channel-videos-section-preview class="section" [section]="$any(section)"
+          (onRemoved)="removeSection(section)"></app-channel-videos-section-preview>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="1">
+        <app-channel-created-playlists-section-preview class="section" [section]="$any(section)"
+          (onRemoved)="removeSection(section)"></app-channel-created-playlists-section-preview>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="2">
+        <app-channel-single-playlist-section-preview class="section" [section]="$any(section)"
+          (onRemoved)="removeSection(section)"></app-channel-single-playlist-section-preview>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="4">
+        <app-channel-multiple-playlists-section-preview class="section" [section]="$any(section)"
+          (onRemoved)="removeSection(section)"></app-channel-multiple-playlists-section-preview>
+      </ng-container>
+
+    </ng-container>
+  </div>
+
+</div>

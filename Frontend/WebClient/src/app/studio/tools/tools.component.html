@@ -1,0 +1,27 @@
+<ng-template #loading>
+  <div class="tools-container">
+
+    <div class="tool-placeholder-container">
+      <div class="tool-placeholder"></div>
+    </div>
+
+    <div class="tool-placeholder-container">
+      <div class="tool-placeholder"></div>
+    </div>
+
+    <div class="tool-placeholder-container">
+      <div class="tool-placeholder"></div>
+    </div>
+
+  </div>
+</ng-template>
+
+<div class="tools-container" *ngIf="!(isLoading$|async); else loading">
+
+  <button mat-icon-button color="primary" (click)="onClickUploadVideo()">
+    <mat-icon mat class="material-symbols-outlined" matTooltip="Upload Video">video_call</mat-icon>
+  </button>
+
+  <app-user-thumbnail-tool></app-user-thumbnail-tool>
+
+</div>

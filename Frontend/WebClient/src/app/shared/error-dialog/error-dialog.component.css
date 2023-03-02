@@ -1,0 +1,10 @@
+.error-dialog-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.error-dialog-container button {
+  margin-left: 4px;
+}

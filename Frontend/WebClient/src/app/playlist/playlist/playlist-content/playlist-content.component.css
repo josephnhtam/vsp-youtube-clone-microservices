@@ -1,0 +1,70 @@
+.playlist {
+  width: 100%;
+  display: block;
+  padding: 24px 16px 24px 16px;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.playlist.cdk-drop-list-dragging .playlist:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.playlist-item {
+  display: flex;
+  border-radius: 16px;
+}
+
+.playlist-item:hover {
+  background-color: var(--tint-50);
+}
+
+.drag-handle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  cursor: grab;
+}
+
+.drag-handle:not(.draggable) {
+  pointer-events: none;
+}
+
+.cdk-drag-preview {
+  background-color: var(--tint-50);
+  box-sizing: border-box;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.index-label {
+  text-overflow: clip;
+}
+
+.pending-container{
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.pending-container ::ng-deep .mat-progress-spinner svg {
+  width: 35px !important;
+  height: 35px !important;
+}

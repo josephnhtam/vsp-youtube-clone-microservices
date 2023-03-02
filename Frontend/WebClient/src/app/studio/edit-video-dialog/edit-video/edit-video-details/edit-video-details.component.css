@@ -1,0 +1,134 @@
+.video-content {
+  padding-left: 25px;
+}
+
+.video-preview {
+  position: sticky;
+  top: 25px;
+}
+
+.thumbnails-container {
+  width: 100%;
+}
+
+.thumbnails {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.thumbnail {
+  width: 127px;
+  height: 74px;
+  background-color: var(--tint-100);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.thumbnail-selected {
+  outline: 2px solid black;
+}
+
+.thumbnail.thumbnail-upload {
+  background-color: transparent;
+}
+
+.thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.thumbnail-upload-icon {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  outline: var(--tint-400) 1px dashed;
+  font-size: 12px;
+} 
+
+.video-empty {
+  width: 100%;
+  padding-top: 56.25%
+}
+
+.video-container {
+  padding: 0;
+  width: 100%;
+  position: relative;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.video-status-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--tint-100);
+}
+
+.video-info-container {
+  padding: 14px 18px;
+  background-color: var(--tint-50);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.video-info-topic{
+  font-size: 12px;
+  color: var(--tint-600)
+}
+
+.video-info-content{
+  font-size: 15px;
+}
+
+.tags-container {
+  width: 100%;
+}
+
+.tags-chip-list {
+  width: 100%;
+}
+
+.thumbnails-container {
+  margin-bottom: 24px;
+}
+
+::ng-deep .tags-container .mat-form-field-flex {
+  padding-top: 0;
+}
+
+::ng-deep .details-content .mat-form-field-subscript-wrapper {
+  padding: 0;
+  font-size: 12px;
+  line-height: 16px;
+}

@@ -1,0 +1,42 @@
+<ng-template #loading>
+  <div class="tools-container">
+
+    <div class="tool-placeholder-container">
+      <div class="tool-placeholder"></div>
+    </div>
+
+    <div class="tool-placeholder-container">
+      <div class="tool-placeholder"></div>
+    </div>
+
+    <div class="tool-placeholder-container">
+      <div class="tool-placeholder"></div>
+    </div>
+
+  </div>
+</ng-template>
+
+<div class="tools-container" *ngIf="!(isLoading$|async); else loading">
+
+  <ng-container *ngIf="isAuthenticated$|async;">
+    <button mat-icon-button color="primary" (click)="onClickUploadVideo()">
+      <mat-icon mat class="material-symbols-outlined" matTooltip="Upload Video">video_call</mat-icon>
+    </button>
+
+    <button class="notification-btn" mat-icon-button color="primary" [matMenuTriggerFor]="notificationsMenu"
+      #notificationMenuTrigger="matMenuTrigger"
+      (menuOpened)=" notificationMenuOpened(notificationDialog, notificationMenuTrigger)">
+      <mat-icon mat class="material-symbols-outlined" matTooltip="Notifications"
+        [matBadge]="unreadNotificationMessagesCount" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+    </button>
+  </ng-container>
+
+  <app-user-thumbnail-tool></app-user-thumbnail-tool>
+
+</div>
+
+<mat-menu #notificationsMenu="matMenu" class="notifications-menu">
+  <div class="notifications-content-container" (click)="$event.stopPropagation()">
+    <app-notifications-dialog #notificationDialog></app-notifications-dialog>
+  </div>
+</mat-menu>

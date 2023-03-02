@@ -1,0 +1,21 @@
+.thumbnail {
+  border-radius: 50%;
+  background-color: var(--tint-100);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}

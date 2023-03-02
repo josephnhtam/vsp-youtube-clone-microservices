@@ -1,0 +1,23 @@
+@page
+@model IdentityProvider.Pages.Logout.LoggedOut
+
+<main class="form w-100 m-auto">
+    <form class="d-flex flex-column align-items-stretch w-100">
+        <h1 class="h3 mb-3 fw-normal text-center">LOGOUT</h1>
+
+        <span class="text-center mb-3 text-primary">You have been successfully logged out.</span>
+
+        @if (Model.View.PostLogoutRedirectUri != null)
+        {
+            <div class="w-100 px-2 mt-2">
+                <div class="w-100">
+                    <a href="@Model.View.PostLogoutRedirectUri" class="w-100 btn btn btn-primary rounded-pill" type="submit">Continue</a>
+                </div>
+            </div>
+        }
+
+        @if (Model.View.SignOutIframeUrl != null) {
+            <iframe width="0" height="0" class="signout" src="@Model.View.SignOutIframeUrl"></iframe>
+        }
+    </form>
+</main>

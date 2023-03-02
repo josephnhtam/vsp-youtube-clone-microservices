@@ -1,0 +1,51 @@
+<div class="item-container" [class.is-current]="isCurrent">
+  <a *ngIf="!isHidden" class="clickable" [routerLink]="['/watch', video.id]" [queryParams]="{index:item.position}"
+    queryParamsHandling="merge"></a>
+
+  <div class="header-container">
+    <div class="playing" *ngIf="isCurrent">
+      <mat-icon>play_arrow</mat-icon>
+    </div>
+
+    <div class="position" *ngIf="!isCurrent">
+      {{position}}
+    </div>
+  </div>
+
+  <div class="thumbnail-container" [class.hidden]="isHidden">
+    <div class="thumbnail">
+      <img *ngIf="!!thumbnailUrl" [src]="thumbnailUrl">
+    </div>
+
+    <div class="length" *ngIf="!isHidden">
+      {{length}}
+    </div>
+  </div>
+
+  <div class="content" [class.hidden]="isHidden">
+    <div class="title">
+      {{title}}
+    </div>
+    <div class="metadata" *ngIf="!isHidden">
+      <span>{{creatorDisplayName}}</span>
+    </div>
+  </div>
+
+  <div class="options" [class.focusing]="focusing" *ngIf="!isHidden">
+    <button mat-icon-button matTooltip="Options" matTooltipPosition="below" [matMenuTriggerFor]="optionsMenu"
+      (click)="openOptionsMenu()" (menuClosed)="optionsMenuClosed()">
+      <mat-icon class="material-symbols">more_vert</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-menu #optionsMenu="matMenu">
+  <ng-template matMenuContent let-row="row">
+
+    <button mat-menu-item (click)="addToPlaylist()">
+      <mat-icon class="material-symbols-outlined">playlist_add</mat-icon>
+      <span>Save to playlist</span>
+    </button>
+
+  </ng-template>
+</mat-menu>

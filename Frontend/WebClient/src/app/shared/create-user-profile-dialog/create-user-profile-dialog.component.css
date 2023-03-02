@@ -1,0 +1,69 @@
+::ng-deep .create-user-profile-dialog .mat-dialog-container {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  height: auto;
+}
+
+.title-row {
+  flex-grow: 0;
+  display:flex;
+  align-items: center;
+  padding: 22px 24px 22px 24px;
+}
+
+.title-row {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.create-user-profile-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 8px 8px 8px;
+}
+
+.info-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-container mat-form-field {
+  width: 100%;
+  max-width: 460px;
+}
+
+.thumbnail {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.thumbnail-upload-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.thumbnail-upload-container button{
+  margin: 16px 0;
+}
