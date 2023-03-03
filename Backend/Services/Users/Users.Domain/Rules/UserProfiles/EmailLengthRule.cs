@@ -2,6 +2,9 @@
 
 namespace Users.Domain.Rules.UserProfiles {
     public class EmailLengthRule : LengthRule {
-        public EmailLengthRule (string? email) : base(email, "Email", null, 255) { }
+        public const string PropertyName = "Email";
+        public const int MaxLength = 255;
+
+        public EmailLengthRule (string? email) : base(email, PropertyName, null, MaxLength) { }
     }
 }

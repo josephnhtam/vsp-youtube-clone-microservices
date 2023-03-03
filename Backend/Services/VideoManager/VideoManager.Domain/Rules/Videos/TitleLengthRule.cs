@@ -2,6 +2,10 @@
 
 namespace VideoManager.Domain.Rules.Videos {
     public class TitleLengthRule : LengthRule {
-        public TitleLengthRule (string text) : base(text, "Title", 1, 100) { }
+        public const string PropertyName = "Title";
+        public const int MinLength = 1;
+        public const int MaxLength = 50;
+
+        public TitleLengthRule (string text) : base(text, PropertyName, MinLength, MaxLength) { }
     }
 }

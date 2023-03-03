@@ -2,6 +2,9 @@
 
 namespace Users.Domain.Rules.UserProfiles {
     public class HandleLengthRule : LengthRule {
-        public HandleLengthRule (string? handle) : base(handle, "Handle", null, 30) { }
+        public const string PropertyName = "Handle";
+        public const int MaxLength = 30;
+
+        public HandleLengthRule (string? handle) : base(handle, PropertyName, null, MaxLength) { }
     }
 }

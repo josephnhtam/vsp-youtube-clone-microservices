@@ -2,6 +2,9 @@
 
 namespace Users.Domain.Rules.UserProfiles {
     public class DescriptionLengthRule : LengthRule {
-        public DescriptionLengthRule (string description) : base(description, "Description", null, 1000) { }
+        public const string PropertyName = "Description";
+        public const int MaxLength = 1000;
+
+        public DescriptionLengthRule (string description) : base(description, PropertyName, null, MaxLength) { }
     }
 }
