@@ -9,7 +9,7 @@ namespace VideoProcessor.Domain.Models {
         public int Height { get; private set; }
         public string Url { get; private set; }
 
-        private VideoThumbnail (Guid imageFileId, string label, int width, int height, string url) {
+        protected VideoThumbnail (Guid imageFileId, string label, int width, int height, string url) {
             ImageFileId = imageFileId;
             Label = label;
             Width = width;

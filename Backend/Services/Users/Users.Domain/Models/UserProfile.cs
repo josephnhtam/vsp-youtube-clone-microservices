@@ -16,9 +16,9 @@ namespace Users.Domain.Models {
 
         public long Version { get; set; }
 
-        private UserProfile () { }
+        protected UserProfile () { }
 
-        private UserProfile (string userId, string displayName, ImageFile? thumbnail) {
+        protected UserProfile (string userId, string displayName, ImageFile? thumbnail) {
             CheckRules(new DisplayNameCharactersRule(displayName),
                        new DisplayNameLengthRule(displayName));
 

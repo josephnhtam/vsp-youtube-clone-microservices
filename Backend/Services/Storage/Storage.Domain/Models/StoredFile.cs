@@ -19,9 +19,9 @@ namespace Storage.Domain.Models {
 
         public IReadOnlyList<FileProperty> Properties => _properties.AsReadOnly();
 
-        private StoredFile () { }
+        protected StoredFile () { }
 
-        private StoredFile (Guid fileId, Guid trackingId, Guid groupId, string? userId, string category, string? contentType, string fileName, string originalFileName, long fileSize, string url, List<FileProperty> claims, DateTimeOffset createDate) {
+        protected StoredFile (Guid fileId, Guid trackingId, Guid groupId, string? userId, string category, string? contentType, string fileName, string originalFileName, long fileSize, string url, List<FileProperty> claims, DateTimeOffset createDate) {
             FileId = fileId;
             TrackingId = trackingId;
             GroupId = groupId;

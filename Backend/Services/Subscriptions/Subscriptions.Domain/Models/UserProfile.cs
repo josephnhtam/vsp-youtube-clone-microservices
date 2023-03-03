@@ -17,7 +17,7 @@ namespace Subscriptions.Domain.Models {
         protected UserProfile () {
         }
 
-        private UserProfile (string userId, string displayName, string description, string? handle, string? thumbnailUrl, long primaryVersion) : this() {
+        protected UserProfile (string userId, string displayName, string description, string? handle, string? thumbnailUrl, long primaryVersion) : this() {
             Id = userId;
             DisplayName = displayName;
             Description = description;

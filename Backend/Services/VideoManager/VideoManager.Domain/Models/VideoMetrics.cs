@@ -12,7 +12,7 @@ namespace VideoManager.Domain.Models {
         public DateTimeOffset? CommentsCountUpdateDate { get; internal set; }
         public DateTimeOffset? VotesCountUpdateDate { get; internal set; }
 
-        private VideoMetrics () {
+        protected VideoMetrics () {
             ViewsCount = 0;
             CommentsCount = 0;
             LikesCount = 0;

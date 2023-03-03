@@ -6,7 +6,7 @@ namespace Storage.Domain.Models {
         public string Name { get; private set; }
         public string Value { get; private set; }
 
-        private FileProperty () { }
+        protected FileProperty () { }
 
         public FileProperty (string name, string value) {
             Name = name;

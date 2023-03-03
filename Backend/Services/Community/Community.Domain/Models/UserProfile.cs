@@ -16,12 +16,12 @@ namespace Community.Domain.Models {
         public long PrimaryVersion { get; private set; }
         public long Version { get; set; }
 
-        private UserProfile () {
+        protected UserProfile () {
             _videoForums = new List<VideoForum>();
             _videoCommentVotes = new List<VideoCommentVote>();
         }
 
-        private UserProfile (string userId, string displayName, string? handle, string? thumbnailUrl, long primaryVersion) : this() {
+        protected UserProfile (string userId, string displayName, string? handle, string? thumbnailUrl, long primaryVersion) : this() {
             Id = userId;
             DisplayName = displayName;
             Handle = handle;

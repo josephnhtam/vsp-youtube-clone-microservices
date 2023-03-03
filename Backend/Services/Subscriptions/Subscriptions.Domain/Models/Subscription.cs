@@ -10,9 +10,9 @@ namespace Subscriptions.Domain.Models {
         public NotificationType NotificationType { get; private set; }
         public DateTimeOffset SubscriptionDate { get; private set; }
 
-        private Subscription () { }
+        protected Subscription () { }
 
-        private Subscription (string userId, string targetId, NotificationType notificationType, DateTimeOffset subscriptionDate) {
+        protected Subscription (string userId, string targetId, NotificationType notificationType, DateTimeOffset subscriptionDate) {
             UserId = userId;
             TargetId = targetId;
             NotificationType = notificationType;

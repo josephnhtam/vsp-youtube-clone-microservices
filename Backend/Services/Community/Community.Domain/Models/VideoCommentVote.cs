@@ -12,7 +12,7 @@ namespace Community.Domain.Models {
 
         public long Version { get; private set; }
 
-        private VideoCommentVote () { }
+        protected VideoCommentVote () { }
 
         private VideoCommentVote (string userId, long videoCommentId, Guid videoId, VoteType type) {
             CheckRule(new ValidVoteTypeRule(type));

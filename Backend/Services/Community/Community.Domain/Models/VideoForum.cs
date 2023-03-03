@@ -17,12 +17,12 @@ namespace Community.Domain.Models {
         public IReadOnlyList<VideoComment> VideoComments => _videoComments.AsReadOnly();
         public IReadOnlyList<VideoCommentVote> VideoCommentVotes => _videoCommentVotes.AsReadOnly();
 
-        private VideoForum () {
+        protected VideoForum () {
             _videoComments = new List<VideoComment>();
             _videoCommentVotes = new List<VideoCommentVote>();
         }
 
-        private VideoForum (Guid videoId, UserProfile creatorProfile, bool allowedToComment) : this() {
+        protected VideoForum (Guid videoId, UserProfile creatorProfile, bool allowedToComment) : this() {
             VideoId = videoId;
             CreatorProfile = creatorProfile;
             CreatorId = creatorProfile.Id;

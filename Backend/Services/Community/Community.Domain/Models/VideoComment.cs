@@ -25,12 +25,12 @@ namespace Community.Domain.Models {
         public DateTimeOffset CreateDate { get; private set; }
         public DateTimeOffset? EditDate { get; private set; }
 
-        private VideoComment () {
+        protected VideoComment () {
             _replies = new List<VideoComment>();
             _videoCommentVotes = new List<VideoCommentVote>();
         }
 
-        private VideoComment (Guid videoId, string userId, string comment, long? parentCommentId = null) : this() {
+        protected VideoComment (Guid videoId, string userId, string comment, long? parentCommentId = null) : this() {
             CheckRule(new CommentLengthRule(comment));
 
             VideoId = videoId;

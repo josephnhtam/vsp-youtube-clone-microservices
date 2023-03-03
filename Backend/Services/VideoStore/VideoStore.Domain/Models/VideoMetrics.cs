@@ -7,7 +7,7 @@ namespace VideoStore.Domain.Models {
 
         public DateTimeOffset? ViewsCountUpdateDate { get; internal set; }
 
-        private VideoMetrics () {
+        protected VideoMetrics () {
             ViewsCount = 0;
         }
 

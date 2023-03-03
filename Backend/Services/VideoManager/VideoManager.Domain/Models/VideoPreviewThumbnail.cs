@@ -9,7 +9,7 @@ namespace VideoManager.Domain.Models {
         public float LengthSeconds { get; private set; }
         public string Url { get; private set; }
 
-        private VideoPreviewThumbnail (Guid imageFileId, int width, int height, float lengthSeconds, string url) {
+        protected VideoPreviewThumbnail (Guid imageFileId, int width, int height, float lengthSeconds, string url) {
             ImageFileId = imageFileId;
             Width = width;
             Height = height;

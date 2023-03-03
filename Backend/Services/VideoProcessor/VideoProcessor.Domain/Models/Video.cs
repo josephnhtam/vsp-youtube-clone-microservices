@@ -24,13 +24,13 @@ namespace VideoProcessor.Domain.Models {
 
         public int LockVersion { get; private set; }
 
-        private Video () {
+        protected Video () {
             _processingSteps = new List<VideoProcessingStep>();
             _thumbnails = new List<VideoThumbnail>();
             _videos = new List<ProcessedVideo>();
         }
 
-        private Video (Guid id, string creatorId, string originalFileName, string videoFileUrl, List<VideoProcessingStep> processingSteps) : this() {
+        protected Video (Guid id, string creatorId, string originalFileName, string videoFileUrl, List<VideoProcessingStep> processingSteps) : this() {
             Id = id;
             CreatorId = creatorId;
             OriginalFileName = originalFileName;

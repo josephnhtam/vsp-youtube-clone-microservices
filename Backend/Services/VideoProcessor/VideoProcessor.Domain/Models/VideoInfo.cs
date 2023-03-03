@@ -8,10 +8,10 @@ namespace VideoProcessor.Domain.Models {
         public long Size { get; private set; }
         public int LengthSeconds { get; private set; }
 
-        private VideoInfo () {
+        protected VideoInfo () {
         }
 
-        private VideoInfo (int width, int height, long size, int lengthSeconds) {
+        protected VideoInfo (int width, int height, long size, int lengthSeconds) {
             Width = width;
             Height = height;
             Size = size;

@@ -18,9 +18,9 @@ namespace Storage.Domain.Models {
 
         public int Version { get; private set; }
 
-        private FileTracking () { }
+        protected FileTracking () { }
 
-        private FileTracking (Guid trackingId, Guid groupId, Guid fileId, string category, string? contentType, string fileName, string originalFileName, TimeSpan removalDelay) {
+        protected FileTracking (Guid trackingId, Guid groupId, Guid fileId, string category, string? contentType, string fileName, string originalFileName, TimeSpan removalDelay) {
             TrackingId = trackingId;
             GroupId = groupId;
             FileId = fileId;

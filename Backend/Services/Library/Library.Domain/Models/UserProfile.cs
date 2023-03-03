@@ -14,7 +14,7 @@ namespace Library.Domain.Models {
 
         protected UserProfile () { }
 
-        private UserProfile (string userId, string displayName, string? handle, string? thumbnailUrl, long primaryVersion) {
+        protected UserProfile (string userId, string displayName, string? handle, string? thumbnailUrl, long primaryVersion) {
             Id = userId;
             DisplayName = displayName;
             Handle = handle;

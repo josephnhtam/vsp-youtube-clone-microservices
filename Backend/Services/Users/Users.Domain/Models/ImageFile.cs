@@ -6,7 +6,7 @@ namespace Users.Domain.Models {
         public Guid ImageFileId { get; private set; }
         public string Url { get; private set; }
 
-        private ImageFile (Guid imageFileId, string url) {
+        protected ImageFile (Guid imageFileId, string url) {
             ImageFileId = imageFileId;
             Url = url;
         }

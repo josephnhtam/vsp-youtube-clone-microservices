@@ -10,7 +10,7 @@ namespace Library.Domain.Models {
         public DateTimeOffset? ViewsCountUpdateDate { get; internal set; }
         public DateTimeOffset? NextSyncDate { get; internal set; }
 
-        private VideoMetrics () {
+        protected VideoMetrics () {
             ViewsCount = 0;
             LikesCount = 0;
             DislikesCount = 0;

@@ -7,9 +7,9 @@ namespace VideoProcessor.Domain.Models {
         public int Height { get; private set; }
         public bool Complete { get; private set; }
 
-        private VideoProcessingStep () { }
+        protected VideoProcessingStep () { }
 
-        private VideoProcessingStep (string label, int height) {
+        protected VideoProcessingStep (string label, int height) {
             Label = label;
             Height = height;
             Complete = false;

@@ -51,12 +51,12 @@ namespace VideoManager.Domain.Models {
             }
         }
 
-        private Video () {
+        protected Video () {
             _videos = new List<ProcessedVideo>();
             _thumbnails = new List<VideoThumbnail>();
         }
 
-        private Video (Guid id, Guid videoFileId, string creatorId, string title, string description) : this() {
+        protected Video (Guid id, Guid videoFileId, string creatorId, string title, string description) : this() {
             CheckRules(new TitleLengthRule(title),
                        new DescriptionLengthRule(description));
 

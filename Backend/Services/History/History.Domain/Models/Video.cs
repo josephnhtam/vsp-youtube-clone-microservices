@@ -25,7 +25,7 @@ namespace History.Domain.Models {
             Metrics = VideoMetrics.Create();
         }
 
-        private Video (Guid id, string creatorId, string title, string description, string tags, VideoVisibility visibility, DateTimeOffset createDate) : this() {
+        protected Video (Guid id, string creatorId, string title, string description, string tags, VideoVisibility visibility, DateTimeOffset createDate) : this() {
             Id = id;
             CreatorId = creatorId;
             Title = title;

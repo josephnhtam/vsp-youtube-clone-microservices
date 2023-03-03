@@ -26,12 +26,12 @@ namespace VideoStore.Domain.Models {
         public long Version { get; private set; }
         public long InfoVersion { get; private set; }
 
-        private Video () {
+        protected Video () {
             _videos = new List<ProcessedVideo>();
             Metrics = VideoMetrics.Create();
         }
 
-        private Video (Guid id, UserProfile creatorProfile, string title, string description, string tags, VideoVisibility visibility, DateTimeOffset createDate) : this() {
+        protected Video (Guid id, UserProfile creatorProfile, string title, string description, string tags, VideoVisibility visibility, DateTimeOffset createDate) : this() {
             Id = id;
             CreatorId = creatorProfile.Id;
             CreatorProfile = creatorProfile;

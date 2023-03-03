@@ -10,13 +10,13 @@ namespace Domain {
 
         public DomainEntity () { }
 
-        public void AddDomainEvent (IDomainEvent domainEvent) {
+        public virtual void AddDomainEvent (IDomainEvent domainEvent) {
             lock (_domainEvents) {
                 _domainEvents.Add(domainEvent);
             }
         }
 
-        public void AddUniqueDomainEvent (IDomainEvent domainEvent) {
+        public virtual void AddUniqueDomainEvent (IDomainEvent domainEvent) {
             lock (_domainEvents) {
                 _domainEvents.RemoveAll(x => {
                     return x.GetType() == domainEvent.GetType();
@@ -25,13 +25,13 @@ namespace Domain {
             }
         }
 
-        public void RemoveAllDomainEvents () {
+        public virtual void RemoveAllDomainEvents () {
             lock (_domainEvents) {
                 _domainEvents.Clear();
             }
         }
 
-        public void RemoveDomainEvent (IDomainEvent domainEvent) {
+        public virtual void RemoveDomainEvent (IDomainEvent domainEvent) {
             lock (_domainEvents) {
                 _domainEvents.Remove(domainEvent);
             }

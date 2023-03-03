@@ -15,11 +15,11 @@ namespace Users.Domain.Models {
         public Guid? SubscribedSpotlightVideoId { get; private set; }
         public IReadOnlyList<ChannelSection> Sections => _sections.AsReadOnly();
 
-        private UserChannel () {
+        protected UserChannel () {
             _sections = new List<ChannelSection>();
         }
 
-        private UserChannel (string id, string? handle) : this() {
+        protected UserChannel (string id, string? handle) : this() {
             CheckRules(new HandlePatternRule(handle), new HandleLengthRule(handle));
 
             Id = id;

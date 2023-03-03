@@ -14,11 +14,11 @@ namespace VideoManager.Domain.Models {
         public long PrimaryVersion { get; private set; }
         public long Version { get; private set; }
 
-        private UserProfile () {
+        protected UserProfile () {
             _videos = new List<Video>();
         }
 
-        private UserProfile (string userId, string displayName, string? handle, string? thumbnailUrl, long primaryVersion) : this() {
+        protected UserProfile (string userId, string displayName, string? handle, string? thumbnailUrl, long primaryVersion) : this() {
             Id = userId;
             DisplayName = displayName;
             Handle = handle;

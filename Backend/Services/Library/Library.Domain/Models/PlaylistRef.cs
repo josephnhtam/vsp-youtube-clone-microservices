@@ -8,7 +8,7 @@ namespace Library.Domain.Models {
         public Guid PlaylistId { get; private set; }
         public DateTimeOffset CreateDate { get; private set; }
 
-        private PlaylistRef (Guid id, string userId, Guid playlistId, DateTimeOffset date) {
+        protected PlaylistRef (Guid id, string userId, Guid playlistId, DateTimeOffset date) {
             Id = id;
             UserId = userId;
             PlaylistId = playlistId;
