@@ -6,6 +6,7 @@ using OpenTelemetry;
 using SharedKernel.Exceptions;
 using SharedKernel.Processors;
 using System.Diagnostics;
+using VideoProcessor.Application.BackgroundTasks.Processors.FileDownloaders;
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoGenerators;
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoInfoGenerators;
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoPreviewThumbnailGenerators;
@@ -22,22 +23,16 @@ namespace VideoProcessor.Application.BackgroundTasks {
 
         private readonly IServiceProvider _services;
         private readonly VideoProcessorConfiguration _config;
-        private readonly StorageConfiguration _storageConfig;
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<VideoProcessingService> _logger;
         private readonly RateLimitedRequestProcessor _requestProcessor;
 
         public VideoProcessingService (
             IServiceProvider services,
             IOptions<VideoProcessorConfiguration> config,
-            IOptions<StorageConfiguration> storageConfig,
-            IHttpClientFactory httpClientFactory,
             ILogger<VideoProcessingService> logger
             ) {
             _services = services;
             _config = config.Value;
-            _storageConfig = storageConfig.Value;
-            _httpClientFactory = httpClientFactory;
             _logger = logger;
             _requestProcessor = new RateLimitedRequestProcessor(new RateLimitedRequestProcessorOptions {
                 MaxConcurrentProcessingLimit = _config.MaxConcurrentProcessingtLimit,
@@ -253,36 +248,20 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return result;
         }
 
-        private Uri GetVideoFileUrl (Video video) {
-            if (string.IsNullOrEmpty(_storageConfig.BaseUri) ||
-                video.VideoFileUrl.StartsWith("http://") ||
-                video.VideoFileUrl.StartsWith("https://")) {
-                return new Uri(video.VideoFileUrl);
-            } else {
-                var baseUri = new Uri(_storageConfig.BaseUri);
-                return new Uri(baseUri, video.VideoFileUrl);
-            }
-        }
-
         private async Task<string> DownloadVideoAsync (IServiceProvider services, Video video, string tempDirPath, CancellationToken cancellationToken) {
             using (_activitySource.StartActivity("DownloadVideo")) {
-                using var httpClient = _httpClientFactory.CreateClient();
-                var downloadStream = await httpClient.GetStreamAsync(GetVideoFileUrl(video), cancellationToken);
+                using var scope = services.CreateScope();
+                var downloader = scope.ServiceProvider.GetRequiredService<IFileDownloader>();
 
-                DirectoryInfo dirInfo = new DirectoryInfo(tempDirPath);
-                if (!dirInfo.Exists) {
-                    dirInfo.Create();
+                try {
+                    _logger.LogInformation(@"Downloading video ({VideoId}) to ""{TempDirPath}"" for processing", video.Id, tempDirPath);
+                    var videoPath = await downloader.DownloadVideoAsync(video, tempDirPath, cancellationToken);
+                    _logger.LogInformation(@"Video ({VideoId}) is downloaded to ""{VideoPath}"" for processing", video.Id, videoPath);
+                    return videoPath;
+                } catch (Exception ex) {
+                    _logger.LogError(ex, @"Failed to download video ({VideoId}) to ""{TempDirPath}"" for processing", video.Id, tempDirPath);
+                    throw;
                 }
-
-                var videoPath = Path.Combine(tempDirPath, video.Id + Path.GetExtension(video.OriginalFileName));
-
-                using (var fileStream = File.Create(videoPath)) {
-                    await downloadStream.CopyToAsync(fileStream, cancellationToken);
-                }
-
-                _logger.LogInformation(@"Video ({VideoId}) is downloaded to ""{VideoPath}"" for processing", video.Id, videoPath);
-
-                return videoPath;
             }
         }
 

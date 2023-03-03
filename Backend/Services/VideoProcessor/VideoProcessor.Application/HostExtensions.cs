@@ -29,6 +29,7 @@ using Storage.Shared.IntegrationEvents;
 using System.Diagnostics;
 using System.Reflection;
 using VideoProcessor.Application.BackgroundTasks;
+using VideoProcessor.Application.BackgroundTasks.Processors.FileDownloaders;
 using VideoProcessor.Application.BackgroundTasks.Processors.FileUploaders;
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoGenerators;
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoInfoGenerators;
@@ -127,7 +128,9 @@ namespace VideoProcessor.Application {
         }
 
         private static WebApplicationBuilder AddVideoProcessor (this WebApplicationBuilder builder) {
-            builder.Services.AddTransient<IFileUploader, FileUploader>()
+            builder.Services
+                   .AddTransient<IFileUploader, FileUploader>()
+                   .AddTransient<IFileDownloader, FileDownloader>()
                    .AddTransient<IVideoInfoGenerator, VideoInfoGenerator>()
                    .AddTransient<IVideoGenerator, VideoGenerator>()
                    .AddTransient<IVideoThumbnailGenerator, VideoThumbnailGenerator>()
