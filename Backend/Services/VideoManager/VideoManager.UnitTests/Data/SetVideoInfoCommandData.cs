@@ -17,6 +17,7 @@ namespace VideoManager.UnitTests.Data {
             string toLongTags = Utilities.GenerateString(TagsLengthRule.MaxLength + 1);
 
             yield return new object[] { false, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = string.Empty,
                         Description = string.Empty,
@@ -29,6 +30,7 @@ namespace VideoManager.UnitTests.Data {
             };
 
             yield return new object[] { true, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = validTile,
                         Description = string.Empty,
@@ -41,6 +43,7 @@ namespace VideoManager.UnitTests.Data {
             };
 
             yield return new object[] { true, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = validTile,
                         Description = validDescription,
@@ -53,6 +56,7 @@ namespace VideoManager.UnitTests.Data {
             };
 
             yield return new object[] { false, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = tooLongTitle,
                         Description = validDescription,
@@ -65,6 +69,7 @@ namespace VideoManager.UnitTests.Data {
             };
 
             yield return new object[] { false, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = validTile,
                         Description = tooLongDescription,
@@ -77,6 +82,7 @@ namespace VideoManager.UnitTests.Data {
             };
 
             yield return new object[] { false, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = validTile,
                         Description = validDescription,
@@ -89,6 +95,7 @@ namespace VideoManager.UnitTests.Data {
             };
 
             yield return new object[] { false, new SetVideoInfoCommand {
+                CreatorId = Guid.NewGuid().ToString(),
                     SetVideoBasicInfo = new () {
                         Title = validTile,
                         Description = validDescription,

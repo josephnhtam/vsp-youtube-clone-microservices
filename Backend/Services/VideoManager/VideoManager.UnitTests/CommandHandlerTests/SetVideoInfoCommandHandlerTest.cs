@@ -28,7 +28,7 @@ namespace VideoManager.UnitTests.CommandHandlerTests {
         [Theory]
         [ClassData(typeof(SetVideoInfoCommandData))]
         public async Task Handle_ShouldSucceed_WhenCommandIsValid (bool isValid, SetVideoInfoCommand command) {
-            var videoMock = new Mock<Video>();
+            var videoMock = new Mock<Video>(It.IsAny<Guid>(), It.IsAny<Guid>(), command.CreatorId, "Valid Title", "Valid Description");
 
             _videoRepositoryMock.Setup(x => x.GetVideoByIdAsync(It.IsAny<Guid>()))
                 .Returns(Task.FromResult(videoMock.Object)!);
@@ -61,6 +61,8 @@ namespace VideoManager.UnitTests.CommandHandlerTests {
 
         [Fact]
         public async Task Handle_ShouldThrow_WhenVideoNotFound () {
+            var command = ValidUpdateVideoInfoCommand();
+
             _videoRepositoryMock.Setup(x => x.GetVideoByIdAsync(It.IsAny<Guid>()))
                 .Returns(Task.FromResult((Video?)null));
 
@@ -73,7 +75,7 @@ namespace VideoManager.UnitTests.CommandHandlerTests {
                 _loggerMock.Object);
 
             // Exception should be thrown
-            var ex = await Assert.ThrowsAnyAsync<AppException>(() => handler.Handle(ValidUpdateVideoInfoCommand(), default));
+            var ex = await Assert.ThrowsAnyAsync<AppException>(() => handler.Handle(command, default));
             Assert.Equal(ex.StatusCode, StatusCodes.Status404NotFound);
 
             // IUnitOfWork.CommitAsync should not be called
@@ -81,8 +83,30 @@ namespace VideoManager.UnitTests.CommandHandlerTests {
         }
 
         [Fact]
+        public async Task Handle_ShouldThrow_WhenCreatorIdNotMatched () {
+            var command = ValidUpdateVideoInfoCommand();
+            var videoMock = new Mock<Video>(It.IsAny<Guid>(), It.IsAny<Guid>(), Guid.NewGuid().ToString(), "Valid Title", "Valid Description");
+
+            _videoRepositoryMock.Setup(x => x.GetVideoByIdAsync(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(videoMock.Object)!);
+
+            var handler = new SetVideoInfoCommandHandler(
+                _videoRepositoryMock.Object,
+                _unitOfWorkMock.Object,
+                _loggerMock.Object);
+
+            // Exception should be thrown
+            var ex = await Assert.ThrowsAnyAsync<AppException>(() => handler.Handle(command, default));
+            Assert.Equal(ex.StatusCode, StatusCodes.Status403Forbidden);
+
+            // IUnitOfWork.CommitAsync should not be called
+            _unitOfWorkMock.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Never());
+        }
+
+        [Fact]
         public async Task Handle_ShouldThrow_WhenNotPersisted () {
-            var videoMock = new Mock<Video>();
+            var command = ValidUpdateVideoInfoCommand();
+            var videoMock = new Mock<Video>(It.IsAny<Guid>(), It.IsAny<Guid>(), command.CreatorId, "Valid Title", "Valid Description");
 
             _videoRepositoryMock.Setup(x => x.GetVideoByIdAsync(It.IsAny<Guid>()))
                 .Returns(Task.FromResult(videoMock.Object)!);
@@ -96,7 +120,7 @@ namespace VideoManager.UnitTests.CommandHandlerTests {
                 _loggerMock.Object);
 
             // Exception should be thrown
-            await Assert.ThrowsAnyAsync<DbUpdateException>(() => handler.Handle(ValidUpdateVideoInfoCommand(), default));
+            await Assert.ThrowsAnyAsync<DbUpdateException>(() => handler.Handle(command, default));
 
             // VideoInfoUpdatedDomainEvent should be added
             videoMock.Verify(x => x.AddUniqueDomainEvent(It.IsAny<VideoInfoUpdatedDomainEvent>()));
