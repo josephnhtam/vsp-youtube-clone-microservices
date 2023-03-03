@@ -11,7 +11,7 @@ namespace VideoProcessor.Domain.Models {
         public int LengthSeconds { get; private set; }
         public string Url { get; private set; }
 
-        private ProcessedVideo (Guid videoFileId, string label, int width, int height, long size, int lengthSeconds, string url) {
+        protected ProcessedVideo (Guid videoFileId, string label, int width, int height, long size, int lengthSeconds, string url) {
             VideoFileId = videoFileId;
             Label = label;
             Width = width;

@@ -127,6 +127,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityProvider", "Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "Services\WebStatus\WebStatus\WebStatus.csproj", "{21683839-F04E-45F6-9266-01574D4FC774}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{97ACF314-76BB-49C3-B039-8CA931888965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoManager.UnitTests", "Services\VideoManager\VideoManager.UnitTests\VideoManager.UnitTests.csproj", "{B8EF6881-349E-4090-99DE-ED8861D396CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -317,6 +321,10 @@ Global
 		{21683839-F04E-45F6-9266-01574D4FC774}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21683839-F04E-45F6-9266-01574D4FC774}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21683839-F04E-45F6-9266-01574D4FC774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -380,6 +388,8 @@ Global
 		{EBB13E6F-75B8-46F4-A1DD-1B479486CB8A} = {AC18602A-F5E2-4739-9BF7-E9CF22F1642A}
 		{F4DD06E8-A9D5-4874-A31E-16CC6804BCF3} = {6D40FEC5-FA5B-46A1-80DC-25ED6AE01181}
 		{21683839-F04E-45F6-9266-01574D4FC774} = {EBB13E6F-75B8-46F4-A1DD-1B479486CB8A}
+		{97ACF314-76BB-49C3-B039-8CA931888965} = {7B3DD36D-EA6A-47CF-BA7A-FB40F52DA584}
+		{B8EF6881-349E-4090-99DE-ED8861D396CA} = {97ACF314-76BB-49C3-B039-8CA931888965}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B4984FC-0EF1-405F-9C70-70B18239A5FC}
