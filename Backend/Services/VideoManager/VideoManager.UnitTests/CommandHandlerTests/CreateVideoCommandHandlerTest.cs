@@ -8,7 +8,6 @@ using VideoManager.API.Commands;
 using VideoManager.Domain.Contracts;
 using VideoManager.Domain.Models;
 using VideoManager.UnitTests.Data;
-using VideoManager.UnitTests.Mocks;
 
 namespace VideoManager.UnitTests.CommandHandlerTests {
     public class CreateVideoCommandHandlerTest {

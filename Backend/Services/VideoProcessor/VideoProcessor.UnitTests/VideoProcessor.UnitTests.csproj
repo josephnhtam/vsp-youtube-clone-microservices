@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\UnitTestingUtilities\UnitTestingUtilities.csproj" />
-    <ProjectReference Include="..\VideoManager.API\VideoManager.API.csproj" />
+    <ProjectReference Include="..\VideoProcessor.Application\VideoProcessor.Application.csproj" />
   </ItemGroup>
 
 </Project>

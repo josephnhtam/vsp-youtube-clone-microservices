@@ -371,7 +371,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             transactionalEventsContext.ResetDefaultEventsGroudId();
         }
 
-        private class VideoProcessingLock : IAsyncDisposable {
+        public class VideoProcessingLock : IAsyncDisposable {
 
             private Task _task;
             private CancellationTokenSource _videoProcessingCts;
@@ -427,7 +427,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
 
         }
 
-        private class ConflictException : Exception {
+        public class ConflictException : Exception {
         }
 
     }

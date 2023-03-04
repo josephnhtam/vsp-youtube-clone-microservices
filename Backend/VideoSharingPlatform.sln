@@ -129,7 +129,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStatus", "Services\WebSt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{97ACF314-76BB-49C3-B039-8CA931888965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoManager.UnitTests", "Services\VideoManager\VideoManager.UnitTests\VideoManager.UnitTests.csproj", "{B8EF6881-349E-4090-99DE-ED8861D396CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoManager.UnitTests", "Services\VideoManager\VideoManager.UnitTests\VideoManager.UnitTests.csproj", "{B8EF6881-349E-4090-99DE-ED8861D396CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoProcessor.UnitTests", "Services\VideoProcessor\VideoProcessor.UnitTests\VideoProcessor.UnitTests.csproj", "{5D7A0E90-68B7-4C2E-84D6-4B4182C084B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7AF4F123-3CA8-4F87-8488-73120FD181FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestingUtilities", "BuildingBlocks\UnitTestingUtilities\UnitTestingUtilities.csproj", "{14E32F50-586E-4E8F-98C7-AEE357C2E812}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -325,6 +331,14 @@ Global
 		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8EF6881-349E-4090-99DE-ED8861D396CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D7A0E90-68B7-4C2E-84D6-4B4182C084B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D7A0E90-68B7-4C2E-84D6-4B4182C084B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D7A0E90-68B7-4C2E-84D6-4B4182C084B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D7A0E90-68B7-4C2E-84D6-4B4182C084B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14E32F50-586E-4E8F-98C7-AEE357C2E812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E32F50-586E-4E8F-98C7-AEE357C2E812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E32F50-586E-4E8F-98C7-AEE357C2E812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E32F50-586E-4E8F-98C7-AEE357C2E812}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -390,6 +404,9 @@ Global
 		{21683839-F04E-45F6-9266-01574D4FC774} = {EBB13E6F-75B8-46F4-A1DD-1B479486CB8A}
 		{97ACF314-76BB-49C3-B039-8CA931888965} = {7B3DD36D-EA6A-47CF-BA7A-FB40F52DA584}
 		{B8EF6881-349E-4090-99DE-ED8861D396CA} = {97ACF314-76BB-49C3-B039-8CA931888965}
+		{5D7A0E90-68B7-4C2E-84D6-4B4182C084B7} = {7AF4F123-3CA8-4F87-8488-73120FD181FF}
+		{7AF4F123-3CA8-4F87-8488-73120FD181FF} = {FAE23B5F-F731-4234-944E-A3D2C878FB89}
+		{14E32F50-586E-4E8F-98C7-AEE357C2E812} = {5CDBFF4C-C3D0-4B33-99A9-63EBEC1D6A0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B4984FC-0EF1-405F-9C70-70B18239A5FC}

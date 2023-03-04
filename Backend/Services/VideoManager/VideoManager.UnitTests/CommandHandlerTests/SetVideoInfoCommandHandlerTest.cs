@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SharedKernel.Exceptions;
+using UnitTestingUtilities;
 using VideoManager.API.Application.Commands.Handlers;
 using VideoManager.API.Commands;
 using VideoManager.Domain.Contracts;
 using VideoManager.Domain.DomainEvents;
 using VideoManager.Domain.Models;
 using VideoManager.UnitTests.Data;
-using VideoManager.UnitTests.Mocks;
 
 namespace VideoManager.UnitTests.CommandHandlerTests {
     public class SetVideoInfoCommandHandlerTest {

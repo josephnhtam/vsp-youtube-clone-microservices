@@ -1,6 +1,6 @@
 ﻿using Infrastructure;
 
-namespace VideoManager.UnitTests.Mocks {
+namespace UnitTestingUtilities {
     public abstract class UnitOfWorkMock : IUnitOfWork {
 
         private bool _isInTransaction = false;
