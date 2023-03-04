@@ -42,8 +42,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
             });
 
             _logger = new LoggerMock<VideoProcessingService>(output, LogLevel.Information);
-        }
 
+            ExceptionIdentifiers.Register(null);
+        }
 
         private static Task InvokeProcesVideoAsync (VideoProcessingService service, CancellationToken cancellationToken) {
             var methodInfo = typeof(VideoProcessingService).GetMethod("ProcessVideoAsync", BindingFlags.NonPublic | BindingFlags.Instance)!;
@@ -88,7 +89,13 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
                 });
 
             var video = videoMock.Object;
-            ServiceProviderMock serviceProvider = CreateServiceProviderMock(video);
+            var tempDirectoryRepositoryMock = new Mock<ITempDirectoryRepository>();
+
+            ServiceProviderMock serviceProvider = CreateServiceProviderMock(video, (services) => {
+                services.AddScoped<ITempDirectoryRepository>(() =>
+                    tempDirectoryRepositoryMock.Object
+                );
+            });
 
             var service = new VideoProcessingService(serviceProvider, _config, _logger);
 
@@ -98,6 +105,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
 
             Assert.True(task.IsCompletedSuccessfully);
 
+            tempDirectoryRepositoryMock.Verify(x => x.RemoveTempDirectoryAsync(It.IsAny<Guid>()), Times.Once);
+
+            videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingStartedDomainEvent>()), Times.Once());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingThumbnailsAddedDomainEvent>()), Times.AtLeastOnce());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingVideoAddedDomainEvent>()), Times.AtLeastOnce());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingCompleteDomainEvent>()), Times.Once());
@@ -108,8 +118,6 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
         [InlineData(true)]
         [InlineData(false)]
         public async void VideoProcessing_ShouldFailOrRetry_WhenVideoFileCannotBeDownloaded (bool isTransientError) {
-            ExceptionIdentifiers.Register(null);
-
             var videoMock = new Mock<Video>(
                 new object[] {
                     It.IsAny<Guid>(),
@@ -122,8 +130,13 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
                 });
 
             var video = videoMock.Object;
+            var tempDirectoryRepositoryMock = new Mock<ITempDirectoryRepository>();
 
             var serviceProvider = CreateServiceProviderMock(video, (services) => {
+                services.AddScoped<ITempDirectoryRepository>(() =>
+                    tempDirectoryRepositoryMock.Object
+                );
+
                 services.AddScoped<IFileDownloader>(() => {
                     var mock = new Mock<IFileDownloader>();
                     mock.Setup(x => x.DownloadVideoAsync(video, It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -140,6 +153,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
 
             Assert.True(task.IsCompletedSuccessfully);
 
+            tempDirectoryRepositoryMock.Verify(x => x.RemoveTempDirectoryAsync(It.IsAny<Guid>()), Times.Once);
+
+            videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingStartedDomainEvent>()), Times.Once());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingCompleteDomainEvent>()), Times.Never());
 
             if (isTransientError) {
@@ -154,8 +170,6 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
         [InlineData(true)]
         [InlineData(false)]
         public async void VideoProcessing_ShouldFailOrRetry_WhenVideoInfoCannotBeGenerated (bool isTransientError) {
-            ExceptionIdentifiers.Register(null);
-
             var videoMock = new Mock<Video>(
                 new object[] {
                     It.IsAny<Guid>(),
@@ -168,8 +182,13 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
                 });
 
             var video = videoMock.Object;
+            var tempDirectoryRepositoryMock = new Mock<ITempDirectoryRepository>();
 
             var serviceProvider = CreateServiceProviderMock(video, (services) => {
+                services.AddScoped<ITempDirectoryRepository>(() =>
+                    tempDirectoryRepositoryMock.Object
+                );
+
                 services.AddScoped<IVideoInfoGenerator>(() => {
                     var mock = new Mock<IVideoInfoGenerator>();
                     mock.Setup(x => x.GenerateAsync(video, It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -186,6 +205,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
 
             Assert.True(task.IsCompletedSuccessfully);
 
+            tempDirectoryRepositoryMock.Verify(x => x.RemoveTempDirectoryAsync(It.IsAny<Guid>()), Times.Once);
+
+            videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingStartedDomainEvent>()), Times.Once());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingCompleteDomainEvent>()), Times.Never());
 
             if (isTransientError) {
@@ -200,8 +222,6 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
         [InlineData(true)]
         [InlineData(false)]
         public async void VideoProcessing_ShouldFailOrRetry_WhenVideoThumbnailCannotBeGenerated (bool isTransientError) {
-            ExceptionIdentifiers.Register(null);
-
             var videoMock = new Mock<Video>(
                 new object[] {
                     It.IsAny<Guid>(),
@@ -214,8 +234,13 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
                 });
 
             var video = videoMock.Object;
+            var tempDirectoryRepositoryMock = new Mock<ITempDirectoryRepository>();
 
             var serviceProvider = CreateServiceProviderMock(video, (services) => {
+                services.AddScoped<ITempDirectoryRepository>(() =>
+                    tempDirectoryRepositoryMock.Object
+                );
+
                 services.AddScoped<IVideoThumbnailGenerator>(() => {
                     var mock = new Mock<IVideoThumbnailGenerator>();
 
@@ -241,6 +266,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
 
             Assert.True(task.IsCompletedSuccessfully);
 
+            tempDirectoryRepositoryMock.Verify(x => x.RemoveTempDirectoryAsync(It.IsAny<Guid>()), Times.Once);
+
+            videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingStartedDomainEvent>()), Times.Once());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingCompleteDomainEvent>()), Times.Never());
 
             if (isTransientError) {
@@ -255,8 +283,6 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
         [InlineData(true)]
         [InlineData(false)]
         public async void VideoProcessing_ShouldFailOrRetry_WhenVideoPreviewThumbnailCannotBeGenerated (bool isTransientError) {
-            ExceptionIdentifiers.Register(null);
-
             var videoMock = new Mock<Video>(
                 new object[] {
                     It.IsAny<Guid>(),
@@ -269,8 +295,13 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
                 });
 
             var video = videoMock.Object;
+            var tempDirectoryRepositoryMock = new Mock<ITempDirectoryRepository>();
 
             var serviceProvider = CreateServiceProviderMock(video, (services) => {
+                services.AddScoped<ITempDirectoryRepository>(() =>
+                    tempDirectoryRepositoryMock.Object
+                );
+
                 services.AddScoped<IVideoPreviewThumbnailGenerator>(() => {
                     var mock = new Mock<IVideoPreviewThumbnailGenerator>();
 
@@ -296,6 +327,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
 
             Assert.True(task.IsCompletedSuccessfully);
 
+            tempDirectoryRepositoryMock.Verify(x => x.RemoveTempDirectoryAsync(It.IsAny<Guid>()), Times.Once);
+
+            videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingStartedDomainEvent>()), Times.Once());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingCompleteDomainEvent>()), Times.Never());
 
             if (isTransientError) {
@@ -310,8 +344,6 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
         [InlineData(true)]
         [InlineData(false)]
         public async void VideoProcessing_ShouldFailOrRetry_WhenVideoCannotBeGenerated (bool isTransientError) {
-            ExceptionIdentifiers.Register(null);
-
             var videoMock = new Mock<Video>(
                 new object[] {
                     It.IsAny<Guid>(),
@@ -324,8 +356,13 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
                 });
 
             var video = videoMock.Object;
+            var tempDirectoryRepositoryMock = new Mock<ITempDirectoryRepository>();
 
             var serviceProvider = CreateServiceProviderMock(video, (services) => {
+                services.AddScoped<ITempDirectoryRepository>(() =>
+                    tempDirectoryRepositoryMock.Object
+                );
+
                 services.AddScoped<IVideoGenerator>(() => {
                     var mock = new Mock<IVideoGenerator>();
 
@@ -353,6 +390,9 @@ namespace VideoProcessor.UnitTests.VideoProcessingServiceTests {
 
             Assert.True(task.IsCompletedSuccessfully);
 
+            tempDirectoryRepositoryMock.Verify(x => x.RemoveTempDirectoryAsync(It.IsAny<Guid>()), Times.Once);
+
+            videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingStartedDomainEvent>()), Times.Once());
             videoMock.Verify(x => x.AddDomainEvent(It.IsAny<VideoProcessingCompleteDomainEvent>()), Times.Never());
 
             if (isTransientError) {
