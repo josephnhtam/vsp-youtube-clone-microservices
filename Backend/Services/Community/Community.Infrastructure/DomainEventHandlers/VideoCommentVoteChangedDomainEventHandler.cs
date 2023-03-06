@@ -1,6 +1,6 @@
-﻿using Application.Handlers;
-using Community.Domain.DomainEvents;
+﻿using Community.Domain.DomainEvents;
 using Community.Domain.Models;
+using Domain.Events;
 using Microsoft.EntityFrameworkCore;
 
 namespace Community.Infrastructure.DomainEventHandlers {

@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\Application.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure.EFCore\Infrastructure.EFCore.csproj" />
   </ItemGroup>
 

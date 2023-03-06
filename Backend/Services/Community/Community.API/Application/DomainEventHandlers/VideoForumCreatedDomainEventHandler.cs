@@ -1,5 +1,5 @@
-﻿using Application.Handlers;
-using Community.Domain.DomainEvents;
+﻿using Community.Domain.DomainEvents;
+using Domain.Events;
 
 namespace Community.API.Application.DomainEventHandlers {
     public class VideoForumCreatedDomainEventHandler : IDomainEventHandler<VideoForumCreatedDomainEvent> {

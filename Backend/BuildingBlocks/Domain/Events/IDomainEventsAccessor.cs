@@ -1,6 +1,4 @@
-﻿using Domain.Events;
-
-namespace Application.DomainEventsDispatching {
+﻿namespace Domain.Events {
     public interface IDomainEventsAccessor {
         IReadOnlyList<IDomainEvent> GetDomainEvents ();
         void ClearDomainEvents ();

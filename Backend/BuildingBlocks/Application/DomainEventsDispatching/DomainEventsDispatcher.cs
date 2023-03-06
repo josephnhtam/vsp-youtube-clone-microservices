@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Events;
+using MediatR;
 
 namespace Application.DomainEventsDispatching {
     public class DomainEventsDispatcher : IDomainEventsDispatcher {

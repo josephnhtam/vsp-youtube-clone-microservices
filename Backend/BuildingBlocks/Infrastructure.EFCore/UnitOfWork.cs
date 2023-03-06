@@ -1,4 +1,4 @@
-﻿using Application.DomainEventsDispatching;
+﻿using Domain.Events;
 using Infrastructure.TransactionalEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

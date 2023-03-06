@@ -1,6 +1,6 @@
-﻿using Application.Handlers;
-using Community.Domain.Contracts;
+﻿using Community.Domain.Contracts;
 using Community.Domain.DomainEvents;
+using Domain.Events;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 

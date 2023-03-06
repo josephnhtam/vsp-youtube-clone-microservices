@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Domain.Events;
 using History.Domain.DomainEvents.UserProfiles;
 using History.Domain.Models;
 using Infrastructure.MongoDb.Contexts;

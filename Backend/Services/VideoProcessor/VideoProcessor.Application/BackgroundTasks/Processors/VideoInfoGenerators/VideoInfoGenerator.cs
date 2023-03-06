@@ -1,6 +1,5 @@
 ﻿using Serilog.Context;
 using SharedKernel.Utilities;
-using System.Diagnostics.Metrics;
 using System.Text;
 using System.Text.Json;
 using VideoProcessor.Application.Utilities;

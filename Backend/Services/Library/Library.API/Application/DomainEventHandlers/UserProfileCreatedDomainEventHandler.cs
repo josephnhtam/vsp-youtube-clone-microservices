@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Domain.Events;
 using Library.Domain.Contracts;
 using Library.Domain.DomainEvents.UserProfiles;
 using Library.Domain.Models;

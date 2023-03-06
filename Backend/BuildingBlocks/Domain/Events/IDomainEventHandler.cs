@@ -1,7 +1,6 @@
-﻿using Domain.Events;
-using MediatR;
+﻿using MediatR;
 
-namespace Application.Handlers {
+namespace Domain.Events {
     public interface IDomainEventHandler<in TDomainEvent> : INotificationHandler<TDomainEvent> where TDomainEvent : IDomainEvent {
     }
 }

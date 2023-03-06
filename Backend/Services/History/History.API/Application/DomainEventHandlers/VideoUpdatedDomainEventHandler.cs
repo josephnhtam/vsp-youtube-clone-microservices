@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Domain.Events;
 using History.Domain.DomainEvents.Videos;
 using History.Infrastructure.Contracts;
 

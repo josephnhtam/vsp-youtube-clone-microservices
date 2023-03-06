@@ -1,6 +1,6 @@
-﻿using Application.Handlers;
-using Community.Domain.Contracts;
+﻿using Community.Domain.Contracts;
 using Community.Domain.DomainEvents;
+using Domain.Events;
 
 namespace Community.API.Application.DomainEventHandlers {
     public class VideoForumUnregisteredDomainEventHandler : IDomainEventHandler<VideoForumUnregisteredDomainEvent> {
