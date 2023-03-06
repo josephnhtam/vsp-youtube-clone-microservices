@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Domain.Events;
 using Infrastructure.MongoDb.Contexts;
 using MongoDB.Driver;
 using Users.Domain.DomainEvents;

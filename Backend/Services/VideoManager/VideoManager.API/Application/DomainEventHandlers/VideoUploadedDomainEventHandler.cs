@@ -1,5 +1,5 @@
-﻿using Application.Handlers;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Events;
 using EventBus.Helper.RoutingSlips.Extensions;
 using Infrastructure.TransactionalEvents;
 using Infrastructure.TransactionalEvents.Outbox;

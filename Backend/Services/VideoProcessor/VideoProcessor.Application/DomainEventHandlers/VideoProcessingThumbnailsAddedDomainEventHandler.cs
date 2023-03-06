@@ -1,5 +1,5 @@
-﻿using Application.Handlers;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Events;
 using Infrastructure.TransactionalEvents;
 using Infrastructure.TransactionalEvents.Outbox;
 using VideoProcessor.Application.DtoModels;

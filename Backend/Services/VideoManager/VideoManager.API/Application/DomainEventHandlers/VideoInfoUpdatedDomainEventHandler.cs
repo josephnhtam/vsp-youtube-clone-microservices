@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Domain.Events;
 using Infrastructure.TransactionalEvents;
 using Infrastructure.TransactionalEvents.Outbox;
 using VideoManager.API.Application.IntegrationEvents;

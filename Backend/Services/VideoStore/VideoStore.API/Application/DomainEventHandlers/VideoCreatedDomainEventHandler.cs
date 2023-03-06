@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Domain.Events;
 using VideoStore.Domain.DomainEvents;
 
 namespace VideoStore.API.Application.DomainEventHandlers {

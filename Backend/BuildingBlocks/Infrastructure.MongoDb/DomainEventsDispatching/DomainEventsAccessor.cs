@@ -1,5 +1,4 @@
-﻿using Application.DomainEventsDispatching;
-using Domain.Events;
+﻿using Domain.Events;
 
 namespace Infrastructure.MongoDb.DomainEventsDispatching {
     public class DomainEventsAccessor : IDomainEventsAccessor {

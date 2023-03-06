@@ -1,6 +1,6 @@
-﻿using Application.Handlers;
-using Community.API.Application.IntegrationEvents;
+﻿using Community.API.Application.IntegrationEvents;
 using Community.Domain.DomainEvents;
+using Domain.Events;
 using Infrastructure.TransactionalEvents;
 using Infrastructure.TransactionalEvents.Outbox;
 

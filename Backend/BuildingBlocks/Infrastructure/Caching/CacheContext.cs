@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using Infrastructure.Caching.Layers;
+using System.Collections.Concurrent;
 using System.Diagnostics;
-using Infrastructure.Caching.Layers;
 
 namespace Infrastructure.Caching {
     public class CacheContext : ICacheContext {
