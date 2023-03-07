@@ -32,6 +32,7 @@ namespace Infrastructure.EFCore.TransactionalEvents {
                 sb.Append("FOR UPDATE SKIP LOCKED");
 
                 cmd = sb.ToString();
+                PoolEventsGroupCmd = cmd;
             }
 
             return context.Set<TransactionalEventsGroup>().FromSqlRaw(cmd, DateTimeOffset.UtcNow, fetchCount);
@@ -68,6 +69,7 @@ namespace Infrastructure.EFCore.TransactionalEvents {
                 sb.Append($@"RETURNING ""LastSequenceNumber""");
 
                 cmd = sb.ToString();
+                UpsertEventsGroupCmd = cmd;
             }
 
             using (var dbCmd = context.Database.GetDbConnection().CreateCommand()) {
