@@ -12,11 +12,10 @@ namespace Infrastructure.MongoDb.Contexts {
 
         private Task<IClientSessionHandle>? _startSessionTask;
         private bool _executingTransactionScope;
-        private bool _insideTransactionScope;
 
         public IMongoClient MongoClient { get; init; }
         public IClientSessionHandle? CurrentSession { get; private set; }
-        public bool IsInTransaction => CurrentSession != null && (CurrentSession.IsInTransaction || _insideTransactionScope);
+        public bool IsInTransaction => CurrentSession != null && (CurrentSession.IsInTransaction || _executingTransactionScope);
 
         public MongoClientContext (IServiceProvider services, IMongoClient mongoClient, IOptions<MongoDbContextConfiguration> config) {
             _services = services;
@@ -95,39 +94,57 @@ namespace Infrastructure.MongoDb.Contexts {
                 await StartSessionAsync(_config.DefaultClientSessionOptions, cancellationToken);
             }
 
-            lock (_syncLock) {
+            using (var scope = new TransactionScope(this)) {
+                Task taskToAwait;
+
                 if (_executingTransactionScope) {
-                    //throw new InvalidOperationException("Transaction scope is being executed");
-                    task.Invoke();
-                    return;
+                    taskToAwait = task.Invoke();
+                } else {
+                    scope.Execute();
+                    taskToAwait = RunTransactionAsync(task, options, cancellationToken);
                 }
 
-                _executingTransactionScope = true;
+                await taskToAwait;
+            }
+        }
+
+        private class TransactionScope : IDisposable {
+
+            private readonly MongoClientContext _context;
+            private bool _executing = false;
+
+            public TransactionScope (MongoClientContext context) {
+                _context = context;
             }
 
-            try {
-                await CurrentSession!.WithTransactionAsync<object?>(
-                    async (session, cancellationToken) => {
-                        try {
-                            _insideTransactionScope = true;
-                            await task.Invoke();
-                        } catch (MongoException ex)
-                            when (ex.HasErrorLabel("TransientTransactionError") ||
-                                  ex.HasErrorLabel("UnknownTransactionCommitResult")) {
-                            await Task.Delay(_config.TransactionRetryDelay);
-                            throw;
-                        } finally {
-                            _insideTransactionScope = false;
-                        }
-                        return null;
-                    },
-                    options,
-                    cancellationToken);
-            } finally {
-                lock (_syncLock) {
-                    _executingTransactionScope = false;
+            public void Execute () {
+                _executing = true;
+                _context._executingTransactionScope = true;
+            }
+
+            public void Dispose () {
+                if (_executing) {
+                    _context._executingTransactionScope = false;
                 }
             }
+
+        }
+
+        private async Task RunTransactionAsync (Func<Task> task, TransactionOptions? options, CancellationToken cancellationToken) {
+            await CurrentSession!.WithTransactionAsync<object?>(
+                async (session, cancellationToken) => {
+                    try {
+                        await task.Invoke();
+                    } catch (MongoException ex)
+                        when (ex.HasErrorLabel("TransientTransactionError") ||
+                              ex.HasErrorLabel("UnknownTransactionCommitResult")) {
+                        await Task.Delay(_config.TransactionRetryDelay);
+                        throw;
+                    }
+                    return null;
+                },
+                options,
+                cancellationToken);
         }
 
         public IMongoCollectionContext<TDocument> GetCollection<TDocument> () {
