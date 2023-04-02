@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: identity-provider-deployment
+  name: library-api-deployment
 spec:
   selector:
     matchLabels:
-      app: identity-provider
+      app: library-api
   template:
     metadata:
       labels:
-        app: identity-provider
+        app: library-api
     spec:
       containers:
-      - name: identity-provider
-        image: identity-provider
+      - name: library-api
+        image: library-api
         imagePullPolicy: Always
         resources:
           requests:
@@ -37,6 +37,6 @@ spec:
         - configMapRef:
             name: common-config
         - configMapRef:
-            name: identity-provider-config
+            name: library-api-config
         - secretRef:
-            name: identity-provider-secret
+            name: library-api-secret

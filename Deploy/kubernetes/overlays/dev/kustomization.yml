@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - "../../base"
+  - "./resources/logstash/config-map.yml"
+
+generators:
+  - "./generators/rabbitmq.yml"
+  - "./generators/mongodb.yml"
+  - "./generators/postgres.yml"
+  - "./generators/elasticsearch.yml"
+  - "./generators/logstash.yml"
+  - "./generators/jaeger.yml"
+
+secretGenerator:
+  - name: api-gateway-secret
+    behavior: merge
+    envs:
+      - "./secrets/api-gateway.env"
+  - name: community-api-secret
+    behavior: merge
+    envs:
+      - "./secrets/community-api.env"
+  - name: history-api-secret
+    behavior: merge
+    envs:
+      - "./secrets/history-api.env"

@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: identity-provider-deployment
+  name: video-manager-api-deployment
 spec:
   selector:
     matchLabels:
-      app: identity-provider
+      app: video-manager-api
   template:
     metadata:
       labels:
-        app: identity-provider
+        app: video-manager-api
     spec:
       containers:
-      - name: identity-provider
-        image: identity-provider
+      - name: video-manager-api
+        image: video-manager-api
         imagePullPolicy: Always
         resources:
           requests:
@@ -37,6 +37,6 @@ spec:
         - configMapRef:
             name: common-config
         - configMapRef:
-            name: identity-provider-config
+            name: video-manager-api-config
         - secretRef:
-            name: identity-provider-secret
+            name: video-manager-api-secret

@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: identity-provider-deployment
+  name: storage-api-deployment
 spec:
   selector:
     matchLabels:
-      app: identity-provider
+      app: storage-api
   template:
     metadata:
       labels:
-        app: identity-provider
+        app: storage-api
     spec:
       containers:
-      - name: identity-provider
-        image: identity-provider
+      - name: storage-api
+        image: storage-api
         imagePullPolicy: Always
         resources:
           requests:
@@ -37,6 +37,6 @@ spec:
         - configMapRef:
             name: common-config
         - configMapRef:
-            name: identity-provider-config
+            name: storage-api-config
         - secretRef:
-            name: identity-provider-secret
+            name: storage-api-secret
