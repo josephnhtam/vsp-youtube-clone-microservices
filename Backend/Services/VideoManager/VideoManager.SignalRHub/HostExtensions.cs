@@ -39,13 +39,20 @@ namespace VideoManager.SignalRHub {
         }
 
         private static WebApplicationBuilder AddSignalR (this WebApplicationBuilder builder) {
-            builder.Services
+            var configuration = builder.Configuration;
+
+            var signalRBuilder = builder.Services
                 .AddSignalR()
                 .AddJsonProtocol(options => {
                     options.PayloadSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 });
 
-            // todo: add redis backplane
+            var redisConnectionString = configuration.GetConnectionString("Redis");
+            if (!string.IsNullOrEmpty(redisConnectionString)) {
+                signalRBuilder.AddStackExchangeRedis(redisConnectionString, options => {
+                    options.Configuration.ChannelPrefix = "VideoManager";
+                });
+            }
 
             return builder;
         }
