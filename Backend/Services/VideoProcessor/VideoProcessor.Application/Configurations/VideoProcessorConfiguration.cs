@@ -1,6 +1,6 @@
 ﻿namespace VideoProcessor.Application.Configurations {
     public class VideoProcessorConfiguration {
-        public int MaxConcurrentProcessingtLimit { get; set; } = 4;
+        public int MaxConcurrentProcessingLimit { get; set; } = 4;
         public float MaxProcessingRateLimit { get; set; } = 5;
         public float ProcessingLockDurationSeconds { get; set; } = 120;
         public float RetryDelaySeconds { get; set; } = 60;

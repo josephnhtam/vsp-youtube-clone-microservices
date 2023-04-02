@@ -141,7 +141,7 @@ services:
       - ClientCredentials__ClientId=m2m
       - ClientCredentials__ClientSecret=secret
       - ClientCredentials__Scope=vsp_m2m_api
-      - VideoProcessorConfiguration__MaxConcurrentProcessingtLimit=4
+      - VideoProcessorConfiguration__MaxConcurrentProcessingLimit=4
       - VideoGeneratorConfiguration__FFmpegThreadsCount=4
       - VideoGeneratorConfiguration__UseHardwareAcceleration=false
       - JaegerExporterOptions__AgentHost=jaeger

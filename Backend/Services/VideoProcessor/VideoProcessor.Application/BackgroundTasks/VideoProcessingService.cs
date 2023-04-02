@@ -35,7 +35,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             _config = config.Value;
             _logger = logger;
             _requestProcessor = new RateLimitedRequestProcessor(new RateLimitedRequestProcessorOptions {
-                MaxConcurrentProcessingLimit = _config.MaxConcurrentProcessingtLimit,
+                MaxConcurrentProcessingLimit = _config.MaxConcurrentProcessingLimit,
                 MaxProcessingRateLimit = _config.MaxProcessingRateLimit
             }, logger);
         }
