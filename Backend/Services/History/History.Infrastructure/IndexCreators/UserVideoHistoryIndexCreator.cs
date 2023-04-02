@@ -43,12 +43,12 @@ namespace History.Infrastructure.IndexCreators {
                     .Text(t => t
                         .Name(p => p.Title)
                         .Analyzer("english")
-                        .Fields(f => f
-                            .Text(p => p
-                                .Name("zh")
-                                .Analyzer("ik_max_word")
-                            )
-                        )
+                    //.Fields(f => f
+                    //    .Text(p => p
+                    //        .Name("zh")
+                    //        .Analyzer("ik_max_word")
+                    //    )
+                    //)
                     )
                     .Text(k => k
                         .Name(p => p.Tags)
