@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - "../../base"
+  - "./resources/common/persistence-storage-class.yml"
   - "./resources/logstash/config-map.yml"
   - "./resources/jaeger/service.yml"
   - "./resources/jaeger/stateful-set.yml"

@@ -1,6 +1,8 @@
 # image:
 #   tag: 1.43.0-debian-11-r0
 
+# global:
+#   storageClass: persistence-sc
 # cassandra:
 #   dbUser:
 #     user: admin

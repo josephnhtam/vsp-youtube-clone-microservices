@@ -1,0 +1,42 @@
+signalrhubVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-status
+spec:
+  selector:
+    matchLabels:
+      app: web-status
+  template:
+    metadata:
+      labels:
+        app: web-status
+    spec:
+      containers:
+      - name: web-status
+        image: web-status
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - name: http
+          containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc-ui
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          failureThreshold: 10
+          successThreshold: 1
+        envFrom:
+        - configMapRef:
+            name: common-config
+        - configMapRef:
+            name: web-status-config
+        - secretRef:
+            name: web-status-secret
