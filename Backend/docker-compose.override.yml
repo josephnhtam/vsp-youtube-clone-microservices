@@ -208,6 +208,7 @@ services:
       - Urls__IdentityProvider=http://identityprovider
       - JaegerExporterOptions__AgentHost=jaeger
       - Logstash__Uri=http://logstash:9250
+      - ConnectionStrings__Redis=redis:6379
     ports:
       - 15050:80
     volumes:
