@@ -9,10 +9,10 @@ global:
 primary:
   resources:
     requests:
-      cpu: "50m"
+      cpu: "100m"
       memory: "512Mi"
     limits:
-      cpu: "200m"
-      memory: "1024Mi"
+      cpu: "500m"
+      memory: "1Gi"
 readinessProbe:
   initialDelaySeconds: 60

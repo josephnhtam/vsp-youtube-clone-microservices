@@ -6,10 +6,12 @@ auth:
   password: password
 resources:
   requests:
-    cpu: "50m"
+    cpu: "100m"
     memory: "512Mi"
   limits:
-    cpu: "200m"
-    memory: "2048Mi"
+    cpu: "500m"
+    memory: "3Gi"
+memoryHighWatermark:
+  enabled: true
 readinessProbe:
-  initialDelaySeconds: 6
+  initialDelaySeconds: 60

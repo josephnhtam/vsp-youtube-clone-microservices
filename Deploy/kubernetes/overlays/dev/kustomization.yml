@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   - "../../base"
   - "./resources/logstash/config-map.yml"
+  - "./resources/jaeger/service.yml"
+  - "./resources/jaeger/stateful-set.yml"
 
 generators:
   - "./generators/rabbitmq.yml"
@@ -11,18 +13,17 @@ generators:
   - "./generators/postgres.yml"
   - "./generators/elasticsearch.yml"
   - "./generators/logstash.yml"
-  - "./generators/jaeger.yml"
 
-secretGenerator:
-  - name: api-gateway-secret
-    behavior: merge
-    envs:
-      - "./secrets/api-gateway.env"
-  - name: community-api-secret
-    behavior: merge
-    envs:
-      - "./secrets/community-api.env"
-  - name: history-api-secret
-    behavior: merge
-    envs:
-      - "./secrets/history-api.env"
+# secretGenerator:
+#   - name: api-gateway-secret
+#     behavior: merge
+#     envs:
+#       - "./secrets/api-gateway.env"
+#   - name: community-api-secret
+#     behavior: merge
+#     envs:
+#       - "./secrets/community-api.env"
+#   - name: history-api-secret
+#     behavior: merge
+#     envs:
+#       - "./secrets/history-api.env"

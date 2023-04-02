@@ -11,8 +11,8 @@ master:
     cpu: "100m"
     memory: "512Mi"
   limits:
-    cpu: "200m"
-    memory: "2048Mi"
+    cpu: "500m"
+    memory: "2Gi"
 data:
   replicaCount: 0
 coordinating:

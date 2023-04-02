@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: storage-api-deployment
+  name: storage-api
 spec:
   selector:
     matchLabels:
@@ -18,10 +18,10 @@ spec:
         resources:
           requests:
             memory: "128Mi"
-            cpu: "50m"
+            cpu: "100m"
           limits:
             memory: "512Mi"
-            cpu: "200m"
+            cpu: "500m"
         ports:
         - name: http
           containerPort: 80

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: storage-api-service
+  name: storage-api
 spec:
   selector:
     app: storage-api

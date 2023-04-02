@@ -1,19 +1,19 @@
-apiVersion: apps/v1
+signalrhubVersion: apps/v1
 kind: Deployment
 metadata:
-  name: library-api
+  name: video-store-api
 spec:
   selector:
     matchLabels:
-      app: library-api
+      app: video-store-api
   template:
     metadata:
       labels:
-        app: library-api
+        app: video-store-api
     spec:
       containers:
-      - name: library-api
-        image: library-api
+      - name: video-store-api
+        image: video-store-api
         imagePullPolicy: Always
         resources:
           requests:
@@ -37,6 +37,6 @@ spec:
         - configMapRef:
             name: common-config
         - configMapRef:
-            name: library-api-config
+            name: video-store-api-config
         - secretRef:
-            name: library-api-secret
+            name: video-store-api-secret

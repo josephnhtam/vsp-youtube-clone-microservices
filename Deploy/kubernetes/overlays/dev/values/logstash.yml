@@ -4,11 +4,11 @@ image:
 existingConfiguration: logstash-config
 resources:
   requests:
-    cpu: "50m"
+    cpu: "100m"
     memory: "256Mi"
   limits:
-    cpu: "200m"
-    memory: "1024Mi"
+    cpu: "500m"
+    memory: "1Gi"
 extraEnvVars:
   - name: ES_JAVA_OPTS
     value: -Xmx512M

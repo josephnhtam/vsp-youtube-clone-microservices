@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+spec:
+  selector:
+    app: jaeger
+  ports:
+  - name: agent-1
+    protocol: UDP
+    port: 6831
+    targetPort: 6831
+  - name: agent-2
+    protocol: UDP
+    port: 6832
+    targetPort: 6832
+  - name: agent-3
+    port: 5778
+    targetPort: 5778
+  - name: query
+    port: 16686
+    targetPort: 16686
+  - name: collector-1
+    port: 14268
+    targetPort: 14268
+  - name: collector-2
+    port: 14250
+    targetPort: 14250
+  - name: collector-3
+    port: 9411
+    targetPort: 9411

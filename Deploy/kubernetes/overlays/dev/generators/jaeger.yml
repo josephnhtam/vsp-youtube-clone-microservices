@@ -1,9 +1,9 @@
-apiVersion: builtin
-kind: HelmChartInflationGenerator
-metadata:
-  name: jaeger-generator
-name: jaeger
-repo: https://charts.bitnami.com/bitnami
-version: 1.0.4
-releaseName: jaeger
-valuesFile: ./values/jaeger.yml
+# apiVersion: builtin
+# kind: HelmChartInflationGenerator
+# metadata:
+#   name: jaeger-generator
+# name: jaeger
+# repo: https://charts.bitnami.com/bitnami
+# version: 1.0.4
+# releaseName: jaeger
+# valuesFile: ./values/jaeger.yml
