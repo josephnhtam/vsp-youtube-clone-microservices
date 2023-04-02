@@ -4,7 +4,7 @@ metadata:
   name: identity-provider
 spec:
   selector:
-    app: api-gateway
+    app: identity-provider
   ports:
   - protocol: TCP
     port: 80

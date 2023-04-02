@@ -10,8 +10,8 @@ resources:
     memory: "512Mi"
   limits:
     cpu: "500m"
-    memory: "3Gi"
+    memory: "4Gi"
 memoryHighWatermark:
   enabled: true
 readinessProbe:
-  initialDelaySeconds: 60
+  initialDelaySeconds: 30

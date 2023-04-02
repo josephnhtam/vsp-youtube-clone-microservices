@@ -20,6 +20,9 @@ namespace IdentityProvider {
         public static WebApplication ConfigureServices (this WebApplicationBuilder builder) {
             RegisterExceptionIdentifiers();
 
+            builder.Services.AddEndpointsApiExplorer()
+                            .AddSwaggerGen();
+
             builder.Services.AddRazorPages();
 
             builder.AddDbContext()
@@ -41,7 +44,16 @@ namespace IdentityProvider {
         }
 
         public static void ConfigurePipeline (this WebApplication app) {
-            app.UseHttpsRedirection();
+            if (app.Environment.IsDevelopment()) {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            if (!app.Environment.IsDevelopment()) {
+                app.UseHttpsRedirection();
+            }
+
+            app.UseCors();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseRouting();

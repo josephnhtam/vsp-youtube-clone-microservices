@@ -11,18 +11,19 @@ generators:
   - "./generators/rabbitmq.yml"
   - "./generators/mongodb.yml"
   - "./generators/postgres.yml"
+  - "./generators/redis.yml"
   - "./generators/elasticsearch.yml"
   - "./generators/logstash.yml"
 
 configMapGenerator:
-  - name: api-gateway-config
-    behavior: merge
-    envs:
-      - "./configs/api-gateway.env"
   - name: common-config
     behavior: merge
     envs:
       - "./configs/common.env"
+  - name: api-gateway-config
+    behavior: merge
+    envs:
+      - "./configs/api-gateway.env"
   - name: identity-provider-config
     behavior: merge
     envs:
@@ -31,6 +32,10 @@ configMapGenerator:
     behavior: merge
     envs:
       - "./configs/storage-api.env"
+  - name: video-processor-application-config
+    behavior: merge
+    envs:
+      - "./configs/video-processor-application.env"
 
 secretGenerator:
   - name: api-gateway-secret

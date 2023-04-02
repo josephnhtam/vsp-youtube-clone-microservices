@@ -1,9 +1,11 @@
 image:
   tag: 7.0.10-debian-11-r1
 
-global:
-  redis:
-    password: password
+architecture: standalone
+auth:
+  password: password
+replica: 
+  replicaCount: 0
 resources:
   requests:
     cpu: "100m"
@@ -12,4 +14,4 @@ resources:
     cpu: "500m"
     memory: "1Gi"
 readinessProbe:
-  initialDelaySeconds: 60
+  initialDelaySeconds: 30

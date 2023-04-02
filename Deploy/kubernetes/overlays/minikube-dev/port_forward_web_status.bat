@@ -1,0 +1,1 @@
+kubectl port-forward svc/web-status 16050:80

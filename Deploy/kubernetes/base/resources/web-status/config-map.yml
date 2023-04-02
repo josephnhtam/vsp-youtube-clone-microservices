@@ -4,7 +4,7 @@ metadata:
   name: web-status-config
 data:
   HealthChecksUI__HealthChecks__0__Name: Storage
-  HealthChecksUI__HealthChecks__0__Uri: http://storage.api/hc
+  HealthChecksUI__HealthChecks__0__Uri: http://storage-api/hc
 
   HealthChecksUI__HealthChecks__1__Name: VideoManager
   HealthChecksUI__HealthChecks__1__Uri: http://video-manager-api/hc
@@ -37,4 +37,4 @@ data:
   HealthChecksUI__HealthChecks__10__Uri: http://history-api/hc
 
   HealthChecksUI__HealthChecks__11__Name: APIGateway
-  HealthChecksUI__HealthChecks__11__Uri: http://apigateway/hc
+  HealthChecksUI__HealthChecks__11__Uri: http://api-gateway/hc

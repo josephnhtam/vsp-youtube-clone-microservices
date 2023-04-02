@@ -52,6 +52,8 @@ namespace VideoManager.SignalRHub {
                 signalRBuilder.AddStackExchangeRedis(redisConnectionString, options => {
                     options.Configuration.ChannelPrefix = "VideoManager";
                 });
+
+                builder.Services.AddHealthChecks().AddRedis(redisConnectionString);
             }
 
             return builder;
@@ -134,6 +136,9 @@ namespace VideoManager.SignalRHub {
                 })
                 .WithTracing(options => {
                     options.AddSource("Mediator", "IntegrationEvent", "VideoManager.SignalR")
+                           .AddRedisInstrumentation(null, options => {
+                               options.SetVerboseDatabaseStatements = true;
+                           })
                            .AddJaegerExporter(options => {
                                configuration.GetSection("JaegerExporterOptions").Bind(options);
                            });
