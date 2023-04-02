@@ -107,7 +107,7 @@ services:
       dockerfile: Services/Library/Library.API/Dockerfile
 
   identityprovider:
-    image: ${DOCKER_REGISTRY-}identityproviderapi
+    image: ${DOCKER_REGISTRY-}identityprovider
     build:
       context: .
       dockerfile: Services/IdentityProvider/IdentityProvider/Dockerfile

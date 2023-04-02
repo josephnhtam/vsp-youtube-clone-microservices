@@ -264,29 +264,32 @@ namespace Storage {
 
         private static void UseLocalStorageStaticFiles (this WebApplication app) {
             var localStorageConfig = app.Services.GetRequiredService<IOptions<LocalStorageConfiguration>>().Value;
-            string localStorageRootPath = LocalStorageHelper.GetRootPath(localStorageConfig);
 
-            if (!Directory.Exists(localStorageRootPath)) {
-                Directory.CreateDirectory(localStorageRootPath);
+            if (localStorageConfig.ServeStaticFiles) {
+                string localStorageRootPath = LocalStorageHelper.GetRootPath(localStorageConfig);
+
+                if (!Directory.Exists(localStorageRootPath)) {
+                    Directory.CreateDirectory(localStorageRootPath);
+                }
+
+                var contentTypeProvider = new FileExtensionContentTypeProvider();
+                contentTypeProvider.Mappings[".mkv"] = "video/x-matroska";
+                contentTypeProvider.Mappings[".wmv"] = "video/x-ms-wmv";
+                contentTypeProvider.Mappings[".ogg"] = "video/ogg";
+                contentTypeProvider.Mappings[".rmvb"] = "application/vnd.rn-realmedia-vbr";
+
+                app.UseStaticFiles(new StaticFileOptions {
+                    ContentTypeProvider = contentTypeProvider,
+                    FileProvider = new PhysicalFileProvider(localStorageRootPath),
+                    RequestPath = localStorageConfig.RequestPath,
+
+                    OnPrepareResponse = ctx => {
+                        ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                        ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
+                            "Origin, X-Requested-With, Content-Type, Accept");
+                    },
+                });
             }
-
-            var contentTypeProvider = new FileExtensionContentTypeProvider();
-            contentTypeProvider.Mappings[".mkv"] = "video/x-matroska";
-            contentTypeProvider.Mappings[".wmv"] = "video/x-ms-wmv";
-            contentTypeProvider.Mappings[".ogg"] = "video/ogg";
-            contentTypeProvider.Mappings[".rmvb"] = "application/vnd.rn-realmedia-vbr";
-
-            app.UseStaticFiles(new StaticFileOptions {
-                ContentTypeProvider = contentTypeProvider,
-                FileProvider = new PhysicalFileProvider(localStorageRootPath),
-                RequestPath = localStorageConfig.RequestPath,
-
-                OnPrepareResponse = ctx => {
-                    ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-                    ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
-                        "Origin, X-Requested-With, Content-Type, Accept");
-                },
-            });
         }
 
         private static WebApplicationBuilder AddDbContext (this WebApplicationBuilder builder) {

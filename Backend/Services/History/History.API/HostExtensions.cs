@@ -368,7 +368,7 @@ namespace History.API {
         private static WebApplicationBuilder AddElasticClient (this WebApplicationBuilder builder) {
             var configuration = builder.Configuration;
 
-            var uri = new Uri(configuration.GetValue<string>("ElasicsearchConfiguration:Uri")!);
+            var uri = new Uri(configuration.GetValue<string>("ElasticsearchConfiguration:Uri")!);
             var connectionSettings = new Nest.ConnectionSettings(uri);
 
             builder.Services.AddElasticClient(connectionSettings);

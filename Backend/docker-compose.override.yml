@@ -289,7 +289,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - StorageConfiguration__BaseUri=http://localhost:14200
-      - ElasicsearchConfiguration__Uri=http://elasticsearch:9200
+      - ElasticsearchConfiguration__Uri=http://elasticsearch:9200
       - RabbitMQConfiguration__HostName=rabbitmq
       - Urls__IdentityProvider=http://identityprovider
       - JaegerExporterOptions__AgentHost=jaeger
@@ -356,7 +356,7 @@ services:
       - StorageConfiguration__BaseUri=http://localhost:14200
       - ConnectionStrings__MongoDb=mongodb://mongo:27017
       - ConnectionStrings__Redis=redis:6379
-      - ElasicsearchConfiguration__Uri=http://elasticsearch:9200
+      - ElasticsearchConfiguration__Uri=http://elasticsearch:9200
       - RabbitMQConfiguration__HostName=rabbitmq
       - Urls__IdentityProvider=http://identityprovider
       - JaegerExporterOptions__AgentHost=jaeger
