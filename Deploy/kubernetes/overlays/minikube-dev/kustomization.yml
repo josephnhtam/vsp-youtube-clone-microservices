@@ -5,7 +5,6 @@ resources:
   - "../dev"
 
 patchesStrategicMerge:
-  - "./patches/persistence-storage-class.yml"
   - "./patches/storage-storage-class.yml"
   - "./patches/api-gateway-deployment.yml"
   - "./patches/community-api-deployment.yml"

@@ -2,8 +2,6 @@ image:
   tag: 8.6.2-debian-11-r3
   
 existingConfiguration: logstash-config
-global:
-  storageClass: persistence-sc
 resources:
   requests:
     cpu: "100m"

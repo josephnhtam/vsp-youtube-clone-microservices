@@ -1,8 +1,6 @@
 image:
   tag: 6.0.5-debian-11-r1
   
-global:
-  storageClass: persistence-sc
 architecture: replicaset
 replicaCount: 1
 auth:

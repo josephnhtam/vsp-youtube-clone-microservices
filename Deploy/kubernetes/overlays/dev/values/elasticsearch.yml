@@ -3,7 +3,6 @@ image:
   
 global:
   kibanaEnabled: true
-  storageClass: persistence-sc
 master:
   masterOnly: false
   replicaCount: 1

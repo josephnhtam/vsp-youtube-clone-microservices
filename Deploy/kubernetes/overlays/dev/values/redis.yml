@@ -2,7 +2,6 @@ image:
   tag: 7.0.10-debian-11-r1
 
 global:
-  storageClass: persistence-sc
   redis:
     password: password
 resources:
