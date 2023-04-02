@@ -1,0 +1,18 @@
+image:
+  tag: 15.2.0-debian-11-r14
+
+global:
+  postgresql:
+    auth:
+      username: admin
+      password: example
+primary:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "512Mi"
+    limits:
+      cpu: "200m"
+      memory: "1024Mi"
+readinessProbe:
+  initialDelaySeconds: 60

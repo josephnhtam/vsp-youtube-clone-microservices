@@ -1,0 +1,15 @@
+image:
+  tag: 7.0.10-debian-11-r1
+
+global:
+  redis:
+    password: password
+resources:
+  requests:
+    cpu: "50m"
+    memory: "512Mi"
+  limits:
+    cpu: "200m"
+    memory: "1024Mi"
+readinessProbe:
+  initialDelaySeconds: 60

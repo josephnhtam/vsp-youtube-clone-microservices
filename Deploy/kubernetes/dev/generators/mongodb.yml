@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: mongodb-generator
+name: mongodb
+repo: https://charts.bitnami.com/bitnami
+version: 13.9.1
+releaseName: mongodb
+valuesFile: ./values/mongodb.yml

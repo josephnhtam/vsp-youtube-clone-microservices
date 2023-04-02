@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: logstash-generator
+name: logstash
+repo: https://charts.bitnami.com/bitnami
+version: 5.2.2
+releaseName: logstash
+valuesFile: ./values/logstash.yml

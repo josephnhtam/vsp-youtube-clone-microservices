@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: history-api-service
+spec:
+  selector:
+    app: history-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http

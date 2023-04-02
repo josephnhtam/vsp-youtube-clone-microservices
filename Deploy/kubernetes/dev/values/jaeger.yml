@@ -1,0 +1,39 @@
+image:
+  tag: 1.43.0-debian-11-r0
+
+cassandra:
+  dbUser:
+    user: admin
+    password: example
+query:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "256Mi"
+    limits:
+      cpu: "100m"
+      memory: "512Mi"
+collector:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "256Mi"
+    limits:
+      cpu: "100m"
+      memory: "512Mi"
+agent:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "256Mi"
+    limits:
+      cpu: "100m"
+      memory: "512Mi"
+migration:
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "256Mi"
+    limits:
+      cpu: "100m"
+      memory: "512Mi"

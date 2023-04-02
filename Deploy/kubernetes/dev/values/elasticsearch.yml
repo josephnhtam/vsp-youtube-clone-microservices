@@ -1,0 +1,22 @@
+image:
+  tag: 8.6.2-debian-11-r10
+  
+global:
+  kibanaEnabled: true
+master:
+  masterOnly: false
+  replicaCount: 1
+  resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "200m"
+    memory: "2048Mi"
+data:
+  replicaCount: 0
+coordinating:
+  replicaCount: 0
+ingest:
+  enabled: false
+heapSize: 1024m

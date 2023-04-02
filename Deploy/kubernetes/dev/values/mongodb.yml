@@ -1,0 +1,17 @@
+image:
+  tag: 6.0.5-debian-11-r1
+  
+architecture: replicaset
+replicaCount: 1
+auth:
+  rootUser: root
+  rootPassword: password
+resources:
+  requests:
+    cpu: "50m"
+    memory: "512Mi"
+  limits:
+    cpu: "200m"
+    memory: "1024Mi"
+readinessProbe:
+  initialDelaySeconds: 60

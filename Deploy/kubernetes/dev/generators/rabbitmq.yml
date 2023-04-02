@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: rabbitmq-generator
+name: rabbitmq
+repo: https://charts.bitnami.com/bitnami
+version: 11.10.3
+releaseName: rabbitmq
+valuesFile: ./values/rabbitmq.yml

@@ -1,0 +1,9 @@
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: elasticsearch-generator
+name: elasticsearch
+repo: https://charts.bitnami.com/bitnami
+version: 19.5.14
+releaseName: elasticsearch
+valuesFile: ./values/elasticsearch.yml

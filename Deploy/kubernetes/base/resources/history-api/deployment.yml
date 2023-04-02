@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: history-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: history-api
+  template:
+    metadata:
+      labels:
+        app: history-api
+    spec:
+      containers:
+      - name: history-api
+        image: history-api
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        ports:
+        - name: http
+          containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          failureThreshold: 10
+          successThreshold: 1
+        envFrom:
+        - configMapRef:
+            name: common-config
+        - configMapRef:
+            name: history-api-config
+        - secretRef:
+            name: history-api-secret

@@ -1,0 +1,14 @@
+image:
+  tag: 8.6.2-debian-11-r3
+  
+existingConfiguration: logstash-config
+resources:
+  requests:
+    cpu: "50m"
+    memory: "256Mi"
+  limits:
+    cpu: "200m"
+    memory: "1024Mi"
+extraEnvVars:
+  - name: ES_JAVA_OPTS
+    value: -Xmx512M
