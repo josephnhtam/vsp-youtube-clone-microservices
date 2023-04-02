@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriptions-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: subscriptions-api
+        imagePullPolicy: Never

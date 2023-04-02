@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: storage-pvc
 spec:
-  storageClassName: storage-sc
+  storageClassName: standard
   accessModes:
   - ReadWriteMany
   resources:

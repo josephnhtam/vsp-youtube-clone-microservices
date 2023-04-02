@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: library-api
+        imagePullPolicy: Never

@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-store-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: video-store-api
+        imagePullPolicy: Never

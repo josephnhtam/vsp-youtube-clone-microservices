@@ -1,7 +1,8 @@
-docker build -t web-status -f ../Backend/Services/WebStatus/WebStatus/Dockerfile ../Backend/
-docker build -t identity-provider -f ../Backend/Services/IdentityProvider/IdentityProvider/Dockerfile ../Backend/
+docker build -t web-status -f ../Backend/Services/WebStatus/Dockerfile ../Backend/
+docker build -t identity-provider -f ../Backend/Services/IdentityProvider/Dockerfile ../Backend/
 docker build -t api-gateway -f ../Backend/Services/ApiGateway/Dockerfile ../Backend/
 docker build -t community-api -f ../Backend/Services/Community/Community.API/Dockerfile ../Backend/
+docker build -t history-api -f ../Backend/Services/History/History.API/Dockerfile ../Backend/
 docker build -t library-api -f ../Backend/Services/Library/Library.API/Dockerfile ../Backend/
 docker build -t search-api -f ../Backend/Services/Search/Search.API/Dockerfile ../Backend/
 docker build -t storage-api -f ../Backend/Services/Storage/Storage.API/Dockerfile ../Backend/

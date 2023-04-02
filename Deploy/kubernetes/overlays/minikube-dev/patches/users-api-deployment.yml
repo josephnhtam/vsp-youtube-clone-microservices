@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: users-api
+        imagePullPolicy: Never

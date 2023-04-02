@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - "../dev"
+
+patchesStrategicMerge:
+  - "./patches/persistence-storage-class.yml"
+  - "./patches/storage-storage-class.yml"
+  - "./patches/api-gateway-deployment.yml"
+  - "./patches/community-api-deployment.yml"
+  - "./patches/history-api-deployment.yml"
+  - "./patches/identity-provider-deployment.yml"
+  - "./patches/library-api-deployment.yml"
+  - "./patches/search-api-deployment.yml"
+  - "./patches/storage-api-deployment.yml"
+  - "./patches/subscriptions-api-deployment.yml"
+  - "./patches/users-api-deployment.yml"
+  - "./patches/video-manager-api-deployment.yml"
+  - "./patches/video-manager-signalrhub-deployment.yml"
+  - "./patches/video-processor-application-deployment.yml"
+  - "./patches/video-store-api-deployment.yml"
+  - "./patches/web-status-deployment.yml"

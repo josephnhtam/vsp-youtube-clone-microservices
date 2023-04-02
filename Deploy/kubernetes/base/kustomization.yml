@@ -3,3 +3,76 @@ kind: Kustomization
 
 resources:
   - "./resources/common/limit-range.yml"
+  - "./resources/common/config-map.yml"
+
+  - "./resources/api-gateway/clusterip-service.yml"
+  - "./resources/api-gateway/config-map.yml"
+  - "./resources/api-gateway/deployment.yml"
+  - "./resources/api-gateway/secret.yml"
+
+  - "./resources/community-api/clusterip-service.yml"
+  - "./resources/community-api/config-map.yml"
+  - "./resources/community-api/deployment.yml"
+  - "./resources/community-api/secret.yml"
+
+  - "./resources/history-api/clusterip-service.yml"
+  - "./resources/history-api/config-map.yml"
+  - "./resources/history-api/deployment.yml"
+  - "./resources/history-api/secret.yml"
+
+  - "./resources/identity-provider/clusterip-service.yml"
+  - "./resources/identity-provider/config-map.yml"
+  - "./resources/identity-provider/deployment.yml"
+  - "./resources/identity-provider/secret.yml"
+
+  - "./resources/library-api/clusterip-service.yml"
+  - "./resources/library-api/config-map.yml"
+  - "./resources/library-api/deployment.yml"
+  - "./resources/library-api/secret.yml"
+
+  - "./resources/search-api/clusterip-service.yml"
+  - "./resources/search-api/config-map.yml"
+  - "./resources/search-api/deployment.yml"
+  - "./resources/search-api/secret.yml"
+
+  - "./resources/storage-api/clusterip-service.yml"
+  - "./resources/storage-api/config-map.yml"
+  - "./resources/storage-api/deployment.yml"
+  - "./resources/storage-api/secret.yml"
+  - "./resources/storage-api/storage-class.yml"
+  - "./resources/storage-api/persistent-volume-claim.yml"
+
+  - "./resources/subscriptions-api/clusterip-service.yml"
+  - "./resources/subscriptions-api/config-map.yml"
+  - "./resources/subscriptions-api/deployment.yml"
+  - "./resources/subscriptions-api/secret.yml"
+
+  - "./resources/users-api/clusterip-service.yml"
+  - "./resources/users-api/config-map.yml"
+  - "./resources/users-api/deployment.yml"
+  - "./resources/users-api/secret.yml"
+
+  - "./resources/video-manager-api/clusterip-service.yml"
+  - "./resources/video-manager-api/config-map.yml"
+  - "./resources/video-manager-api/deployment.yml"
+  - "./resources/video-manager-api/secret.yml"
+
+  - "./resources/video-manager-signalrhub/clusterip-service.yml"
+  - "./resources/video-manager-signalrhub/config-map.yml"
+  - "./resources/video-manager-signalrhub/deployment.yml"
+  - "./resources/video-manager-signalrhub/secret.yml"
+
+  - "./resources/video-processor-application/clusterip-service.yml"
+  - "./resources/video-processor-application/config-map.yml"
+  - "./resources/video-processor-application/deployment.yml"
+  - "./resources/video-processor-application/secret.yml"
+
+  - "./resources/video-store-api/clusterip-service.yml"
+  - "./resources/video-store-api/config-map.yml"
+  - "./resources/video-store-api/deployment.yml"
+  - "./resources/video-store-api/secret.yml"
+
+  - "./resources/web-status/clusterip-service.yml"
+  - "./resources/web-status/config-map.yml"
+  - "./resources/web-status/deployment.yml"
+  - "./resources/web-status/secret.yml"
