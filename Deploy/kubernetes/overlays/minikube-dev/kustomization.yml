@@ -3,6 +3,9 @@ kind: Kustomization
 
 resources:
   - "../dev"
+  - "./resources/api-gateway/load-balancer.yml"
+  - "./resources/identity-provider/load-balancer.yml"
+  - "./resources/storage-api/load-balancer.yml"
 
 patchesStrategicMerge:
   - "./patches/storage-storage-class.yml"

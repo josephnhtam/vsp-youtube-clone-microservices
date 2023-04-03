@@ -1,0 +1,1 @@
+kubectl port-forward svc/rabbitmq 15672:15672

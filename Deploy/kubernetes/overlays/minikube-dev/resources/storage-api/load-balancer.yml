@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-api-load-balancer
+spec:
+  selector:
+    app: storage-api
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 14200
+    targetPort: http

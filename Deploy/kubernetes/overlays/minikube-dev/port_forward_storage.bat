@@ -1,1 +1,0 @@
-kubectl port-forward svc/storage-api 14200:80

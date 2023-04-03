@@ -1,1 +1,0 @@
-kubectl port-forward svc/identity-provider 15100:80

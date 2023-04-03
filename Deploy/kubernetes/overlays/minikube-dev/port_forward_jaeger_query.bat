@@ -1,0 +1,1 @@
+kubectl port-forward svc/jaegery 16686:16686
