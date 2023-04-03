@@ -11,6 +11,10 @@ spec:
       labels:
         app: storage-api
     spec:
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: storage-pvc
       containers:
       - name: storage-api
         image: storage-api
@@ -40,3 +44,6 @@ spec:
             name: storage-api-config
         - secretRef:
             name: storage-api-secret
+        volumeMounts:
+          - name:  storage-volume
+            mountPath:  /VideoSharingPlatform/Storage
