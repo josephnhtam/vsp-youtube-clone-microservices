@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Prometheus;
 using Serilog;
 using Serilog.Enrichers.Span;
 using SharedKernel.Exceptions;
@@ -68,6 +69,8 @@ namespace VideoProcessor.Application {
 
         public static void ConfigurePipeline (this WebApplication app) {
             app.UseHttpsRedirection();
+
+            app.UseMetricServer();
 
             app.MapHealthChecks("/hc", new() {
                 Predicate = _ => true,
@@ -180,6 +183,7 @@ namespace VideoProcessor.Application {
                 string dbPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!, "tempDir.db");
                 ctx.UseSqlite($"Data Source={dbPath}");
             });
+
 
             builder.Services.AddHealthChecks().AddDbContextCheck<VideoProcessorDbContext>();
 

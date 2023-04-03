@@ -3,6 +3,7 @@ using Infrastructure.TransactionalEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
+using Prometheus;
 using SharedKernel.Exceptions;
 using SharedKernel.Processors;
 using System.Diagnostics;
@@ -21,10 +22,20 @@ namespace VideoProcessor.Application.BackgroundTasks {
 
         private static readonly ActivitySource _activitySource = new ActivitySource("VideoProcessor");
 
+        private readonly Gauge _concurrentVideoProcessingTasksGauge = Metrics.CreateGauge(
+            "concurrent_video_processing_tasks",
+            "Number of concurrent video processing tasks.");
+
+        private readonly Gauge _concurrentVideoProcessingTasksPercentageGauge = Metrics.CreateGauge(
+            "concurrent_video_processing_tasks_percentage",
+            "100 * Number of concurrent video processing tasks / Max number of concurrent video processing tasks.");
+
         private readonly IServiceProvider _services;
         private readonly VideoProcessorConfiguration _config;
         private readonly ILogger<VideoProcessingService> _logger;
         private readonly RateLimitedRequestProcessor _requestProcessor;
+
+        private int _concurrentProcesses = 0;
 
         public VideoProcessingService (
             IServiceProvider services,
@@ -64,30 +75,32 @@ namespace VideoProcessor.Application.BackgroundTasks {
                     var processingCancellationToken = processingCts.Token;
 
                     await using (new VideoProcessingLock(services, video.Id, processingCts, cancellationToken)) {
-                        using (CreateVideoProcessingActivity(video)) {
-                            try {
-                                string tempDirPath = await GetTempDirectoryAsync(services, tempFilesId);
-                                string videoFilePath = await DownloadVideoAsync(services, video, tempDirPath, processingCancellationToken);
+                        using (new ConcurrentProcessesCounter(this)) {
+                            using (CreateVideoProcessingActivity(video)) {
+                                try {
+                                    string tempDirPath = await GetTempDirectoryAsync(services, tempFilesId);
+                                    string videoFilePath = await DownloadVideoAsync(services, video, tempDirPath, processingCancellationToken);
 
-                                VideoInfo videoInfo = await GenerateVideoInfoAsync(services, video, videoFilePath, processingCancellationToken);
-                                await SetVideoInfo(services, video, videoInfo);
+                                    VideoInfo videoInfo = await GenerateVideoInfoAsync(services, video, videoFilePath, processingCancellationToken);
+                                    await SetVideoInfo(services, video, videoInfo);
 
-                                if (video.Status == VideoProcessingStatus.ProcessingThumbnails) {
-                                    await ProcessThumbnailsAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
+                                    if (video.Status == VideoProcessingStatus.ProcessingThumbnails) {
+                                        await ProcessThumbnailsAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
+                                    }
+
+                                    if (video.Status == VideoProcessingStatus.ProcessingVideos) {
+                                        await ProcessVideosAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
+                                    }
+                                } catch (OperationCanceledException) {
+                                    _logger.LogWarning("Processing of video ({VideoId}) is canceled.", video.Id);
+                                    return;
+                                } catch (Exception ex) when (IsRetryableException(ex)) {
+                                    _logger.LogWarning(ex, "Processing of video ({VideoId}) is failed due to a transient exception.", video.Id);
+                                    await RetryVideoOrFailVideoProcessing(services, video);
+                                } catch (Exception ex) when (ex is not ConflictException && ex is not DbUpdateConcurrencyException) {
+                                    _logger.LogError(ex, "Processing of video ({VideoId}) is fatally failed.", video.Id);
+                                    await SetVideoProcessingFailed(services, video);
                                 }
-
-                                if (video.Status == VideoProcessingStatus.ProcessingVideos) {
-                                    await ProcessVideosAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
-                                }
-                            } catch (OperationCanceledException) {
-                                _logger.LogWarning("Processing of video ({VideoId}) is canceled.", video.Id);
-                                return;
-                            } catch (Exception ex) when (IsRetryableException(ex)) {
-                                _logger.LogWarning(ex, "Processing of video ({VideoId}) is failed due to a transient exception.", video.Id);
-                                await RetryVideoOrFailVideoProcessing(services, video);
-                            } catch (Exception ex) when (ex is not ConflictException && ex is not DbUpdateConcurrencyException) {
-                                _logger.LogError(ex, "Processing of video ({VideoId}) is fatally failed.", video.Id);
-                                await SetVideoProcessingFailed(services, video);
                             }
                         }
                     };
@@ -371,11 +384,36 @@ namespace VideoProcessor.Application.BackgroundTasks {
             transactionalEventsContext.ResetDefaultEventsGroudId();
         }
 
+        private class ConcurrentProcessesCounter : IDisposable {
+            private readonly VideoProcessingService _service;
+
+            public ConcurrentProcessesCounter (VideoProcessingService service) {
+                _service = service;
+                UpdateMetrics(true);
+            }
+
+            public void Dispose () {
+                UpdateMetrics(false);
+            }
+
+            private void UpdateMetrics (bool start) {
+                lock (_service) {
+                    _service._concurrentProcesses += start ? 1 : -1;
+
+                    _service._concurrentVideoProcessingTasksGauge
+                        .Set(_service._concurrentProcesses);
+
+                    _service._concurrentVideoProcessingTasksPercentageGauge
+                        .Set(100f * _service._concurrentProcesses / _service._config.MaxConcurrentProcessingLimit);
+                }
+            }
+        }
+
         private class VideoProcessingLock : IAsyncDisposable {
 
-            private Task _task;
-            private CancellationTokenSource _videoProcessingCts;
-            private CancellationTokenSource _completeCts;
+            private readonly Task _task;
+            private readonly CancellationTokenSource _videoProcessingCts;
+            private readonly CancellationTokenSource _completeCts;
 
             public VideoProcessingLock (IServiceProvider services, Guid videoId, CancellationTokenSource videoProcessingCts, CancellationToken stoppingToken) {
                 _videoProcessingCts = videoProcessingCts;
