@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: video-processor-application-monitor
+  labels:
+    release: prometheus-stack
+spec:
+  podMetricsEndpoints:
+  - port: http
+    interval: 10s 
+  selector:
+    matchLabels:
+      app: video-processor-application

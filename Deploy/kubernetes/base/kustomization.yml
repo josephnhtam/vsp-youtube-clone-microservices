@@ -66,6 +66,8 @@ resources:
   - "./resources/video-processor-application/config-map.yml"
   - "./resources/video-processor-application/deployment.yml"
   - "./resources/video-processor-application/secret.yml"
+  - "./resources/video-processor-application/pod-monitor.yml"
+  - "./resources/video-processor-application/hpa.yml"
 
   - "./resources/video-store-api/clusterip-service.yml"
   - "./resources/video-store-api/config-map.yml"
