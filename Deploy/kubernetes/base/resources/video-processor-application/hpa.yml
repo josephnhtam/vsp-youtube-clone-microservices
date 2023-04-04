@@ -7,8 +7,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: video-processor-application
-  minReplicas: 1
-  maxReplicas: 2
+  minReplicas: 2
+  maxReplicas: 4
   metrics:
   - type: Pods
     pods:
@@ -16,4 +16,4 @@ spec:
         name: concurrent_video_processing_tasks_percentage
       target:
         type: AverageValue
-        averageValue: "50"
+        averageValue: "80"
