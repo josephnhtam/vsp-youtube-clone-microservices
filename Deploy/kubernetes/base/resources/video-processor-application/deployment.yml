@@ -11,6 +11,8 @@ spec:
       labels:
         app: video-processor-application
     spec:
+      serviceAccountName: video-processor-application-service-account
+      terminationGracePeriodSeconds: 2000
       containers:
       - name: video-processor-application
         image: video-processor-application
@@ -40,3 +42,12 @@ spec:
             name: video-processor-application-config
         - secretRef:
             name: video-processor-application-secret
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace

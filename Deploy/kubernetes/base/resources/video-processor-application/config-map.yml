@@ -8,3 +8,4 @@ data:
   VideoProcessorConfiguration__MaxConcurrentProcessingLimit: "4"
   VideoGeneratorConfiguration__FFmpegThreadsCount: "4"
   VideoGeneratorConfiguration__UseHardwareAcceleration: "false"
+  GracefulTerminationConfiguration__ShutdownTimeoutInMinutes: "30"

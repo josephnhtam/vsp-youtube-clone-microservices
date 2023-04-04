@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using Infrastructure.TransactionalEvents;
+using k8s;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
@@ -57,60 +58,78 @@ namespace VideoProcessor.Application.BackgroundTasks {
         }
 
         public override async Task StopAsync (CancellationToken cancellationToken) {
+            _logger.LogInformation("Video processing service is stopping");
             await base.StopAsync(cancellationToken);
+
+            _logger.LogInformation("Removing temp directories");
             await RemoveAllTempDirectoryAsync(_services);
+
+            _logger.LogInformation("Video processing service is stopped");
         }
 
-        private async Task ProcessVideoAsync (CancellationToken cancellationToken) {
+        private async Task ProcessVideoAsync (CancellationToken stoppingToken) {
             using var scope = _services.CreateScope();
             var services = scope.ServiceProvider;
 
-            var video = await PollVideoAsync(services, cancellationToken);
+            Video? video = null;
+
+            try {
+                video = await PollVideoAsync(services, stoppingToken);
+            } catch (OperationCanceledException) {
+                _logger.LogWarning("Video processing is cancelled");
+                return;
+            }
 
             if (video != null) {
-                Guid tempFilesId = Guid.NewGuid();
+                await DoProcessVideoAsync(services, video /*, stoppingToken */);
+            }
+        }
 
-                try {
-                    using var processingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                    var processingCancellationToken = processingCts.Token;
+        private async Task DoProcessVideoAsync (IServiceProvider services, Video video, CancellationToken cancellationToken = default) {
+            Guid tempFilesId = Guid.NewGuid();
 
-                    await using (new VideoProcessingLock(services, video.Id, processingCts, cancellationToken)) {
-                        using (new ConcurrentProcessesCounter(this)) {
-                            using (CreateVideoProcessingActivity(video)) {
-                                try {
-                                    string tempDirPath = await GetTempDirectoryAsync(services, tempFilesId);
-                                    string videoFilePath = await DownloadVideoAsync(services, video, tempDirPath, processingCancellationToken);
+            try {
+                using var processingCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var processingCancellationToken = processingCts.Token;
 
-                                    VideoInfo videoInfo = await GenerateVideoInfoAsync(services, video, videoFilePath, processingCancellationToken);
-                                    await SetVideoInfo(services, video, videoInfo);
+                await using (new VideoProcessingLock(services, video.Id, processingCts, cancellationToken)) {
+                    await using (var metricsUpdater = new ConcurrentProcessesMetricsUpdater(this)) {
+                        await metricsUpdater.Execute();
 
-                                    if (video.Status == VideoProcessingStatus.ProcessingThumbnails) {
-                                        await ProcessThumbnailsAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
-                                    }
+                        using (CreateVideoProcessingActivity(video)) {
+                            try {
+                                string tempDirPath = await GetTempDirectoryAsync(services, tempFilesId);
+                                string videoFilePath = await DownloadVideoAsync(services, video, tempDirPath, processingCancellationToken);
 
-                                    if (video.Status == VideoProcessingStatus.ProcessingVideos) {
-                                        await ProcessVideosAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
-                                    }
-                                } catch (OperationCanceledException) {
-                                    _logger.LogWarning("Processing of video ({VideoId}) is canceled.", video.Id);
-                                    return;
-                                } catch (Exception ex) when (IsRetryableException(ex)) {
-                                    _logger.LogWarning(ex, "Processing of video ({VideoId}) is failed due to a transient exception.", video.Id);
-                                    await RetryVideoOrFailVideoProcessing(services, video);
-                                } catch (Exception ex) when (ex is not ConflictException && ex is not DbUpdateConcurrencyException) {
-                                    _logger.LogError(ex, "Processing of video ({VideoId}) is fatally failed.", video.Id);
-                                    await SetVideoProcessingFailed(services, video);
+                                VideoInfo videoInfo = await GenerateVideoInfoAsync(services, video, videoFilePath, processingCancellationToken);
+                                await SetVideoInfo(services, video, videoInfo);
+
+                                if (video.Status == VideoProcessingStatus.ProcessingThumbnails) {
+                                    await ProcessThumbnailsAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
                                 }
+
+                                if (video.Status == VideoProcessingStatus.ProcessingVideos) {
+                                    await ProcessVideosAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
+                                }
+                            } catch (OperationCanceledException) {
+                                _logger.LogWarning("Processing of video ({VideoId}) is canceled.", video.Id);
+                                return;
+                            } catch (Exception ex) when (IsRetryableException(ex)) {
+                                _logger.LogWarning(ex, "Processing of video ({VideoId}) is failed due to a transient exception.", video.Id);
+                                await RetryVideoOrFailVideoProcessing(services, video);
+                            } catch (Exception ex) when (ex is not ConflictException && ex is not DbUpdateConcurrencyException) {
+                                _logger.LogError(ex, "Processing of video ({VideoId}) is fatally failed.", video.Id);
+                                await SetVideoProcessingFailed(services, video);
                             }
                         }
-                    };
-                } catch (Exception ex) when (ex is ConflictException || ex is DbUpdateConcurrencyException) {
-                    _logger.LogWarning(
-                        $"More than one processor instance trying to process the video ({video.Id}) concurrently\n" +
-                        "which may occur if the time is not synchronized or lock duration too small.");
-                } finally {
-                    await CleanUpTempFiles(services, tempFilesId);
-                }
+                    }
+                };
+            } catch (Exception ex) when (ex is ConflictException || ex is DbUpdateConcurrencyException) {
+                _logger.LogWarning(
+                    $"More than one processor instance trying to process the video ({video.Id}) concurrently\n" +
+                    "which may occur if the time is not synchronized or lock duration too small.");
+            } finally {
+                await CleanUpTempFiles(services, tempFilesId);
             }
         }
 
@@ -384,19 +403,24 @@ namespace VideoProcessor.Application.BackgroundTasks {
             transactionalEventsContext.ResetDefaultEventsGroudId();
         }
 
-        private class ConcurrentProcessesCounter : IDisposable {
+        private class ConcurrentProcessesMetricsUpdater : IAsyncDisposable {
             private readonly VideoProcessingService _service;
+            private readonly Kubernetes? _kubernetesClient;
 
-            public ConcurrentProcessesCounter (VideoProcessingService service) {
+            public ConcurrentProcessesMetricsUpdater (VideoProcessingService service) {
                 _service = service;
-                UpdateMetrics(true);
+                _kubernetesClient = service._services.GetService<Kubernetes>();
             }
 
-            public void Dispose () {
-                UpdateMetrics(false);
+            public async Task Execute () {
+                await UpdateMetricsAsync(true);
             }
 
-            private void UpdateMetrics (bool start) {
+            public async ValueTask DisposeAsync () {
+                await UpdateMetricsAsync(false);
+            }
+
+            private async Task UpdateMetricsAsync (bool start) {
                 lock (_service) {
                     _service._concurrentProcesses += start ? 1 : -1;
 
@@ -405,6 +429,31 @@ namespace VideoProcessor.Application.BackgroundTasks {
 
                     _service._concurrentVideoProcessingTasksPercentageGauge
                         .Set(100f * _service._concurrentProcesses / _service._config.MaxConcurrentProcessingLimit);
+                }
+
+                if (_kubernetesClient != null) {
+                    try {
+
+                        var podName = Environment.GetEnvironmentVariable("POD_NAME");
+                        var podNamespace = Environment.GetEnvironmentVariable("POD_NAMESPACE");
+
+                        _service._logger.LogInformation("Updating pod-deletion-cost annotation for {podName}.{podNamespace}", podName, podNamespace);
+
+                        var pod = await _kubernetesClient.ReadNamespacedPodAsync(podName, podNamespace);
+
+                        if (pod == null) {
+                            throw new Exception($"Failed to read namespaced pod for {podName}.{podNamespace}");
+                        }
+
+                        if (pod.Metadata.Annotations == null) pod.Metadata.Annotations = new Dictionary<string, string>();
+                        pod.Metadata.Annotations["controller.kubernetes.io/pod-deletion-cost"] = _service._concurrentProcesses.ToString();
+
+                        await _kubernetesClient.ReplaceNamespacedPodAsync(pod, podName, podNamespace);
+
+                        _service._logger.LogInformation("pod-deletion-cost annotation updated");
+                    } catch (Exception ex) {
+                        _service._logger.LogError(ex, "Failed to update pod-deletion-cost annotation");
+                    }
                 }
             }
         }

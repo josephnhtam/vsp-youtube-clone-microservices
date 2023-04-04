@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - "./resources/common/limit-range.yml"
   - "./resources/common/config-map.yml"
+  - "./resources/common/pod-updater-role.yml"
 
   - "./resources/api-gateway/clusterip-service.yml"
   - "./resources/api-gateway/config-map.yml"
@@ -68,6 +69,8 @@ resources:
   - "./resources/video-processor-application/secret.yml"
   - "./resources/video-processor-application/pod-monitor.yml"
   - "./resources/video-processor-application/hpa.yml"
+  - "./resources/video-processor-application/service-account.yml"
+  - "./resources/video-processor-application/role-binding.yml"
 
   - "./resources/video-store-api/clusterip-service.yml"
   - "./resources/video-store-api/config-map.yml"

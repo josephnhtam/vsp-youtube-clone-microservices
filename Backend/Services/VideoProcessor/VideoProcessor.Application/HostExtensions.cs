@@ -17,8 +17,10 @@ using Infrastructure.Extensions;
 using Infrastructure.TransactionalEvents.Extensions;
 using Infrastructure.TransactionalEvents.Handlers;
 using Infrastructure.TransactionalEvents.Processing.Extensions;
+using k8s;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -59,10 +61,13 @@ namespace VideoProcessor.Application {
                    .AddMediatR()
                    .AddAutoMapper()
                    .AddHttpClient()
-                   .AddVideoProcessor()
                    .AddOpenTelemetry()
                    .AddSerilog()
-                   .AddHealthChecks();
+                   .AddHealthChecks()
+                   .AddKubernetesClient()
+                   .AddVideoProcessor();
+
+            builder.ConfigureGracefulTermination();
 
             return builder.Build();
         }
@@ -282,6 +287,37 @@ namespace VideoProcessor.Application {
 
         private static WebApplicationBuilder AddHealthChecks (this WebApplicationBuilder builder) {
             builder.Services.AddHealthChecks();
+            return builder;
+        }
+
+        private static WebApplicationBuilder AddKubernetesClient (this WebApplicationBuilder builder) {
+            if (KubernetesClientConfiguration.IsInCluster()) {
+                var podName = Environment.GetEnvironmentVariable("POD_NAME");
+                var podNamespace = Environment.GetEnvironmentVariable("POD_NAMESPACE");
+
+                if (!string.IsNullOrEmpty(podName) && !string.IsNullOrEmpty(podNamespace)) {
+                    var config = KubernetesClientConfiguration.InClusterConfig();
+                    var client = new Kubernetes(config);
+
+                    builder.Services.AddSingleton(client);
+                }
+            }
+
+            return builder;
+        }
+
+        private static WebApplicationBuilder ConfigureGracefulTermination (this WebApplicationBuilder builder) {
+            var configuration = new GracefulTerminationConfiguration();
+
+            var section = builder.Configuration.GetSection("GracefulTerminationConfiguration");
+            section.Bind(configuration);
+
+            builder.Services.Configure<GracefulTerminationConfiguration>(section);
+
+            builder.Services.Configure<HostOptions>(options => {
+                options.ShutdownTimeout = TimeSpan.FromMinutes(configuration.ShutdownTimeoutInMinutes);
+            });
+
             return builder;
         }
 

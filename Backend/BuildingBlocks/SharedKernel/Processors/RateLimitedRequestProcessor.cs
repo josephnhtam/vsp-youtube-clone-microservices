@@ -40,11 +40,13 @@ namespace SharedKernel.Processors {
                     var taskId = Interlocked.Increment(ref _totalRequestCount);
                     _tasks[taskId] = Task.Run(async () => await ProcessRequestAsync(request, cancellationToken, taskId));
                 }
-
-                await Task.WhenAll(_tasks.Values).ConfigureAwait(false);
             } catch (OperationCanceledException) {
-                _logger?.LogInformation("Rate-Limited Request Processor is stopped");
+                _logger?.LogInformation("Rate-Limited Request Processor is stopping");
             }
+
+            await Task.WhenAll(_tasks.Values).ConfigureAwait(false);
+
+            _logger?.LogInformation("Rate-Limited Request Processor is stopped");
         }
 
         private async Task ProcessRequestAsync (Func<Task> request, CancellationToken cancellationToken, ulong taskId) {
