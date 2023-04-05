@@ -1,6 +1,5 @@
 ﻿using Infrastructure;
 using Infrastructure.TransactionalEvents;
-using k8s;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
@@ -15,11 +14,12 @@ using VideoProcessor.Application.BackgroundTasks.Processors.VideoPreviewThumbnai
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoThumbnailGenerators;
 using VideoProcessor.Application.Configurations;
 using VideoProcessor.Application.Infrastructure;
+using VideoProcessor.Application.Services;
 using VideoProcessor.Domain.Contracts;
 using VideoProcessor.Domain.Models;
 
 namespace VideoProcessor.Application.BackgroundTasks {
-    public class VideoProcessingService : BackgroundService {
+    public partial class VideoProcessingService : BackgroundService {
 
         private static readonly ActivitySource _activitySource = new ActivitySource("VideoProcessor");
 
@@ -401,120 +401,6 @@ namespace VideoProcessor.Application.BackgroundTasks {
 
             // The ordering of integration events publishing is not neccessary
             transactionalEventsContext.ResetDefaultEventsGroudId();
-        }
-
-        private class ConcurrentProcessesMetricsUpdater : IAsyncDisposable {
-            private readonly VideoProcessingService _service;
-            private readonly Kubernetes? _kubernetesClient;
-
-            public ConcurrentProcessesMetricsUpdater (VideoProcessingService service) {
-                _service = service;
-                _kubernetesClient = service._services.GetService<Kubernetes>();
-            }
-
-            public async Task Execute () {
-                await UpdateMetricsAsync(true);
-            }
-
-            public async ValueTask DisposeAsync () {
-                await UpdateMetricsAsync(false);
-            }
-
-            private async Task UpdateMetricsAsync (bool start) {
-                lock (_service) {
-                    _service._concurrentProcesses += start ? 1 : -1;
-
-                    _service._concurrentVideoProcessingTasksGauge
-                        .Set(_service._concurrentProcesses);
-
-                    _service._concurrentVideoProcessingTasksPercentageGauge
-                        .Set(100f * _service._concurrentProcesses / _service._config.MaxConcurrentProcessingLimit);
-                }
-
-                if (_kubernetesClient != null) {
-                    try {
-
-                        var podName = Environment.GetEnvironmentVariable("POD_NAME");
-                        var podNamespace = Environment.GetEnvironmentVariable("POD_NAMESPACE");
-
-                        _service._logger.LogInformation("Updating pod-deletion-cost annotation for {podName}.{podNamespace}", podName, podNamespace);
-
-                        var pod = await _kubernetesClient.ReadNamespacedPodAsync(podName, podNamespace);
-
-                        if (pod == null) {
-                            throw new Exception($"Failed to read namespaced pod for {podName}.{podNamespace}");
-                        }
-
-                        if (pod.Metadata.Annotations == null) pod.Metadata.Annotations = new Dictionary<string, string>();
-                        pod.Metadata.Annotations["controller.kubernetes.io/pod-deletion-cost"] = _service._concurrentProcesses.ToString();
-
-                        await _kubernetesClient.ReplaceNamespacedPodAsync(pod, podName, podNamespace);
-
-                        _service._logger.LogInformation("pod-deletion-cost annotation updated");
-                    } catch (Exception ex) {
-                        _service._logger.LogError(ex, "Failed to update pod-deletion-cost annotation");
-                    }
-                }
-            }
-        }
-
-        private class VideoProcessingLock : IAsyncDisposable {
-
-            private readonly Task _task;
-            private readonly CancellationTokenSource _videoProcessingCts;
-            private readonly CancellationTokenSource _completeCts;
-
-            public VideoProcessingLock (IServiceProvider services, Guid videoId, CancellationTokenSource videoProcessingCts, CancellationToken stoppingToken) {
-                _videoProcessingCts = videoProcessingCts;
-                _completeCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
-                _task = LockVideo(services, videoId, _completeCts.Token);
-            }
-
-            public async ValueTask DisposeAsync () {
-                _completeCts.Cancel();
-                _completeCts.Dispose();
-
-                try {
-                    await _task;
-                } catch (OperationCanceledException) { }
-            }
-
-            private async Task LockVideo (IServiceProvider services, Guid videoId, CancellationToken stoppingToken) {
-                using var scope = services.CreateScope();
-                var scopedServices = scope.ServiceProvider;
-
-                var repository = scopedServices.GetRequiredService<IVideoRepository>();
-                var unitOfWork = scopedServices.GetRequiredService<IUnitOfWork>();
-                var config = scopedServices.GetRequiredService<IOptions<VideoProcessorConfiguration>>().Value;
-                var logger = scopedServices.GetRequiredService<ILogger<VideoProcessingLock>>();
-
-                var video = await repository.GetVideoByIdAsync(videoId, stoppingToken);
-
-                if (video == null) {
-                    logger.LogError("Video ({VideoId}) not found", videoId);
-                    _videoProcessingCts.Cancel();
-                    return;
-                }
-
-                while (!stoppingToken.IsCancellationRequested) {
-                    try {
-                        video.PostponeAvailableDate(TimeSpan.FromSeconds(config.ProcessingLockDurationSeconds));
-                        await unitOfWork.CommitAsync(stoppingToken);
-                    } catch (Exception ex) {
-                        logger.LogError(ex, "Failed to postpone video ({VideoId}) processing available date. Cancelling the processing.", videoId);
-                        _videoProcessingCts.Cancel();
-                        return;
-                    }
-
-                    await Task.Delay(
-                        (int)Math.Ceiling(config.ProcessingLockDurationSeconds * 1000 * 0.5f),
-                        stoppingToken);
-                }
-            }
-
-        }
-
-        private class ConflictException : Exception {
         }
 
     }

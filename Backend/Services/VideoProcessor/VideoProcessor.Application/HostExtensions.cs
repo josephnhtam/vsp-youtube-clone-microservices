@@ -20,7 +20,6 @@ using Infrastructure.TransactionalEvents.Processing.Extensions;
 using k8s;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -40,6 +39,7 @@ using VideoProcessor.Application.BackgroundTasks.Processors.VideoPreviewThumbnai
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoThumbnailGenerators;
 using VideoProcessor.Application.Configurations;
 using VideoProcessor.Application.Infrastructure;
+using VideoProcessor.Application.Services;
 using VideoProcessor.Application.Utilities;
 using VideoProcessor.Domain.Contracts;
 using VideoProcessor.Infrastructure;
@@ -296,10 +296,16 @@ namespace VideoProcessor.Application {
                 var podNamespace = Environment.GetEnvironmentVariable("POD_NAMESPACE");
 
                 if (!string.IsNullOrEmpty(podName) && !string.IsNullOrEmpty(podNamespace)) {
-                    var config = KubernetesClientConfiguration.InClusterConfig();
-                    var client = new Kubernetes(config);
+                    builder.Services.Configure<KubernetesPodConfiguration>(options => {
+                        options.PodName = podName;
+                        options.PodNamespace = podNamespace;
+                    });
 
-                    builder.Services.AddSingleton(client);
+                    builder.Services.AddSingleton(
+                        _ => new Kubernetes(KubernetesClientConfiguration.InClusterConfig())
+                    );
+
+                    builder.Services.AddSingleton<IKubernetesPodUpdater, KubernetesPodUpdater>();
                 }
             }
 
