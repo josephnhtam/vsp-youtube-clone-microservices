@@ -17,3 +17,10 @@ output "aks_log_analytics_workspace" {
 output "aks_cluster" {
   value = module.aks_cluster.aks_cluster
 }
+
+output "virtual_network" {
+  value = {
+    id   = azurerm_virtual_network.vnet.id
+    name = azurerm_virtual_network.vnet.name
+  }
+}
