@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: storage-api-load-balancer
+  labels:
+        app: storage-api
 spec:
   selector:
     app: storage-api

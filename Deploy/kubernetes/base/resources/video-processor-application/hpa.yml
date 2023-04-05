@@ -2,6 +2,8 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: video-processor-application-hpa
+  labels:
+        app: video-processor-application
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

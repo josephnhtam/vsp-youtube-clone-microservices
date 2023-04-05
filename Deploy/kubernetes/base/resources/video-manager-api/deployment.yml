@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: video-manager-api
+  labels:
+        app: video-manager-api
 spec:
   selector:
     matchLabels:

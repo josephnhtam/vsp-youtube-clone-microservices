@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: video-processor-application
+  labels:
+        app: video-processor-application
 spec:
   selector:
     matchLabels:

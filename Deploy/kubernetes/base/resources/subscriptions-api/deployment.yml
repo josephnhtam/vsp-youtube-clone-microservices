@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: subscriptions-api
+  labels:
+        app: subscriptions-api
 spec:
   selector:
     matchLabels:

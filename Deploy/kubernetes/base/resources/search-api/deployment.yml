@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: search-api
+  labels:
+        app: search-api
 spec:
   selector:
     matchLabels:

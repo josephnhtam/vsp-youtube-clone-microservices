@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: video-store-api
+  labels:
+        app: video-store-api
 spec:
   selector:
     app: video-store-api

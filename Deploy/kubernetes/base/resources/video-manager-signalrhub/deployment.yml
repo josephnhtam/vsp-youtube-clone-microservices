@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: video-manager-signalrhub
+  labels:
+        app: video-manager-signalrhub
 spec:
   selector:
     matchLabels:
