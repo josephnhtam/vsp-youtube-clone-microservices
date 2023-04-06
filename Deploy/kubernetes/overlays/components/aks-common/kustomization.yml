@@ -3,3 +3,5 @@ kind: Component
 
 patchesStrategicMerge:
   - "./patches/video-processor-application/deployment.yml"
+  - "./patches/persistence/storage-class.yml"
+  - "./patches/storage-api/storage-class.yml"

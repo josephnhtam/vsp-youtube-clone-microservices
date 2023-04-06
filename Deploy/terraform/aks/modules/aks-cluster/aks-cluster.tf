@@ -57,6 +57,11 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
 
   provisioner "local-exec" {
     when    = create
-    command = "az aks enable-addons --resource-group ${var.rg} --name ${var.name} --addons virtual-node --subnet-name ${azurerm_subnet.virtual_node_pool_subnet.name}"
+    command = "az aks enable-addons -n ${var.name} -g ${var.rg} --addons virtual-node --subnet-name ${azurerm_subnet.virtual_node_pool_subnet.name}"
+  }
+
+  provisioner "local-exec" {
+    when    = create
+    command = "az aks create --enable-blob-driver -n ${var.name} -g ${var.rg}"
   }
 }

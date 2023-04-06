@@ -40,8 +40,8 @@ resources:
   - "./resources/storage-api/config-map.yml"
   - "./resources/storage-api/deployment.yml"
   - "./resources/storage-api/secret.yml"
-  - "./resources/storage-api/storage-class.yml"
   - "./resources/storage-api/persistent-volume-claim.yml"
+  - "./resources/storage-api/storage-class.yml"
 
   - "./resources/subscriptions-api/clusterip-service.yml"
   - "./resources/subscriptions-api/config-map.yml"

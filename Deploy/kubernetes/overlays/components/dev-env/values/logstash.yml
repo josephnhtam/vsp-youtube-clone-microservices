@@ -1,6 +1,8 @@
 image:
   tag: 8.6.2-debian-11-r3
   
+global:
+  storageClass: persistence-sc
 existingConfiguration: logstash-config
 resources:
   requests:

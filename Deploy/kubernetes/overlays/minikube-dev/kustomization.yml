@@ -11,7 +11,7 @@ components:
   - "../components/dev-env"
 
 patchesStrategicMerge:
-  - "./patches/storage-api/storage-class.yml"
+  - "./patches/persistence/storage-class.yml"
   - "./patches/api-gateway/deployment.yml"
   - "./patches/community-api/deployment.yml"
   - "./patches/history-api/deployment.yml"
@@ -19,6 +19,8 @@ patchesStrategicMerge:
   - "./patches/library-api/deployment.yml"
   - "./patches/search-api/deployment.yml"
   - "./patches/storage-api/deployment.yml"
+  - "./patches/storage-api/storage-class.yml"
+  - "./patches/storage-api/persistent-volume-claim.yml"
   - "./patches/subscriptions-api/deployment.yml"
   - "./patches/users-api/deployment.yml"
   - "./patches/video-manager-api/deployment.yml"
