@@ -5,6 +5,7 @@ resources:
   - "./resources/common/limit-range.yml"
   - "./resources/common/config-map.yml"
   - "./resources/common/pod-updater-role.yml"
+  - "./resources/persistence/storage-class.yml"
 
   - "./resources/api-gateway/clusterip-service.yml"
   - "./resources/api-gateway/config-map.yml"
