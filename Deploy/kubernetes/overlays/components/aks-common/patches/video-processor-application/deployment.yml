@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processor-application
+  labels:
+        app: video-processor-application
+spec:
+  selector:
+    matchLabels:
+      app: video-processor-application
+  template:
+    metadata:
+      labels:
+        app: video-processor-application
+    spec:
+      serviceAccountName: video-processor-application-service-account
+      terminationGracePeriodSeconds: 3660
+      nodeSelector:
+        kubernetes.io/role: agent
+        kubernetes.io/os: linux
+        type: virtual-kubelet
+      tolerations:
+      - key: virtual-kubelet.io/provider
+        operator: Exists
+      - key: azure.com/aci
+        effect: NoSchedule
