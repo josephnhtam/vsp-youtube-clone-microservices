@@ -1,7 +1,7 @@
 resource "azurerm_kubernetes_cluster_node_pool" "node_pools" {
   for_each = local.node_pools_map
 
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks_cluster.id
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.kubernetes_cluster.id
   name                  = each.key
   mode                  = each.value.mode
   zones                 = each.value.zones
