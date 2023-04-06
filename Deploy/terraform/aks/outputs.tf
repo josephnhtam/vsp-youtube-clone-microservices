@@ -37,6 +37,7 @@ output "aks_kubernetes_cluster" {
 
 output "acr" {
   value = {
-    name = azurerm_container_registry.acr.name
+    name         = azurerm_container_registry.acr.name
+    login_server = azurerm_container_registry.acr.login_server
   }
 }
