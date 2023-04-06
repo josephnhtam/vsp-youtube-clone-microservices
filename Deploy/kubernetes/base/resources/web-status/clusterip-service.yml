@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: web-status
   labels:
-        app: web-status
+    app: web-status
 spec:
   selector:
     app: web-status

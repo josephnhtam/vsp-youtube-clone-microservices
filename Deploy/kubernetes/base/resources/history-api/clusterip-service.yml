@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: history-api
   labels:
-        app: history-api
+    app: history-api
 spec:
   selector:
     app: history-api

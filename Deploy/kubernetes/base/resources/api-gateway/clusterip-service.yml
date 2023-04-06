@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: api-gateway
   labels:
-        app: api-gateway
+    app: api-gateway
 spec:
   selector:
     app: api-gateway

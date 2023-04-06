@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: library-api
   labels:
-        app: library-api
+    app: library-api
 spec:
   selector:
     app: library-api

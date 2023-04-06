@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: video-manager-signalrhub
   labels:
-        app: video-manager-signalrhub
+    app: video-manager-signalrhub
 spec:
   selector:
     app: video-manager-signalrhub

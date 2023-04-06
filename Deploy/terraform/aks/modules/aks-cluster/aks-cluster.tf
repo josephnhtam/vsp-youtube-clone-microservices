@@ -62,6 +62,6 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
 
   provisioner "local-exec" {
     when    = create
-    command = "az aks update --enable-blob-driver -n ${var.name} -g ${var.rg}"
+    command = "az aks update --enable-blob-driver -n ${var.name} -g ${var.rg} --y"
   }
 }

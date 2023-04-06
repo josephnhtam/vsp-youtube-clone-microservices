@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: video-processor-application
   labels:
-        app: video-processor-application
+    app: video-processor-application
 spec:
   selector:
     app: video-processor-application
