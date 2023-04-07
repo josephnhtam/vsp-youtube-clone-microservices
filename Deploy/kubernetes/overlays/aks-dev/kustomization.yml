@@ -3,14 +3,10 @@ kind: Kustomization
 
 resources:
   - "../../base"
-  - "./resources/namespace/ingress-namespace.yml"
 
 components:
   - "../components/dev-env"
   - "../components/aks-common"
-
-generators:
-  - "./generators/ingress-nginx.yml"
 
 patchesStrategicMerge:
   - "./patches/persistence/storage-class.yml"
