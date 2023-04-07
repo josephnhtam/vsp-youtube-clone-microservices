@@ -3,16 +3,16 @@ kind: ConfigMap
 metadata:
   name: common-config
 data:
-  ASPNETCORE_ENVIRONMENT: Production
-  ASPNETCORE_URLS: http://+:80
-  Urls__Community: http://community-api
-  Urls__History: http://history-api
-  Urls__Library: http://library-api
-  Urls__Search: http://search-api
-  Urls__Subscriptions: http://subscriptions-api
-  Urls__Users: http://users-api
-  Urls__VideoManager: http://video-manager-api
-  Urls__VideoManagerSignalR: http://video-manager-signalrhub
-  Urls__VideoStore: http://video-store-api
-  Urls__IdentityProvider: http://identity-provider
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ASPNETCORE_URLS: "http://+:80"
+  Urls__Community: "http://community-api"
+  Urls__History: "http://history-api"
+  Urls__Library: "http://library-api"
+  Urls__Search: "http://search-api"
+  Urls__Subscriptions: "http://subscriptions-api"
+  Urls__Users: "http://users-api"
+  Urls__VideoManager: "http://video-manager-api"
+  Urls__VideoManagerSignalR: "http://video-manager-signalrhub"
+  Urls__VideoStore: "http://video-store-api"
+  Urls__IdentityProvider: "http://identity-provider"
   StorageConfiguration__BaseUri: ""
