@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: storage-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 1g
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "storage.vspsample.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: storage-api
+            port:
+              number: 80
