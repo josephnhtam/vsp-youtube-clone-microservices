@@ -3,9 +3,9 @@ kind: Kustomization
 
 resources:
   - "../aks-dev"
-  - "./resources/namespace/ingress-namespace.yml"
   - "./resources/ingress/ingress.yml"
   - "./resources/ingress/storage-ingress.yml"
+  - "./resources/cluster-issuer/lets-encrypt.yml"
 
 images:
   - name: api-gateway

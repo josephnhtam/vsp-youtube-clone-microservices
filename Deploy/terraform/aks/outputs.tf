@@ -37,7 +37,14 @@ output "aks_kubernetes_cluster" {
 
 output "acr" {
   value = {
-    name         = azurerm_container_registry.acr.name
-    login_server = azurerm_container_registry.acr.login_server
+    name         = length(azurerm_container_registry.acr) > 0 ? azurerm_container_registry.acr.0.name : ""
+    login_server = length(azurerm_container_registry.acr) > 0 ? azurerm_container_registry.acr.0.login_server : ""
   }
+}
+
+output "static_public_ip" {
+  value = [for i in azurerm_public_ip.static_public_ip : {
+    name       = i.name
+    ip_address = i.ip_address
+  }]
 }

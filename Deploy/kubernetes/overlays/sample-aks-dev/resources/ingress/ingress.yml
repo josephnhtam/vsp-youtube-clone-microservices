@@ -15,7 +15,17 @@ spec:
             name: identity-provider
             port:
               number: 80
-  - host: "*.vspsample.com"
+  - host: "www.vspsample.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 80
+  - host: "vspsample.com"
     http:
       paths:
       - pathType: Prefix

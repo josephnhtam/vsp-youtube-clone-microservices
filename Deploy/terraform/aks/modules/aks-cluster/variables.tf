@@ -24,6 +24,18 @@ variable "kubernetes_version_prefix" {
   description = "A prefix filter for the versions of Kubernetes"
 }
 
+variable "sku_tier" {
+  type        = string
+  default     = "Free"
+  description = "The SKU Tier that should be used for this Kubernetes Cluster"
+}
+
+variable "load_balancer_sku" {
+  type        = string
+  default     = "Standard"
+  description = "Specifies the SKU of the Load Balancer used for this Kubernetes Cluster"
+}
+
 variable "ad_rbac_control" {
   type = object({
     enabled                = bool
@@ -102,4 +114,14 @@ variable "virtual_node_pool" {
     subnet_name           = string
     subnet_address_prefix = string
   })
+}
+
+variable "web_app_routing" {
+  type = object({
+    enabled     = bool
+    dns_zone_id = optional(string, null)
+  })
+  default = {
+    enabled = false
+  }
 }

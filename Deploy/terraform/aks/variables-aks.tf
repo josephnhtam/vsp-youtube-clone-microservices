@@ -1,20 +1,3 @@
-variable "name" {
-  type        = string
-  default     = "vsp"
-  description = "Deployment name"
-}
-
-variable "location" {
-  type        = string
-  default     = "East Asia"
-  description = "Location"
-}
-
-variable "vnet_address_space" {
-  type    = string
-  default = "10.0.0.0/8"
-}
-
 variable "kubernetes_version_prefix" {
   type        = string
   default     = "1.23"
@@ -26,7 +9,8 @@ variable "aks_log_analytics_workspace" {
     sku               = optional(string, "PerGB2018")
     retention_in_days = optional(number, 30)
   })
-  default = {}
+  default     = {}
+  description = "Configuration of the log analytics workspace for aks"
 }
 
 variable "aks_default_node_pool" {
@@ -44,16 +28,17 @@ variable "aks_default_node_pool" {
     subnet_name           = string
     subnet_address_prefix = string
   })
-
   default = {
     name                  = "defaultpool"
-    enable_auto_scaling   = false
-    node_count            = 1
+    enable_auto_scaling   = true
+    min_count             = 1
+    max_count             = 4
     os_disk_size_gb       = 30
-    vm_size               = "standard_e2pds_v5"
+    vm_size               = "standard_D2as_v4"
     subnet_name           = "default-nodes-subnet"
     subnet_address_prefix = "10.240.0.0/16"
   }
+  description = "Configuration of the default node pool for aks"
 }
 
 variable "aks_node_pools" {
@@ -78,8 +63,8 @@ variable "aks_node_pools" {
     subnet_name           = string
     subnet_address_prefix = string
   }))
-
-  default = []
+  default     = []
+  description = "Configuration of the node pools for aks"
 }
 
 variable "aks_virtual_node_pool" {
@@ -87,17 +72,17 @@ variable "aks_virtual_node_pool" {
     subnet_name           = string
     subnet_address_prefix = string
   })
-
   default = {
     subnet_name           = "virtual-nodes-subnet"
     subnet_address_prefix = "10.241.0.0/16"
   }
+  description = "Configuration of the virtual node pool for aks"
 }
 
 variable "aks_ssh_public_key_path" {
   type        = string
   default     = "./ssh-key/ssh-key.pub"
-  description = "Path of the SSH public key"
+  description = "Path of the SSH public key for aks linux node"
 }
 
 variable "aks_ad_rbac_control" {
@@ -109,20 +94,23 @@ variable "aks_ad_rbac_control" {
   default = {
     enabled = false
   }
+  description = "Configuration for aks rbac control"
 }
 
-variable "acr" {
-  type = object({
-    name               = string
-    sku                = optional(string, "Basic")
-    admin_enabled      = optional(bool, true)
-    create_pull_secret = optional(bool, false)
-    pull_secret_name   = optional(string, "docker-config")
-  })
-  default = {
-    enabled            = true
-    name               = "myvspacr"
-    admin_enabled      = true
-    create_pull_secret = false
-  }
+variable "aks_sku_tier" {
+  type        = string
+  default     = "Free"
+  description = "The SKU Tier that should be used for this Kubernetes Cluster"
+}
+
+variable "aks_load_balancer_sku" {
+  type        = string
+  default     = "Standard"
+  description = "Specifies the SKU of the Load Balancer used for this Kubernetes Cluster"
+}
+
+variable "aks_use_web_app_routing" {
+  type        = bool
+  default     = false
+  description = "Use aks web application routing"
 }

@@ -11,6 +11,13 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.workspace.id
   }
 
+  dynamic "web_app_routing" {
+    for_each = var.web_app_routing.enabled != null ? toset(["enabled"]) : toset([])
+    content {
+      dns_zone_id = var.web_app_routing.dns_zone_id
+    }
+  }
+
   dynamic "azure_active_directory_role_based_access_control" {
     for_each = var.ad_rbac_control.enabled ? toset(["enabled"]) : toset([])
     content {
@@ -25,9 +32,9 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
     vnet_subnet_id      = azurerm_subnet.default_node_pool_subnet.id
     vm_size             = var.default_node_pool.vm_size
     enable_auto_scaling = var.default_node_pool.enable_auto_scaling
-    node_count          = var.default_node_pool.node_count
-    min_count           = var.default_node_pool.min_count
-    max_count           = var.default_node_pool.max_count
+    node_count          = !var.default_node_pool.enable_auto_scaling ? var.default_node_pool.node_count : null
+    min_count           = var.default_node_pool.enable_auto_scaling ? var.default_node_pool.min_count : null
+    max_count           = var.default_node_pool.enable_auto_scaling ? var.default_node_pool.max_count : null
     os_disk_size_gb     = var.default_node_pool.os_disk_size_gb
     zones               = var.default_node_pool.zones
     node_labels         = var.default_node_pool.node_labels
@@ -55,13 +62,13 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   #   subnet_name = azurerm_subnet.virtual_node_pool_subnet.name
   # }
 
-  provisioner "local-exec" {
-    when    = create
-    command = "az aks enable-addons -n ${var.name} -g ${var.rg} --addons virtual-node --subnet-name ${azurerm_subnet.virtual_node_pool_subnet.name}"
-  }
+  # provisioner "local-exec" {
+  #   when    = create
+  #   command = "az aks enable-addons -n ${var.name} -g ${var.rg} --addons virtual-node --subnet-name ${azurerm_subnet.virtual_node_pool_subnet.name}"
+  # }
 
-  provisioner "local-exec" {
-    when    = create
-    command = "az aks update --enable-blob-driver -n ${var.name} -g ${var.rg} --y"
-  }
+  # provisioner "local-exec" {
+  #   when    = create
+  #   command = "az aks update --enable-blob-driver -n ${var.name} -g ${var.rg} --y"
+  # }
 }

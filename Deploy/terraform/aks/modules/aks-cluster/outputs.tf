@@ -17,3 +17,7 @@ output "log_analytics_workspace" {
 output "kubernetes_cluster" {
   value = azurerm_kubernetes_cluster.kubernetes_cluster
 }
+
+output "node_resource_group_name" {
+  value = local.node_resource_group
+}
