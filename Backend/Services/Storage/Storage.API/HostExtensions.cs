@@ -65,8 +65,6 @@ namespace Storage {
 
             builder.AddLocalStorageRepository();
 
-            builder.ConfigureForwardedHeaders();
-
             builder.AddAuthentication()
                    .AddAuthorization()
                    .AddCors();
@@ -79,8 +77,6 @@ namespace Storage {
         }
 
         public static void ConfigurePipeline (this WebApplication app) {
-            app.UseForwardedHeaders();
-
             if (app.Environment.IsDevelopment()) {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -104,18 +100,6 @@ namespace Storage {
             });
 
             app.MapControllers();
-        }
-
-        private static WebApplicationBuilder ConfigureForwardedHeaders (this WebApplicationBuilder builder) {
-            builder.Services.Configure<ForwardedHeadersOptions>(options => {
-                options.ForwardedHeaders =
-                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
-
-            return builder;
         }
 
         private static void RegisterExceptionIdentifiers () {
