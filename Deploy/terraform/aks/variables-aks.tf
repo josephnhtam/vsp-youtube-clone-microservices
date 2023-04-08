@@ -29,12 +29,12 @@ variable "aks_default_node_pool" {
     subnet_address_prefix = string
   })
   default = {
-    name                  = "defaultpool"
+    name                  = "default"
     enable_auto_scaling   = true
-    min_count             = 1
-    max_count             = 4
+    min_count             = 4
+    max_count             = 5
     os_disk_size_gb       = 30
-    vm_size               = "standard_D2as_v4"
+    vm_size               = "standard_DS2_v2"
     subnet_name           = "default-nodes-subnet"
     subnet_address_prefix = "10.240.0.0/16"
   }
@@ -67,17 +67,17 @@ variable "aks_node_pools" {
   description = "Configuration of the node pools for aks"
 }
 
-variable "aks_virtual_node_pool" {
-  type = object({
-    subnet_name           = string
-    subnet_address_prefix = string
-  })
-  default = {
-    subnet_name           = "virtual-nodes-subnet"
-    subnet_address_prefix = "10.241.0.0/16"
-  }
-  description = "Configuration of the virtual node pool for aks"
-}
+# variable "aks_virtual_node_pool" {
+#   type = object({
+#     subnet_name           = string
+#     subnet_address_prefix = string
+#   })
+#   default = {
+#     subnet_name           = "virtual-nodes-subnet"
+#     subnet_address_prefix = "10.241.0.0/16"
+#   }
+#   description = "Configuration of the virtual node pool for aks"
+# }
 
 variable "aks_ssh_public_key_path" {
   type        = string

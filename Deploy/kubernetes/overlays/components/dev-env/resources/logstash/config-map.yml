@@ -16,7 +16,4 @@ data:
         hosts => "elasticsearch:9200"
         index => "vsp-logs-%{+YYYY.MM.dd}"
       }
-      stdout {
-        codec => rubydebug
-      }
     }

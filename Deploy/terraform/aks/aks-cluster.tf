@@ -9,12 +9,12 @@ module "aks_cluster" {
   kubernetes_version_prefix = var.kubernetes_version_prefix
   default_node_pool         = var.aks_default_node_pool
   node_pools                = var.aks_node_pools
-  virtual_node_pool         = var.aks_virtual_node_pool
-  ssh_public_key_path       = var.aks_ssh_public_key_path
-  ad_rbac_control           = var.aks_ad_rbac_control
-  log_analytics_workspace   = var.aks_log_analytics_workspace
-  sku_tier                  = var.aks_sku_tier
-  load_balancer_sku         = var.aks_load_balancer_sku
+  # virtual_node_pool         = var.aks_virtual_node_pool
+  ssh_public_key_path     = var.aks_ssh_public_key_path
+  ad_rbac_control         = var.aks_ad_rbac_control
+  log_analytics_workspace = var.aks_log_analytics_workspace
+  sku_tier                = var.aks_sku_tier
+  load_balancer_sku       = var.aks_load_balancer_sku
 
   web_app_routing = {
     enabled     = var.aks_use_web_app_routing

@@ -22,7 +22,7 @@ resource "helm_release" "external_dns" {
 
   set {
     name  = "azure.resourceGroup"
-    value = azurerm_resource_group.rg.id
+    value = azurerm_resource_group.rg.name
   }
 
   set {

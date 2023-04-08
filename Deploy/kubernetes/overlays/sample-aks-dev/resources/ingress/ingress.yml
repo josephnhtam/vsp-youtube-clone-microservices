@@ -2,10 +2,31 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 1000M
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-expose-headers: "*"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection keep-alive;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_cache_bypass $http_upgrade;
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - "auth.vspsample.online"
+    - "api.vspsample.online"
+    - "storage.vspsample.online"
+    secretName: tls-secret
   rules:
-  - host: "auth.vspsample.com"
+  - host: "auth.vspsample.online"
     http:
       paths:
       - pathType: Prefix
@@ -15,17 +36,17 @@ spec:
             name: identity-provider
             port:
               number: 80
-  - host: "www.vspsample.com"
+  - host: "storage.vspsample.online"
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: api-gateway
+            name: storage-api
             port:
               number: 80
-  - host: "vspsample.com"
+  - host: "api.vspsample.online"
     http:
       paths:
       - pathType: Prefix

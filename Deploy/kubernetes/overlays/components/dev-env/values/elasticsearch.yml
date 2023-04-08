@@ -13,11 +13,11 @@ master:
     memory: "512Mi"
   limits:
     cpu: "500m"
-    memory: "2Gi"
+    memory: "1Gi"
 data:
   replicaCount: 0
 coordinating:
   replicaCount: 0
 ingest:
   enabled: false
-heapSize: 1024m
+heapSize: 512m

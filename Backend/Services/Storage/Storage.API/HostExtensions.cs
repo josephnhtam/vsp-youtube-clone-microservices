@@ -18,6 +18,7 @@ using Infrastructure.TransactionalEvents.Handlers;
 using Infrastructure.TransactionalEvents.Processing.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -64,6 +65,8 @@ namespace Storage {
 
             builder.AddLocalStorageRepository();
 
+            builder.ConfigureForwardedHeaders();
+
             builder.AddAuthentication()
                    .AddAuthorization()
                    .AddCors();
@@ -76,6 +79,8 @@ namespace Storage {
         }
 
         public static void ConfigurePipeline (this WebApplication app) {
+            app.UseForwardedHeaders();
+
             if (app.Environment.IsDevelopment()) {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -99,6 +104,18 @@ namespace Storage {
             });
 
             app.MapControllers();
+        }
+
+        private static WebApplicationBuilder ConfigureForwardedHeaders (this WebApplicationBuilder builder) {
+            builder.Services.Configure<ForwardedHeadersOptions>(options => {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
+            return builder;
         }
 
         private static void RegisterExceptionIdentifiers () {

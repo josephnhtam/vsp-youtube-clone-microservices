@@ -1,11 +1,11 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt
+  name: lets-encrypt
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: vsp@vspsample.com
+    email: vsp@vspsample.online
     privateKeySecretRef:
       name: letsencrypt
     solvers:

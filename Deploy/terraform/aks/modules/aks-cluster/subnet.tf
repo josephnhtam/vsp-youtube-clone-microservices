@@ -14,18 +14,18 @@ resource "azurerm_subnet" "node_pool_subnets" {
   address_prefixes     = [each.value.subnet_address_prefix]
 }
 
-resource "azurerm_subnet" "virtual_node_pool_subnet" {
-  resource_group_name  = var.rg
-  virtual_network_name = var.virtual_network
-  name                 = var.virtual_node_pool.subnet_name
-  address_prefixes     = [var.virtual_node_pool.subnet_address_prefix]
+# resource "azurerm_subnet" "virtual_node_pool_subnet" {
+#   resource_group_name  = var.rg
+#   virtual_network_name = var.virtual_network
+#   name                 = var.virtual_node_pool.subnet_name
+#   address_prefixes     = [var.virtual_node_pool.subnet_address_prefix]
 
-  delegation {
-    name = "aci-delegation"
+#   delegation {
+#     name = "aci-delegation"
 
-    service_delegation {
-      name    = "Microsoft.ContainerInstance/containerGroups"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
+#     service_delegation {
+#       name    = "Microsoft.ContainerInstance/containerGroups"
+#       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+#     }
+#   }
+# }

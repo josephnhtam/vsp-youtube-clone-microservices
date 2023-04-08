@@ -14,3 +14,5 @@ resources:
 extraEnvVars:
   - name: ES_JAVA_OPTS
     value: -Xmx512M
+  - name: LS_JAVA_OPTS
+    value: -Xmx512M

@@ -109,12 +109,12 @@ variable "node_pools" {
   }))
 }
 
-variable "virtual_node_pool" {
-  type = object({
-    subnet_name           = string
-    subnet_address_prefix = string
-  })
-}
+# variable "virtual_node_pool" {
+#   type = object({
+#     subnet_name           = string
+#     subnet_address_prefix = string
+#   })
+# }
 
 variable "web_app_routing" {
   type = object({

@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - "../aks-dev"
   - "./resources/ingress/ingress.yml"
-  - "./resources/ingress/storage-ingress.yml"
   - "./resources/cluster-issuer/lets-encrypt.yml"
 
 images:
@@ -50,15 +49,16 @@ images:
   - name: web-status
     newName: vspsample.azurecr.io/web-status
     newTag: "1"
-
-generators:
-  - "./generators/ingress-nginx.yml"
-
+    
 configMapGenerator:
   - name: common-config
     behavior: merge
     envs:
       - "./configs/common.env"
+  - name: identity-provider-config
+    behavior: merge
+    envs:
+      - "./configs/identity-provider.env"
     
 patches:
   - target:

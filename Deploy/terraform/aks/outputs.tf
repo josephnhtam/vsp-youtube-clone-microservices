@@ -10,11 +10,11 @@ output "aks_default_node_pool_subnet" {
   }
 }
 
-output "aks_virtual_node_pool_subnet" {
-  value = {
-    name = module.aks_cluster.virtual_node_pool_subnet.name
-  }
-}
+# output "aks_virtual_node_pool_subnet" {
+#   value = {
+#     name = module.aks_cluster.virtual_node_pool_subnet.name
+#   }
+# }
 
 output "aks_node_pool_subnets" {
   value = [for s in module.aks_cluster.node_pool_subnets : {

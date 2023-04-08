@@ -12,7 +12,7 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   }
 
   dynamic "web_app_routing" {
-    for_each = var.web_app_routing.enabled != null ? toset(["enabled"]) : toset([])
+    for_each = var.web_app_routing.enabled ? toset(["enabled"]) : toset([])
     content {
       dns_zone_id = var.web_app_routing.dns_zone_id
     }
@@ -67,8 +67,8 @@ resource "azurerm_kubernetes_cluster" "kubernetes_cluster" {
   #   command = "az aks enable-addons -n ${var.name} -g ${var.rg} --addons virtual-node --subnet-name ${azurerm_subnet.virtual_node_pool_subnet.name}"
   # }
 
-  # provisioner "local-exec" {
-  #   when    = create
-  #   command = "az aks update --enable-blob-driver -n ${var.name} -g ${var.rg} --y"
-  # }
+  provisioner "local-exec" {
+    when    = create
+    command = "az aks update --enable-blob-driver -n ${var.name} -g ${var.rg} --y"
+  }
 }

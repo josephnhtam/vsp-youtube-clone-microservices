@@ -1,6 +1,6 @@
 $tag = "1"
-
-$registry = "vspsample.azurecr.io"
+$name = "vspsample"
+$registry = "${name}.azurecr.io"
 
 $images = @(
   "api-gateway",

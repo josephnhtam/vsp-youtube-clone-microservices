@@ -2,9 +2,9 @@ output "default_node_pool_subnet" {
   value = azurerm_subnet.default_node_pool_subnet
 }
 
-output "virtual_node_pool_subnet" {
-  value = azurerm_subnet.virtual_node_pool_subnet
-}
+# output "virtual_node_pool_subnet" {
+#   value = azurerm_subnet.virtual_node_pool_subnet
+# }
 
 output "node_pool_subnets" {
   value = [for s in azurerm_subnet.node_pool_subnets : s]

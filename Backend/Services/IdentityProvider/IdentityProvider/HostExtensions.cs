@@ -4,6 +4,8 @@ using Duende.IdentityServer;
 using HealthChecks.UI.Client;
 using IdentityProvider.Configurations;
 using Infrastructure.EFCore.Exceptions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Resources;
@@ -33,6 +35,8 @@ namespace IdentityProvider {
                    .AddSerilog()
                    .AddHealthChecks();
 
+            builder.ConfigureForwardedHeaders();
+
             builder.AddCors()
                    .ConfigureCookiesPolicy();
 
@@ -44,6 +48,8 @@ namespace IdentityProvider {
         }
 
         public static void ConfigurePipeline (this WebApplication app) {
+            app.UseForwardedHeaders();
+
             if (app.Environment.IsDevelopment()) {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -69,6 +75,18 @@ namespace IdentityProvider {
             app.MapRazorPages();
 
             app.MapControllers();
+        }
+
+        private static WebApplicationBuilder ConfigureForwardedHeaders (this WebApplicationBuilder builder) {
+            builder.Services.Configure<ForwardedHeadersOptions>(options => {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
+            return builder;
         }
 
         private static WebApplicationBuilder AddAuthorization (this WebApplicationBuilder builder) {
