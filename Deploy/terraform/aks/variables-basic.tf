@@ -1,6 +1,6 @@
 variable "name" {
   type        = string
-  default     = "vsp"
+  default     = "vspsample"
   description = "Deployment name"
 }
 
@@ -18,6 +18,7 @@ variable "vnet_address_space" {
 variable "dns_zone_name" {
   type        = string
   description = "DNS zone name"
+  default     = "vspsample.online"
 }
 
 variable "static_public_ip" {
