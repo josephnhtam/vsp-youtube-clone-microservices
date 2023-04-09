@@ -57,7 +57,7 @@
     margin-right: 45px;
     right: 0;
     width: 400px;
-    height: calc(100vh - var(--toolbar-height));
+    height: calc(100dvh - var(--toolbar-height));
     overflow-y: auto;
   }
 }

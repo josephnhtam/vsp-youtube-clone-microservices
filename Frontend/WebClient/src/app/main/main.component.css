@@ -15,7 +15,7 @@
 
 .body {
   background-color: var(--bg-1-color);
-  min-height: calc(100vh - var(--toolbar-height));
+  min-height: calc(100dvh - var(--toolbar-height));
 }
 
 .sidebar {
@@ -62,7 +62,7 @@
   margin-top: var(--toolbar-height);
   margin-left: var(--sidebar-width);
   position: relative;
-  height: calc(100vh - var(--toolbar-height));
+  height: calc(100dvh - var(--toolbar-height));
   overflow: hidden;
 }
 
