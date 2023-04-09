@@ -29,8 +29,9 @@ spec:
   tls:
   - hosts:
     - "auth.vspsample.online"
-    - "api.vspsample.online"
     - "storage.vspsample.online"
+    - "www.vspsample.online"
+    - "vspsample.online"
     secretName: tls-secret
   rules:
   - host: "auth.vspsample.online"
@@ -53,13 +54,37 @@ spec:
             name: storage-api
             port:
               number: 80
-  - host: "api.vspsample.online"
+  - host: "www.vspsample.online"
     http:
       paths:
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 80
       - pathType: Prefix
         path: "/"
         backend:
           service:
+            name: vspclient
+            port:
+              number: 80
+  - host: "vspsample.online"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service:
             name: api-gateway
+            port:
+              number: 80
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: vspclient
             port:
               number: 80

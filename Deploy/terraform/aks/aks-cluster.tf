@@ -18,7 +18,7 @@ module "aks_cluster" {
 
   web_app_routing = {
     enabled     = var.aks_use_web_app_routing
-    dns_zone_id = azurerm_dns_zone.dns_zone.id
+    dns_zone_id = data.azurerm_dns_zone.dns_zone.id
   }
 }
 

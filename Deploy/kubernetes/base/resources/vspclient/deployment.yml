@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: vspclient
   labels:
-    app: api-gateway
+    app: vspclient
 spec:
   selector:
     matchLabels:
-      app: api-gateway
+      app: vspclient
   template:
     metadata:
       labels:
-        app: api-gateway
+        app: vspclient
     spec:
       containers:
-      - name: api-gateway
-        image: api-gateway
+      - name: vspclient
+        image: vspclient
         imagePullPolicy: Always
         resources:
           requests:
@@ -29,16 +29,9 @@ spec:
           containerPort: 80
         readinessProbe:
           httpGet:
-            path: /hc
+            path: /
             port: 80
           initialDelaySeconds: 30
           periodSeconds: 5
           failureThreshold: 10
           successThreshold: 1
-        envFrom:
-        - configMapRef:
-            name: common-config
-        - configMapRef:
-            name: api-gateway-config
-        - secretRef:
-            name: api-gateway-secret

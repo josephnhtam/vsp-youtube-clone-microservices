@@ -12,7 +12,7 @@ const authSetup: AuthSetup = {
 };
 
 const appSetup: AppSetup = {
-  apiUrl: 'https://api.vspsample.online',
+  apiUrl: '',
   storageUrl: 'https://storage.vspsample.online',
 };
 

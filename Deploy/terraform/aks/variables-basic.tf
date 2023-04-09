@@ -15,10 +15,18 @@ variable "vnet_address_space" {
   default = "10.0.0.0/8"
 }
 
-variable "dns_zone_name" {
-  type        = string
-  description = "DNS zone name"
-  default     = "vspsample.online"
+variable "dns_zone" {
+  type = object({
+    create              = bool
+    name                = string
+    resource_group_name = string
+  })
+  description = "DNS zone"
+  default = {
+    create              = true
+    name                = "vspsample.online"
+    resource_group_name = "vspsample-dns-zone-rg"
+  }
 }
 
 variable "static_public_ip" {

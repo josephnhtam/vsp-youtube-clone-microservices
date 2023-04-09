@@ -1,1 +1,1 @@
-docker stop vspclient
+docker stop vspclient-dev

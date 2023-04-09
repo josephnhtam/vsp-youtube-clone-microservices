@@ -2,6 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - "./resources/vspclient/clusterip-service.yml"
+  - "./resources/vspclient/deployment.yml"
+
   - "./resources/common/limit-range.yml"
   - "./resources/common/config-map.yml"
   - "./resources/common/pod-updater-role.yml"

@@ -16,11 +16,37 @@ $images = @(
   "video-manager-signalrhub",
   "video-processor-application",
   "video-store-api",
-  "web-status"
+  "web-status",
+  "vspclient"
 )
 
+$maxRetries = 3
+
 foreach ($image in $images) {
-  $tagged_image = "${registry}/${image}:${tag}"
-  docker tag $image $tagged_image
-  docker push $tagged_image
+    $tagged_image = "${registry}/${image}:${tag}"
+  
+    docker tag $image $tagged_image
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Failed to tag image $image"
+        break
+    }
+  
+    $retryCount = 0
+	$success = $true
+
+    do {
+        docker push $tagged_image
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to push image $tagged_image"
+            $retryCount++
+			$success = $false
+        } else {
+            Write-Host "Pushed image $tagged_image"
+        }
+    } while (!$success -and $retryCount -le $maxRetries)
+    
+    if (!$success) {
+        Write-Error "Maximum retry count exceeded for pushing image $tagged_image"
+        break
+    }
 }
