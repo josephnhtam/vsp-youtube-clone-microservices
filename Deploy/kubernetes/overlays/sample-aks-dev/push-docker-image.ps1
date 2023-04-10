@@ -42,6 +42,7 @@ foreach ($image in $images) {
 			$success = $false
         } else {
             Write-Host "Pushed image $tagged_image"
+			$success = $true
         }
     } while (!$success -and $retryCount -le $maxRetries)
     
