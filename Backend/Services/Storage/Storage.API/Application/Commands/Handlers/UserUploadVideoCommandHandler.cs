@@ -21,7 +21,12 @@ namespace Storage.API.Application.Commands.Handlers {
 
         public readonly static List<string> AllowedMimeTypes = new List<string> {
             "video/mp4",
+            "video/quicktime",
+            "video/x-quicktime",
+            "video/mpeg",
             "video/webm",
+            "video/3gpp",
+            "video/3gpp2",
             "video/x-flv",
             "video/x-matroska",
             "video/x-ms-wmv",

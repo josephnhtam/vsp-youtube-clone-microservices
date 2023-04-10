@@ -18,6 +18,7 @@ using Infrastructure.TransactionalEvents.Handlers;
 using Infrastructure.TransactionalEvents.Processing.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
@@ -285,9 +286,26 @@ namespace Storage {
                     RequestPath = localStorageConfig.RequestPath,
 
                     OnPrepareResponse = ctx => {
-                        ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-                        ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
-                            "Origin, X-Requested-With, Content-Type, Accept");
+                        var corsService = app.Services.GetRequiredService<ICorsService>();
+                        var corsPolicyProvider = app.Services.GetRequiredService<ICorsPolicyProvider>();
+
+                        if (corsService == null || corsPolicyProvider == null) return;
+
+                        var policy = corsPolicyProvider
+                            .GetPolicyAsync(ctx.Context, null)
+                            .ConfigureAwait(false)
+                            .GetAwaiter()
+                            .GetResult();
+
+                        if (policy == null) return;
+
+                        var corsResult = corsService.EvaluatePolicy(ctx.Context, policy);
+
+                        corsService.ApplyResult(corsResult, ctx.Context.Response);
+
+                        //ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                        //ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers",
+                        //    "Origin, X-Requested-With, Content-Type, Accept");
                     },
                 });
             }
