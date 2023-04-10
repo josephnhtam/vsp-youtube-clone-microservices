@@ -3,3 +3,16 @@ kind: Kustomization
 
 resources:
   - "../../base"
+
+images:
+  - name: vspclient
+    newName: VAR_CONTAINER_REGISTRY/vspclient
+    newTag: VAR_IMAGE_TAG
+
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ name: VAR_IMAGE_PULL_SECRET }]
