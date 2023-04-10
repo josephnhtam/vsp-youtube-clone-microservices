@@ -1,0 +1,78 @@
+apiVersion: v1
+data:
+  Cors__Origins__0: https://www.vspsample.online
+  Cors__Origins__1: https://vspsample.online
+  Cors__Origins__3: http://localhost:4200
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+---
+apiVersion: v1
+data:
+  JaegerExporterOptions__AgentHost: amFlZ2Vy
+  Logstash__Uri: aHR0cDovL2xvZ3N0YXNoOjgwODA=
+kind: Secret
+metadata:
+  name: api-gateway-secret
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-gateway
+  name: api-gateway
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: api-gateway
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-gateway
+  name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: common-config
+        - configMapRef:
+            name: api-gateway-config
+        - secretRef:
+            name: api-gateway-secret
+        image: $CONTAINER_REGISTRY/api-gateway:$IMAGE_TAG
+        imagePullPolicy: Always
+        name: api-gateway
+        ports:
+        - containerPort: 80
+          name: http
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /hc
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      imagePullSecrets:
+      - name: $IMAGE_PULL_SECRET

@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - "../../base"
+
+configMapGenerator:
+  - name: api-gateway-config
+    behavior: merge
+    envs:
+      - "./patches/config-map.env"
+
+secretGenerator:
+  - name: api-gateway-secret
+    behavior: merge
+    envs:
+      - "./patches/secret.env"
+
+images:
+  - name: api-gateway
+    newName: VAR_CONTAINER_REGISTRY/api-gateway
+    newTag: VAR_IMAGE_TAG
+
+patches:
+  - target:
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ name: VAR_IMAGE_PULL_SECRET }]

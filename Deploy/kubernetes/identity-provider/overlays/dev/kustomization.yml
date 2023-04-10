@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - "../../base"
+
+configMapGenerator:
+  - name: identity-provider-config
+    behavior: merge
+    envs:
+      - "./patches/config-map.env"
+
+secretGenerator:
+  - name: identity-provider-secret
+    behavior: merge
+    envs:
+      - "./patches/secret.env"

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: video-processor-application-config
+data:
+  StorageConfiguration__BaseUri: "http://storage-api"
+  Urls__ThumbnailUpload: "http://storage-api/api/v1/ImageStorage/Internal"
+  Urls__VideoUpload: "http://storage-api/api/v1/ImageStorage/Internal"
+  VideoProcessorConfiguration__MaxConcurrentProcessingLimit: "1"
+  VideoGeneratorConfiguration__FFmpegThreadsCount: "4"
+  VideoGeneratorConfiguration__UseHardwareAcceleration: "false"
+  GracefulTerminationConfiguration__ShutdownTimeoutInMinutes: "60"

@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - "../../base"
+  - "./resources/ingress/ingress.yml"
+  - "./resources/cluster-issuer/lets-encrypt.yml"
+
+components:
+  - "../../components/dev-env"
+
+patchesStrategicMerge:
+  - "./patches/storage-classes/persistence.yml"
+
+configMapGenerator:
+  - name: common-config
+    behavior: merge
+    envs:
+      - "./patches/config-maps/common.env"
