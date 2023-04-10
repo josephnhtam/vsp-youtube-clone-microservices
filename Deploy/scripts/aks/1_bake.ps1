@@ -16,7 +16,7 @@ if (Test-Path $tempFolderPath) {
 New-Item -ItemType Directory -Path $tempFolderPath
 
 # Generate Kubernetes manifests using kustomize and helm
-Get-ChildItem -Path "../../kubernetes" -Recurse -Filter "kustomization.yml" | Where-Object { $_.DirectoryName -like "*\${environment}" } | ForEach-Object {
+Get-ChildItem -Path "../../kubernetes" -Recurse -Filter "kustomization.yml" | Where-Object { $_.DirectoryName -like "*\overlays\${environment}" } | ForEach-Object {
   $outputName = (Resolve-Path $_.FullName -Relative).Replace("\", "-").Replace("/", "-").Replace("..-", "").Replace(".-", "")
   kubectl kustomize $_.DirectoryName --enable-helm -o "${tempFolderPath}/${outputName}"
   if ($LASTEXITCODE -ne 0) {

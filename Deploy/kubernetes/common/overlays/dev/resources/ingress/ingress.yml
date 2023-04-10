@@ -6,6 +6,9 @@ metadata:
     cert-manager.io/cluster-issuer: lets-encrypt
     nginx.ingress.kubernetes.io/proxy-body-size: 1024M
     nginx.ingress.kubernetes.io/use-regex: "true"
+    
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
 
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/affinity-mode: persistent
