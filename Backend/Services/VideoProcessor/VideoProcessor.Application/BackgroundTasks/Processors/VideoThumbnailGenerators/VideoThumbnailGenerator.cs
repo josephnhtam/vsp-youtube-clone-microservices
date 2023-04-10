@@ -37,9 +37,9 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoThumbnailGe
             var thumbnailPositions = _processorConfig.ThumbnailPositions.Select(
                 x => {
                     if (x.Seconds != null) {
-                        return Math.Min(x.Seconds.Value, videoInfo.LengthSeconds);
+                        return Math.Clamp(x.Seconds.Value, 0, videoInfo.LengthSeconds - 1);
                     } else {
-                        return (int)Math.Ceiling(videoInfo.LengthSeconds * (x.TimePercentage ?? 0f));
+                        return (int)Math.Ceiling(Math.Max(0, videoInfo.LengthSeconds - 1) * (x.TimePercentage ?? 0f));
                     }
                 });
 
