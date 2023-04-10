@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MultiplePlaylistsSection} from 'src/app/core/models/channel';
-import {EditMultiplePlaylistsDialogComponent} from './edit-multiple-playlists-dialog.component';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MultiplePlaylistsSection } from 'src/app/core/models/channel';
+import { EditMultiplePlaylistsDialogComponent } from './edit-multiple-playlists-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +19,10 @@ export class EditMultiplePlaylistsDialogService {
     }
 
     const dialogRef = this.dialog.open(EditMultiplePlaylistsDialogComponent, {
-      width: '60vw',
-      height: '80vh',
+      width: '90dvw',
+      height: '90dvh',
+      maxWidth: '1200px',
+      maxHeight: '720px',
       disableClose: true,
       autoFocus: false,
       restoreFocus: false,

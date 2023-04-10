@@ -1,6 +1,6 @@
-import {UploaderDialogComponent} from './uploader-dialog.component';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Injectable} from '@angular/core';
+import { UploaderDialogComponent } from './uploader-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UploaderDialogService {
@@ -13,6 +13,7 @@ export class UploaderDialogService {
 
     const dialog = this.dialog.open(UploaderDialogComponent, {
       width: '384px',
+      maxWidth: '50dvw',
       minHeight: '0',
       disableClose: true,
       hasBackdrop: false,

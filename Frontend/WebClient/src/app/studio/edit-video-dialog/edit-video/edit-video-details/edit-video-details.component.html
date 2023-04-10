@@ -57,7 +57,7 @@
     <p class="text-tint-500">Tags can be useful if content in your video is commonly misspelled. Otherwise, tags play a
       minimal role in helping viewers find your video.</p>
 
-    <div class="tags-container">
+    <div class="tags-container mb-4">
       <mat-form-field class="tags-chip-list" appearance="fill" hintLabel="Enter a comma after each tag">
         <mat-chip-list #chipList aria-label="Tag selection">
           <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">

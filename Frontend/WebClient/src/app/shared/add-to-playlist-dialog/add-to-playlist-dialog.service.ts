@@ -1,7 +1,10 @@
-import {AddToPlaylistActionService} from './add-to-playlist-actions.service';
-import {Injectable} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {AddToPlaylistDialogComponent, AddToPlaylistDialogData,} from './add-to-playlist-dialog.component';
+import { AddToPlaylistActionService } from './add-to-playlist-actions.service';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  AddToPlaylistDialogComponent,
+  AddToPlaylistDialogData,
+} from './add-to-playlist-dialog.component';
 
 @Injectable()
 export class AddToPlaylistDialogService {
@@ -31,8 +34,8 @@ export class AddToPlaylistDialogService {
         this.dialog.open(AddToPlaylistDialogComponent, {
           data,
           minWidth: '300px',
-          maxWidth: '50vw',
-          maxHeight: '80vh',
+          maxWidth: '50dvw',
+          maxHeight: '80dvh',
           autoFocus: false,
           restoreFocus: false,
           panelClass: 'add-to-playlist-dialog',

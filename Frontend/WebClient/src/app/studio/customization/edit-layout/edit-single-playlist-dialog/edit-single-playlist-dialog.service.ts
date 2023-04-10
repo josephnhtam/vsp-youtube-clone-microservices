@@ -1,7 +1,7 @@
-import {EditSinglePlaylistDialogComponent} from './edit-single-playlist-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {Injectable} from '@angular/core';
-import {SinglePlaylistSection} from 'src/app/core/models/channel';
+import { EditSinglePlaylistDialogComponent } from './edit-single-playlist-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Injectable } from '@angular/core';
+import { SinglePlaylistSection } from 'src/app/core/models/channel';
 
 @Injectable()
 export class EditSinglePlaylistDialogService {
@@ -17,8 +17,10 @@ export class EditSinglePlaylistDialogService {
     }
 
     const dialogRef = this.dialog.open(EditSinglePlaylistDialogComponent, {
-      width: '60vw',
-      height: '80vh',
+      width: '90dvw',
+      height: '90dvh',
+      maxWidth: '1200px',
+      maxHeight: '720px',
       disableClose: true,
       autoFocus: false,
       restoreFocus: false,

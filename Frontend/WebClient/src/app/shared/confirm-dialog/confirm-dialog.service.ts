@@ -1,6 +1,6 @@
-import {ConfirmDialogComponent} from './confirm-dialog.component';
-import {Injectable} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './confirm-dialog.component';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class ConfirmDialogService {
@@ -26,8 +26,8 @@ export class ConfirmDialogService {
     const instance = this.dialog.open(ConfirmDialogComponent, {
       data,
       minWidth: '250px',
-      maxWidth: '30vw',
-      maxHeight: '80vh',
+      maxWidth: '30dvw',
+      maxHeight: '80dvh',
       autoFocus: false,
       restoreFocus: false,
       panelClass: 'confirm-dialog',

@@ -13,7 +13,7 @@
 }
 
 .draft-content .mat-horizontal-stepper-header-container {
-  padding: 8px 64px 8px 64px;
+  padding: 8px 8% 8px 8%;
 }
 
 .draft-content .mat-horizontal-content-container{
@@ -32,20 +32,6 @@
   justify-content: space-between;
   border-top: 1px solid var(--highlight-color);
   padding: 12px;
-}
-
-.video-content {
-  padding-left: 25px;
-}
-
-.video-preview {
-  position: sticky;
-  top: 25px;
-}
-
-.video {
-  width: 100%;
-  height: auto;
 }
 
 .material-symbols-outlined {

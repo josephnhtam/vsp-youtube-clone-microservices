@@ -33,8 +33,8 @@ export class CreateUserProfileDialogService {
   openCreateUserProfileDialog() {
     if (!this.dialogRef) {
       const dialogRef = this.dialog.open(CreateUserProfileDialogComponent, {
-        width: '90vw',
-        height: '90vh',
+        width: '90dvw',
+        height: '90dvh',
         maxWidth: '638px',
         maxHeight: '450px',
         disableClose: true,

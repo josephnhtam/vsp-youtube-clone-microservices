@@ -1,6 +1,6 @@
-import {EditVideoDialogComponent} from '../edit-video-dialog/edit-video-dialog.component';
-import {Injectable} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { EditVideoDialogComponent } from '../edit-video-dialog/edit-video-dialog.component';
+import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Injectable()
 export class EditVideoDialogService {
@@ -12,8 +12,10 @@ export class EditVideoDialogService {
   openDialog(videoId: string): void;
   openDialog(videoId?: string): void {
     const dialog = this.dialog.open(EditVideoDialogComponent, {
-      width: '60vw',
-      height: '80vh',
+      width: '90dvw',
+      height: '90dvh',
+      maxWidth: '1200px',
+      maxHeight: '720px',
       disableClose: true,
       autoFocus: false,
       restoreFocus: false,

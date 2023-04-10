@@ -1,4 +1,12 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild,} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-upload-video',
@@ -9,14 +17,21 @@ export class UploadVideoComponent implements OnInit {
   @Input() fileAccepted = false;
   @Input() allowedMimeTypes = [
     'video/mp4',
+    'video/quicktime',
+    'video/x-quicktime',
+    'video/mpeg',
     'video/webm',
+    'video/3gpp',
+    'video/3gpp2',
     'video/x-flv',
     'video/x-matroska',
     'video/x-ms-wmv',
+    'video/x-msvideo',
     'video/ogg',
     'application/vnd.rn-realmedia-vbr',
   ];
-  @Input() acceptedExtensions = '.mp4,.webm,.flv,.mkv,.wmv,.ogg,.rmvb';
+  @Input() acceptedExtensions =
+    '.mp4,.mov,.webm,.flv,.mkv,.wmv,.ogg,.rmvb,.mpg,.mpeg,.3gp';
   @Output() fileToUpload = new EventEmitter<File[]>();
 
   @ViewChild('fileInput', { static: true })

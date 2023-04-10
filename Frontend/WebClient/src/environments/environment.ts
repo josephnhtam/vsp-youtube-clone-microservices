@@ -12,7 +12,7 @@ import { AppSetup } from 'src/app/app-setup';
 // };
 
 // const appSetup: AppSetup = {
-//   apiUrl: 'https://api.vspsample.online',
+//   apiUrl: 'https://vspsample.online',
 //   storageUrl: 'https://storage.vspsample.online',
 // };
 
