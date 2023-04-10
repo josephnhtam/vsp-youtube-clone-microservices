@@ -11,4 +11,4 @@ secretGenerator:
   - name: history-api-secret
     behavior: merge
     envs:
-      - "./secrets/history-api.env"
+      - "./patches/secret.env"

@@ -29,13 +29,13 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - "auth.vspsample.online"
-    - "storage.vspsample.online"
-    - "www.vspsample.online"
-    - "vspsample.online"
+    - "auth.VAR_DOMAIN_NAME"
+    - "storage.VAR_DOMAIN_NAME"
+    - "www.VAR_DOMAIN_NAME"
+    - "VAR_DOMAIN_NAME"
     secretName: tls-secret
   rules:
-  - host: "auth.vspsample.online"
+  - host: "auth.VAR_DOMAIN_NAME"
     http:
       paths:
       - pathType: Prefix
@@ -45,7 +45,7 @@ spec:
             name: identity-provider
             port:
               number: 80
-  - host: "storage.vspsample.online"
+  - host: "storage.VAR_DOMAIN_NAME"
     http:
       paths:
       - pathType: Prefix
@@ -55,7 +55,7 @@ spec:
             name: storage-api
             port:
               number: 80
-  - host: "www.vspsample.online"
+  - host: "www.VAR_DOMAIN_NAME"
     http:
       paths:
       - pathType: Prefix
@@ -79,7 +79,7 @@ spec:
             name: vspclient
             port:
               number: 80
-  - host: "vspsample.online"
+  - host: "VAR_DOMAIN_NAME"
     http:
       paths:
       - pathType: Prefix
