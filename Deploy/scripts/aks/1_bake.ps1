@@ -1,8 +1,10 @@
-$environment = "dev"
-$domainName = "vspsample.online"
-$containerRegistry = "vspsample.azurecr.io"
-$imageTag = "1"
-$imagePullSecret = "docker-config"
+param(
+  [string] $environment = "dev",
+  [string] $domainName = "vspsample.online",
+  [string] $containerRegistry = "vspsample.azurecr.io",
+  [string] $imageTag = "1",
+  [string] $imagePullSecret = "docker-config"
+)
 
 # ------------------------------------------------------------------- #
 
