@@ -5,36 +5,10 @@ resource "azurerm_container_registry" "acr" {
   resource_group_name = var.acr.resource_group_name
   location            = var.location
   sku                 = var.acr.sku
-  admin_enabled       = var.acr.admin_enabled
+  admin_enabled       = true
 
   depends_on = [
     azurerm_resource_group.acr_rg
-  ]
-}
-
-resource "kubernetes_secret" "image_pull_secret" {
-  count = var.acr.create && var.acr.admin_enabled && var.acr.create_pull_secret ? 1 : 0
-
-  metadata {
-    name = var.acr.pull_secret_name
-  }
-
-  type = "kubernetes.io/dockerconfigjson"
-
-  data = {
-    ".dockerconfigjson" = jsonencode({
-      auths = {
-        "${azurerm_container_registry.acr.0.login_server}" = {
-          "username" = azurerm_container_registry.acr.0.admin_username
-          "password" = azurerm_container_registry.acr.0.admin_password
-          "auth"     = base64encode("${azurerm_container_registry.acr.0.admin_username}:${azurerm_container_registry.acr.0.admin_password}")
-        }
-      }
-    })
-  }
-
-  depends_on = [
-    azurerm_container_registry.acr
   ]
 }
 
@@ -45,6 +19,28 @@ data "azurerm_container_registry" "acr" {
   depends_on = [
     azurerm_container_registry.acr
   ]
+}
+
+resource "kubernetes_secret" "image_pull_secret" {
+  count = var.acr.create_pull_secret ? 1 : 0
+
+  metadata {
+    name = var.acr.pull_secret_name
+  }
+
+  type = "kubernetes.io/dockerconfigjson"
+
+  data = {
+    ".dockerconfigjson" = jsonencode({
+      auths = {
+        "${data.azurerm_container_registry.acr.login_server}" = {
+          "username" = data.azurerm_container_registry.acr.admin_username
+          "password" = data.azurerm_container_registry.acr.admin_password
+          "auth"     = base64encode("${data.azurerm_container_registry.acr.admin_username}:${data.azurerm_container_registry.acr.admin_password}")
+        }
+      }
+    })
+  }
 }
 
 resource "azurerm_role_assignment" "acr_role_assignment" {
