@@ -17,7 +17,7 @@ $images = @(
   "video-processor-application",
   "video-store-api",
   "web-status",
-  "vspclient"
+  "web-client"
 )
 
 $maxRetries = 3
