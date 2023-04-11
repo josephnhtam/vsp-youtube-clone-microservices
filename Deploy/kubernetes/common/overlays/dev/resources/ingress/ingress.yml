@@ -79,7 +79,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: vspclient
+            name: web-client
             port:
               number: 80
   - host: "VAR_DOMAIN_NAME"
@@ -103,6 +103,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: vspclient
+            name: web-client
             port:
               number: 80

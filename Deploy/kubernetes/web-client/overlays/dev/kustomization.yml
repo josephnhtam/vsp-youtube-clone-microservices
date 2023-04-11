@@ -5,8 +5,8 @@ resources:
   - "../../base"
 
 images:
-  - name: vspclient
-    newName: VAR_CONTAINER_REGISTRY/vspclient
+  - name: web-client
+    newName: VAR_CONTAINER_REGISTRY/web-client
     newTag: VAR_IMAGE_TAG
 
 patches:
