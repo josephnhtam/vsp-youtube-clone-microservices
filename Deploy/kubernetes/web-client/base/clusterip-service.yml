@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vspclient
+  name: web-client
   labels:
-    app: vspclient
+    app: web-client
 spec:
   selector:
-    app: vspclient
+    app: web-client
   ports:
   - protocol: TCP
     port: 80

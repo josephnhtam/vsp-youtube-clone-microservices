@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vspclient
+  name: web-client
   labels:
-    app: vspclient
+    app: web-client
 spec:
   selector:
     matchLabels:
-      app: vspclient
+      app: web-client
   template:
     metadata:
       labels:
-        app: vspclient
+        app: web-client
     spec:
       containers:
-      - name: vspclient
-        image: vspclient
+      - name: web-client
+        image: web-client
         imagePullPolicy: Always
         resources:
           requests:
