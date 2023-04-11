@@ -1,17 +1,19 @@
 variable "acr" {
   type = object({
-    enabled            = bool
-    name               = string
-    sku                = optional(string, "Basic")
-    admin_enabled      = optional(bool, true)
-    create_pull_secret = optional(bool, false)
-    pull_secret_name   = optional(string, "docker-config")
+    create              = bool
+    name                = string
+    resource_group_name = string
+    sku                 = optional(string, "Basic")
+    admin_enabled       = optional(bool, true)
+    create_pull_secret  = optional(bool, false)
+    pull_secret_name    = optional(string, "docker-config")
   })
   default = {
-    enabled            = true
-    name               = "vspsample"
-    admin_enabled      = true
-    create_pull_secret = false
+    create              = true
+    name                = "vspsample"
+    resource_group_name = "vspsample-acr-rg"
+    admin_enabled       = true
+    create_pull_secret  = false
   }
   description = "Configuration for container registry"
 }
