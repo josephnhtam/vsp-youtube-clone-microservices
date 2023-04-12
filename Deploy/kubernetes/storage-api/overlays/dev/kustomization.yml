@@ -4,9 +4,6 @@ kind: Kustomization
 resources:
   - "../../base"
 
-patchesStrategicMerge:
-  - "./patches/storage-class.yml"
-
 configMapGenerator:
   - name: storage-api-config
     behavior: merge
@@ -25,6 +22,7 @@ images:
     newTag: VAR_IMAGE_TAG
 
 patches:
+  - path: "./patches/storage-class.yml"
   - target:
       kind: Deployment
     patch: |-

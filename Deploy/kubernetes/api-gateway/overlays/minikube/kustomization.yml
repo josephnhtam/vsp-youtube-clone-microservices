@@ -5,8 +5,8 @@ resources:
   - "../../base"
   - "./resources/load-balancer.yml"
 
-patchesStrategicMerge:
-  - "./patches/deployment.yml"
+patches:
+  - path: "./patches/deployment.yml"
 
 configMapGenerator:
   - name: api-gateway-config

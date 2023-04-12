@@ -4,8 +4,8 @@ kind: Kustomization
 resources:
   - "../../base"
 
-patchesStrategicMerge:
-  - "./patches/deployment.yml"
+patches:
+  - path: "./patches/deployment.yml"
 
 secretGenerator:
   - name: community-api-secret

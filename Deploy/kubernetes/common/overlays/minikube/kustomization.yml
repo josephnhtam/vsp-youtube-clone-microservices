@@ -7,8 +7,8 @@ resources:
 components:
   - "../../components/dev-env"
 
-patchesStrategicMerge:
-  - "./patches/storage-classes/persistence.yml"
+patches:
+  - path: "./patches/storage-classes/persistence.yml"
 
 configMapGenerator:
   - name: common-config

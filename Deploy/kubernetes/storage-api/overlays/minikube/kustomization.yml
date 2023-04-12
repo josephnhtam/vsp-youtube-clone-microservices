@@ -5,10 +5,10 @@ resources:
   - "../../base"
   - "./resources/load-balancer.yml"
 
-patchesStrategicMerge:
-  - "./patches/deployment.yml"
-  - "./patches/persistent-volume-claim.yml"
-  - "./patches/storage-class.yml"
+patches:
+  - path: "./patches/deployment.yml"
+  - path: "./patches/persistent-volume-claim.yml"
+  - path: "./patches/storage-class.yml"
 
 configMapGenerator:
   - name: storage-api-config
