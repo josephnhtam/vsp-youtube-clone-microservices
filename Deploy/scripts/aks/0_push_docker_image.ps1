@@ -1,6 +1,7 @@
-$tag = "1"
-$name = "vspsample"
-$registry = "${name}.azurecr.io"
+param(
+  [string] $imageTag = "1",
+  [string] $containerRegistry = "vspsample.azurecr.io"
+)
 
 $images = @(
   "api-gateway",
@@ -23,7 +24,7 @@ $images = @(
 $maxRetries = 3
 
 foreach ($image in $images) {
-    $tagged_image = "${registry}/${image}:${tag}"
+    $tagged_image = "${containerRegistry}/${image}:${imageTag}"
   
     docker tag $image $tagged_image
     if ($LASTEXITCODE -ne 0) {
