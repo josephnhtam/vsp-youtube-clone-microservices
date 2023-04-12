@@ -43,7 +43,11 @@ This repository contains a YouTube Clone microservices application built with .N
 - Health checks
 - Fault resilience
 - JWT token
+- Prometheus
 - Docker
+- Kubernetes
+- Kustomize
+- Terraform
 - Angular 14
 
 ### Features
@@ -113,6 +117,8 @@ The Video Processor Service is responsible for processing the video files. This 
 - The Video Processor Service will process the video file, generate different resolutions and preview thumbnails of the uploaded video using FFmpeg.
 
 - If the video processing is interrupted for transient issues, the video processing will be retried automatically.
+
+- The video processor service can be automatically horizontally scaled by Kubernetes horizontal pod autoscaler. This is implemented through the use of custom metrics, including the number of concurrent processing tasks, which are exposed by each instance of the video processor service and gathered by Prometheus. By integrating with the Prometheus adapter, the Kubernetes hpa can scale out the video processor service in response to the usage.
 
 ### Video Store Service
 
@@ -247,8 +253,11 @@ OpenTelemetry is used to instrument the microservices, generate tracing data, an
 
 ### Pending Improvement
 
-- Add unit/functional testing
-- Add more caching
+- **AKS Virtual Nodes**: Support for AKS virtual nodes can be added to the video processor service, which allows it to run on the Azure container instances to enhance its scalability and efficiency.
+
+- **Testing**: The application currently lacks unit and functional testing. Adding tests would help to catch bugs and ensure the application works as expected.
+
+- **Caching**: More caching can be added to the application to improve its performance and reduce the load on the backend services.
 
 ## SPA Application (Angular)
 
@@ -352,3 +361,55 @@ This application use the following ports:
 
     WebClient: 4200
 ```
+
+## Kubernetes
+
+This repository includes sample kubernetes manifests for deploying the application to Minikube and Azure Kubernetes Service (AKS).
+
+### Deploying to Minikube
+
+To deploy the application to Minikube, you will need to have Docker, Kubectl, and Minikube installed on your machine. Here are the steps to get started:
+
+1. Start the **Minikube** by running the following command:
+
+```
+minikube start
+```
+
+2. Build the required Docker images by navigating to the **Deploy/scripts** directory and running the following command:
+
+```
+build_images.bat
+```
+
+3. Navigate to the **Deploy/scripts/minikube** directory and run the following commands using PowerShell:
+
+```
+./0_enable_metrics_server.ps1
+./1_minikube_load_images.ps1
+./2_install_prometheus.ps1
+./3_bake.ps1
+./4_apply.ps1
+./5_minikube_tunnel.ps1
+```
+
+These commands enable the metrics server, load Docker images into Minikube, install Prometheus, bake the Kubernetes manifests with Kustomize, deploy the application, and start a tunnel to the Minikube cluster.
+
+Once the application is fully launched, the services will be exposed by the following ports
+
+```
+    Storage: 14200
+    IdentityProvider: 15100
+    APIGateway: 16000
+```
+
+### Deploying to Azure Kubernetes Service
+
+To deploy the application to Azure Kubernetes Service, you'll need to have the following set up:
+
+- A Kubernetes cluster
+- A container registry
+- A DNS zone
+- A domain name
+
+The DNS zone and domain name are required for domain-name-based routing. The Kubernetes cluster is also integrated with **ingress-nginx**, **external-dns** and **cert-manager** which automatically manage the DNS records and TLS certificates for the services.
