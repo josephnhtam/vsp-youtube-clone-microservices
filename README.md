@@ -13,6 +13,7 @@ This repository contains a YouTube Clone microservices application built with .N
 **[Screenshots](#screenshots)**<br>
 **[Demo Video](#demo-video)**<br>
 **[Running with Docker](#running-with-docker)**<br>
+**[Kubernetes](#kubernetes)**<br>
 
 ### Architecture
 
@@ -413,3 +414,5 @@ To deploy the application to Azure Kubernetes Service, you'll need to have the f
 - A domain name
 
 The DNS zone and domain name are required for domain-name-based routing. The Kubernetes cluster is also integrated with **ingress-nginx**, **external-dns** and **cert-manager** which automatically manage the DNS records and TLS certificates for the services.
+
+This repository contains Terraform manifests for provisioning the required infrastructure, excluding the domain name.
