@@ -82,3 +82,7 @@
 #### Jaeger For Distributed Tracing
 
 ![Screenshot](Images/Screenshots/tracing.png)
+
+#### Prometheus For Metrics
+
+![Screenshot](Images/Screenshots/metrics.png)

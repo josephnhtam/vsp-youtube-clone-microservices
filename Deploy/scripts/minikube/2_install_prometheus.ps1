@@ -22,7 +22,7 @@ if ($LASTEXITCODE -ne 0) {
   Write-Error "Failed to install Prometheus Stack"
 }
 else {
-  Write-Error "Successfully installed Prometheus Stack"
+  Write-Host "Successfully installed Prometheus Stack"
 }
 
 # Install Prometheus Adapter
