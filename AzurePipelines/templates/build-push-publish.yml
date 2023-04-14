@@ -1,0 +1,33 @@
+parameters:
+  - name: dockerRegistryServiceConnection
+    type: string
+  - name: imageRepository
+    type: string
+  - name: dockerfilePath
+    type: string
+  - name: dockerBuildContext
+    type: string
+  - name: imageTag
+    type: string
+  - name: kustomizationPath
+    type: string
+
+jobs:
+- job: BuildPushPublish
+  displayName: Build And Push
+  steps:
+  - task: Docker@2
+    displayName: Build and push the image to docker registry
+    inputs:
+      command: 'buildAndPush'
+      containerRegistry: ${{ Parameters.dockerRegistryServiceConnection }}
+      repository: ${{ Parameters.imageRepository }}
+      Dockerfile: ${{ Parameters.dockerfilePath }}
+      buildContext: ${{ Parameters.dockerBuildContext }}
+      tags: ${{ Parameters.imageTag }}
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Artifact
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/${{ Parameters.kustomizationPath }}'
+      artifact: 'kubernetes-manifest'
+      publishLocation: 'pipeline'

@@ -1,0 +1,60 @@
+trigger:
+  tags:
+    include:
+      - common-*
+
+variables:
+  kubectlVersion: 'v1.26.3'
+  kustomizationPath: 'Deploy/kubernetes/common'
+
+  devEnvName: 'dev-environment'
+  devEnvResourceName: 'default'
+  devClusterAdminServiceConnection: 'dev-kubernetes-cluster-service-connection'
+
+  devKustomizationOverlayPath: 'overlays/dev'
+  devDomainName: 'vspsample.online'
+  devContainerRegistry: 'vspsample.azurecr.io'
+  devImagePullSecret: 'docker-config'
+
+name: 
+pool:
+  # vmImage: ubuntu-latest
+  name: default
+
+stages:
+  - stage: PublishArtifact
+    displayName: Publish Artifact
+    jobs:
+      - job: Publish
+        displayName: Publish
+        steps:
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.SourcesDirectory)/$(kustomizationPath)'
+              artifact: 'kubernetes-manifest'
+              publishLocation: 'pipeline'
+
+  - stage: DeployToDevEnv
+    displayName: Deploy to Dev Environment
+    dependsOn: PublishArtifact
+    condition: succeeded()
+    jobs:
+      - deployment: DeployUsingKustomize
+        displayName: Deploy using Kustomize
+        environment: 
+          name: ${{ Variables.devEnvName }}
+          resourceName: ${{ Variables.devEnvResourceName }}
+          resourceType: kubernetes
+        strategy:
+          runOnce:
+            deploy:
+               steps:
+                - template: templates/deploy-using-kustomize.yml
+                  parameters:
+                    clusterAdminServiceConnection: $(devClusterAdminServiceConnection)
+                    kubectlVersion: $(kubectlVersion)
+                    kustomizationOverlayPath: $(devKustomizationOverlayPath)
+                    domainName: $(devDomainName)
+                    containerRegistryType: $(devContainerRegistry)
+                    imageTag: $(Build.SourceVersion)
+                    imagePullSecret: $(devImagePullSecret)

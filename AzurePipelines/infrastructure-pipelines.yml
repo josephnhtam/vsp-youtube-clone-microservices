@@ -1,0 +1,55 @@
+trigger:
+  tags:
+    include:
+      - infra-*
+
+variables:
+  azureServiceConnection: 'azure-service-connection'
+  terraformVersion: '1.4.2'
+  backendResourceGroupName: 'vspsample-iac'
+  backendResourceGroupLocation: 'East Asia'
+  backendAccountSku: 'Standard_RAGRS'
+  backendStorageAccountName: 'vspterraformstates'
+  backendContainerName: 'terraformstates'
+
+  terraformManifestPath: 'Deploy/terraform/aks'
+  devEnvName: 'dev-infrastructure-deployment'
+  devBackendKey: 'dev-terraform.tfstate'
+  devSshKeyFile: 'dev-ssh-key.pub'
+  devTerraformVarsFile: 'dev-terraform.tfvars'
+  
+pool:
+  # vmImage: ubuntu-latest
+  name: default
+
+stages:
+  - stage: PublishArtifact
+    displayName: Publish Artifact
+    jobs:
+      - job: Publish
+        displayName: Publish
+        steps:
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.SourcesDirectory)/$(terraformManifestPath)'
+              artifact: 'terraform-manifest'
+              publishLocation: 'pipeline'
+
+  - stage: DeployToDevEnv
+    displayName: Deploy to Dev Environment
+    dependsOn: PublishArtifact
+    condition: succeeded()
+    jobs:
+      - template: templates/deploy-aks-using-terraform.yml
+        parameters:
+          envName: $(devEnvName)
+          azureServiceConnection: $(azureServiceConnection)
+          terraformVersion: $(terraformVersion)
+          backendResourceGroupName: $(backendResourceGroupName)
+          backendResourceGroupLocation: $(backendResourceGroupLocation)
+          backendAccountSku: $(backendAccountSku)
+          backendStorageAccountName: $(backendStorageAccountName)
+          backendContainerName: $(backendContainerName)
+          backendKey: $(devBackendKey)
+          sshKeyFile: $(devSshKeyFile)
+          terraformVarsFile: $(devTerraformVarsFile)

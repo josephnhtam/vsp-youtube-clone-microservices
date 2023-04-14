@@ -1,0 +1,63 @@
+trigger:
+  tags:
+    include:
+      - search-api-*
+
+variables:
+  kubectlVersion: 'v1.26.3'
+  kustomizationPath: 'Deploy/kubernetes/search-api'
+
+  devEnvName: 'dev-environment'
+  devEnvResourceName: 'default'
+  devDockerRegistryServiceConnection: 'dev-docker-registry-service-connection'
+
+  devImageRepository: 'search-api'
+  devDockerBuildContext: '$(Build.SourcesDirectory)/Backend'
+  devDockerfilePath: '$(Build.SourcesDirectory)/Backend/Services/Search/Search.API/Dockerfile'
+  
+  devKustomizationOverlayPath: 'overlays/dev'
+  devDomainName: 'vspsample.online'
+  devContainerRegistry: 'vspsample.azurecr.io'
+  devImagePullSecret: 'docker-config'
+
+name: 
+pool:
+  # vmImage: ubuntu-latest
+  name: default
+
+stages:
+  - stage: Build
+    displayName: Build
+    jobs:
+      - template: templates/build-push-publish.yml
+        parameters:
+          dockerRegistryServiceConnection: $(devDockerRegistryServiceConnection)
+          imageRepository: $(devImageRepository)
+          dockerfilePath: $(devDockerfilePath)
+          dockerBuildContext: $(devDockerBuildContext)
+          imageTag: $(Build.SourceVersion)
+          kustomizationPath: $(kustomizationPath)
+
+  - stage: DeployToDevEnv
+    displayName: Deploy to Dev Environment
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - deployment: DeployUsingKustomize
+        displayName: Deploy using Kustomize
+        environment: 
+          name: ${{ variables.devEnvName }}
+          resourceName: ${{ variables.devEnvResourceName }}
+          resourceType: kubernetes
+        strategy:
+          runOnce:
+            deploy:
+               steps:
+                - template: templates/deploy-using-kustomize.yml
+                  parameters:
+                    kubectlVersion: $(kubectlVersion)
+                    kustomizationOverlayPath: $(devKustomizationOverlayPath)
+                    domainName: $(devDomainName)
+                    containerRegistryType: $(devContainerRegistry)
+                    imageTag: $(Build.SourceVersion)
+                    imagePullSecret: $(devImagePullSecret)

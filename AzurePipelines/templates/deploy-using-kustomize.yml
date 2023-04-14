@@ -1,0 +1,83 @@
+parameters:
+  - name: clusterAdminServiceConnection
+    type: string
+    default: ""
+  - name: kubectlVersion
+    type: string
+    default: LATEST
+  - name: kustomizationOverlayPath
+    type: string
+  - name: domainName
+    type: string
+  - name: containerRegistryType
+    type: string
+  - name: imageTag
+    type: string
+  - name: imagePullSecret
+    type: string
+
+steps:
+  - task: KubectlInstaller@0
+    displayName: Install Kubectl tool
+    inputs:
+      kubectlVersion: ${{ Parameters.kubectlVersion }}
+  - task: Kubernetes@1
+    displayName: Build Kustomization
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      command: 'kustomize'
+      arguments: |
+        "$(Pipeline.Workspace)/kubernetes-manifest/${{ Parameters.kustomizationOverlayPath }}" 
+        --enable-helm
+      secretType: 'dockerRegistry'
+      containerRegistryType: 'Azure Container Registry'
+      workingDirectory: '$(Pipeline.Workspace)/kubernetes-manifest'
+      outputFormat: '$(Pipeline.Workspace)/kubernetes-manifest/bake.yml'
+  - task: PowerShell@2
+    displayName: Substitute parameters
+    inputs:
+      targetType: 'inline'
+      script: |
+        $manifestPath = "$(Pipeline.Workspace)/kubernetes-manifest/bake.yml"
+        
+        $values = @(
+          "${{ Parameters.domainName }}",
+          "${{ Parameters.containerRegistryType }}",
+          "${{ Parameters.imageTag }}",
+          "${{ Parameters.imagePullSecret }}"
+        )
+        
+        $vars = @(
+          "VAR_DOMAIN_NAME"
+          "VAR_CONTAINER_REGISTRY"
+          "VAR_IMAGE_TAG"
+          "VAR_IMAGE_PULL_SECRET"
+        )
+        
+        # Replace the placeholders in the generated kubernetes manifests
+        $content = Get-Content $manifestPath
+        
+        for ($i = 0; $i -lt $vars.Count; $i++) {
+          $var = $vars[$i]
+          $value = $values[$i]
+        
+          if ($content -match $var) {
+            $content = $content -replace $var, $value
+            $updated = $true
+          }
+        }
+        
+        if ($updated) {
+          Set-Content $manifestPath -Value $content
+        }
+        
+        Write-Output "Updated manifest:"
+        Write-Output $content
+  - task: KubernetesManifest@1
+    displayName: Deploy
+    inputs:
+      action: 'deploy'
+      connectionType: 'kubernetesServiceConnection'
+      ${{ if Parameters.clusterAdminServiceConnection }}:
+        kubernetesServiceConnection: ${{ Parameters.clusterAdminServiceConnection }}
+      manifests: '$(Pipeline.Workspace)/kubernetes-manifest/bake.yml'
