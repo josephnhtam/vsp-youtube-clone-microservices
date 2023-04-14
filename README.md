@@ -49,6 +49,7 @@ This repository contains a YouTube Clone microservices application built with .N
 - Kubernetes
 - Kustomize
 - Terraform
+- Azure Pipelines
 - Angular 14
 
 ### Features
@@ -415,4 +416,8 @@ To deploy the application to Azure Kubernetes Service, you'll need to have the f
 
 The DNS zone and domain name are required for domain-name-based routing. The Kubernetes cluster is also integrated with **ingress-nginx**, **external-dns** and **cert-manager** which automatically manage the DNS records and TLS certificates for the services.
 
-This repository contains Terraform manifests for provisioning the required infrastructure, excluding the domain name.
+**This repository contains:**
+
+- Terraform manifests for provisioning the required infrastructure, including the AKS cluster, container registry, DNS zone, virtual network, subnets.
+- Kubernetes manifests for deploying the application to the AKS cluster.
+- Azure pipelines YAML files for creating pipelines to continuously build and deploy the application.
