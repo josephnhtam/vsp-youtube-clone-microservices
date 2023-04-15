@@ -56,7 +56,7 @@ stages:
                steps:
                 - template: templates/deploy-using-kustomize.yml
                   parameters:
-                    clusterAdminServiceConnection: $(devClusterAdminServiceConnection)
+                    kubernetesServiceConnection: $(devClusterAdminServiceConnection)
                     kubectlVersion: $(kubectlVersion)
                     kustomizationOverlayPath: $(devKustomizationOverlayPath)
                     domainName: $(devDomainName)
