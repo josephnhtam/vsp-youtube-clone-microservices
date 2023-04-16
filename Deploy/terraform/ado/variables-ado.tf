@@ -1,6 +1,13 @@
+variable "ado_org_name" {
+  type        = string
+  description = "The Azure DevOps organization name"
+  sensitive   = true
+}
+
 variable "ado_org_service_url" {
   type        = string
   description = "The Azure DevOps organization url"
+  sensitive   = true
 }
 
 variable "ado_personal_access_token" {

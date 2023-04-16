@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processor-application
+spec:
+  template:
+    spec:
+      nodeSelector:
+        # beta.kubernetes.io/os: linux
+        kubernetes.io/role: agent
+        type: virtual-kubelet
+      tolerations:
+      - key: virtual-kubelet.io/provider
+        operator: Exists
+        

@@ -4,23 +4,26 @@ trigger:
       - api-gateway-*
 
 variables:
-  kubectlVersion: 'v1.26.3'
-  kustomizationPath: 'Deploy/kubernetes/api-gateway'
+  - group: "application-variable-group"
 
-  devEnvName: 'dev-environment'
-  devEnvResourceName: 'default'
-  devDockerRegistryServiceConnection: 'dev-docker-registry-service-connection'
+  - name: kubectlVersion
+    value: "v1.26.3"
 
-  devImageRepository: 'api-gateway'
-  devDockerBuildContext: '$(Build.SourcesDirectory)/Backend'
-  devDockerfilePath: '$(Build.SourcesDirectory)/Backend/Services/ApiGateway/Dockerfile'
+  - name: kustomizationPath
+    value: "Deploy/kubernetes/api-gateway"
+
+  - name: devEnvName
+    value: dev-environment
+
+  - name: devImageRepository
+    value: "api-gateway"
   
-  devKustomizationOverlayPath: 'overlays/dev'
-  devDomainName: 'vspsample.online'
-  devContainerRegistry: 'vspsample.azurecr.io'
-  devImagePullSecret: 'docker-config'
+  - name: devDockerBuildContext
+    value: "$(Build.SourcesDirectory)/Backend"
+    
+  - name: devDockerfilePath
+    value: "$(Build.SourcesDirectory)/Backend/Services/ApiGateway/Dockerfile"
 
-name: 
 pool:
   # vmImage: ubuntu-latest
   name: default
@@ -47,14 +50,13 @@ stages:
         displayName: Deploy using Kustomize
         environment: 
           name: ${{ variables.devEnvName }}
-          resourceName: ${{ variables.devEnvResourceName }}
-          resourceType: kubernetes
         strategy:
           runOnce:
             deploy:
                steps:
                 - template: templates/deploy-using-kustomize.yml
                   parameters:
+                    kubernetesServiceConnection: $(devKubernetesServiceConnection)
                     kubectlVersion: $(kubectlVersion)
                     kustomizationOverlayPath: $(devKustomizationOverlayPath)
                     domainName: $(devDomainName)

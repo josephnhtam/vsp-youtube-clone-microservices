@@ -4,24 +4,26 @@ trigger:
       - storage-api-*
 
 variables:
-  kubectlVersion: 'v1.26.3'
-  kustomizationPath: 'Deploy/kubernetes/storage-api'
+  - group: "application-variable-group"
 
-  devEnvName: 'dev-environment'
-  devEnvResourceName: 'default'
-  devClusterAdminServiceConnection: 'dev-kubernetes-cluster-service-connection'
-  devDockerRegistryServiceConnection: 'dev-docker-registry-service-connection'
+  - name: kubectlVersion
+    value: "v1.26.3"
 
-  devImageRepository: 'storage-api'
-  devDockerBuildContext: '$(Build.SourcesDirectory)/Backend'
-  devDockerfilePath: '$(Build.SourcesDirectory)/Backend/Services/Storage/Storage.API/Dockerfile'
+  - name: kustomizationPath
+    value: "Deploy/kubernetes/storage-api"
+
+  - name: devEnvName
+    value: dev-environment
+
+  - name: devImageRepository
+    value: "storage-api"
   
-  devKustomizationOverlayPath: 'overlays/dev'
-  devDomainName: 'vspsample.online'
-  devContainerRegistry: 'vspsample.azurecr.io'
-  devImagePullSecret: 'docker-config'
+  - name: devDockerBuildContext
+    value: "$(Build.SourcesDirectory)/Backend"
+    
+  - name: devDockerfilePath
+    value: "$(Build.SourcesDirectory)/Backend/Services/Storage/Storage.API/Dockerfile"
 
-name: 
 pool:
   # vmImage: ubuntu-latest
   name: default
@@ -48,15 +50,13 @@ stages:
         displayName: Deploy using Kustomize
         environment: 
           name: ${{ variables.devEnvName }}
-          resourceName: ${{ variables.devEnvResourceName }}
-          resourceType: kubernetes
         strategy:
           runOnce:
             deploy:
                steps:
                 - template: templates/deploy-using-kustomize.yml
                   parameters:
-                    kubernetesServiceConnection: $(devClusterAdminServiceConnection)
+                    kubernetesServiceConnection: $(devKubernetesServiceConnection)
                     kubectlVersion: $(kubectlVersion)
                     kustomizationOverlayPath: $(devKustomizationOverlayPath)
                     domainName: $(devDomainName)

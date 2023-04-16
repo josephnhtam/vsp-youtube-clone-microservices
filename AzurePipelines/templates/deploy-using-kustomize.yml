@@ -33,6 +33,8 @@ steps:
       containerRegistryType: "Azure Container Registry"
       workingDirectory: "$(Pipeline.Workspace)/kubernetes-manifest"
       outputFormat: "$(Pipeline.Workspace)/kubernetes-manifest/bake.yml"
+      ${{ if Parameters.kubernetesServiceConnection }}:
+        kubernetesServiceEndpoint: ${{ Parameters.kubernetesServiceConnection }}
   - task: PowerShell@2
     displayName: Substitute parameters
     inputs:

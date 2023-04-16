@@ -4,23 +4,26 @@ trigger:
       - web-status-*
 
 variables:
-  kubectlVersion: 'v1.26.3'
-  kustomizationPath: 'Deploy/kubernetes/web-status'
+  - group: "application-variable-group"
 
-  devEnvName: 'dev-environment'
-  devEnvResourceName: 'default'
-  devDockerRegistryServiceConnection: 'dev-docker-registry-service-connection'
+  - name: kubectlVersion
+    value: "v1.26.3"
 
-  devImageRepository: 'web-status'
-  devDockerBuildContext: '$(Build.SourcesDirectory)/Backend'
-  devDockerfilePath: '$(Build.SourcesDirectory)/Backend/Services/WebStatus/WebStatus/Dockerfile'
+  - name: kustomizationPath
+    value: "Deploy/kubernetes/web-status"
+
+  - name: devEnvName
+    value: dev-environment
+
+  - name: devImageRepository
+    value: "web-status"
   
-  devKustomizationOverlayPath: 'overlays/dev'
-  devDomainName: 'vspsample.online'
-  devContainerRegistry: 'vspsample.azurecr.io'
-  devImagePullSecret: 'docker-config'
+  - name: devDockerBuildContext
+    value: "$(Build.SourcesDirectory)/Backend"
+    
+  - name: devDockerfilePath
+    value: "$(Build.SourcesDirectory)/Backend/Services/WebStatus/WebStatus/Dockerfile"
 
-name: 
 pool:
   # vmImage: ubuntu-latest
   name: default
@@ -47,14 +50,13 @@ stages:
         displayName: Deploy using Kustomize
         environment: 
           name: ${{ variables.devEnvName }}
-          resourceName: ${{ variables.devEnvResourceName }}
-          resourceType: kubernetes
         strategy:
           runOnce:
             deploy:
                steps:
                 - template: templates/deploy-using-kustomize.yml
                   parameters:
+                    kubernetesServiceConnection: $(devKubernetesServiceConnection)
                     kubectlVersion: $(kubectlVersion)
                     kustomizationOverlayPath: $(devKustomizationOverlayPath)
                     domainName: $(devDomainName)

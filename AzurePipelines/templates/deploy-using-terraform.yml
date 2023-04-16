@@ -1,0 +1,66 @@
+parameters:
+  - name: path
+    type: string
+  - name: azureServiceConnection
+    type: string
+  - name: terraformVersion
+    type: string
+  - name: backendResourceGroupName
+    type: string
+  - name: backendResourceGroupLocation
+    type: string
+  - name: backendAccountSku
+    type: string
+  - name: backendStorageAccountName
+    type: string
+  - name: backendContainerName
+    type: string
+  - name: backendKey
+    type: string
+  - name: arguments
+    type: string
+
+steps:
+  - task: TerraformInstaller@0
+    displayName: Install terraform tool
+    inputs:
+      terraformVersion: ${{ parameters.terraformVersion }}
+  - task: TerraformCLI@0
+    displayName: Terraform init
+    inputs:
+      command: "init"
+      workingDirectory: "$(Pipeline.Workspace)/${{ parameters.path }}"
+      backendType: "azurerm"
+      backendServiceArm: ${{ parameters.azureServiceConnection }}
+      ensureBackend: true
+      backendAzureRmResourceGroupName: ${{ parameters.backendResourceGroupName }}
+      backendAzureRmResourceGroupLocation: ${{ parameters.backendResourceGroupLocation }}
+      backendAzureRmStorageAccountName: ${{ parameters.backendStorageAccountName }}
+      backendAzureRmStorageAccountSku: ${{ parameters.backendAccountSku }}
+      backendAzureRmContainerName: ${{ parameters.backendContainerName }}
+      backendAzureRmKey: ${{ parameters.backendKey }}
+      allowTelemetryCollection: true
+  - task: TerraformCLI@0
+    displayName: Terraform validate
+    inputs:
+      command: "validate"
+      workingDirectory: "$(Pipeline.Workspace)/${{ parameters.path }}"
+      allowTelemetryCollection: false
+  - task: TerraformCLI@0
+    displayName: Terraform plan
+    inputs:
+      command: "plan"
+      workingDirectory: "$(Pipeline.Workspace)/${{ parameters.path }}"
+      environmentServiceName: ${{ parameters.azureServiceConnection }}
+      runAzLogin: true
+      allowTelemetryCollection: false
+      commandOptions: ${{ parameters.arguments }} -out "$(Pipeline.Workspace)/${{ parameters.path }}/plan-$(Build.BuildId).out"
+  - task: TerraformCLI@0
+    displayName: Terraform apply
+    inputs:
+      command: "apply"
+      workingDirectory: "$(Pipeline.Workspace)/${{ parameters.path }}"
+      environmentServiceName: "${{ parameters.azureServiceConnection }}"
+      runAzLogin: true
+      commandOptions: "$(Pipeline.Workspace)/${{ parameters.path }}/plan-$(Build.BuildId).out"
+      allowTelemetryCollection: false

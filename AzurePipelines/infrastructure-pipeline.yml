@@ -4,20 +4,25 @@ trigger:
       - infra-*
 
 variables:
-  azureServiceConnection: 'azure-service-connection'
-  terraformVersion: '1.4.2'
-  backendResourceGroupName: 'vspsample-iac'
-  backendResourceGroupLocation: 'East Asia'
-  backendAccountSku: 'Standard_RAGRS'
-  backendStorageAccountName: 'vspterraformstates'
-  backendContainerName: 'terraformstates'
+  azureServiceConnection: "azure-service-connection"
+  terraformVersion: "1.4.2"
+  backendResourceGroupName: "vspsample-devops-rg"
+  backendResourceGroupLocation: "East Asia"
+  backendAccountSku: "Standard_RAGRS"
+  backendStorageAccountName: "vspterraformstates"
+  backendContainerName: "terraformstates"
 
-  terraformManifestPath: 'Deploy/terraform/aks'
-  devEnvName: 'dev-infrastructure-deployment'
-  devBackendKey: 'dev-terraform.tfstate'
-  devSshKeyFile: 'dev-ssh-key.pub'
-  devTerraformVarsFile: 'dev-terraform.tfvars'
-  
+  devEnvName: "dev-infrastructure-deployment"
+
+  aksTerraformManifestPath: "Deploy/terraform/aks"
+  devAksBackendKey: "dev-aks-terraform.tfstate"
+  devAksSshKeyFile: "dev-aks-ssh-key.pub"
+  devAksTerraformVarsFile: "dev-aks-terraform.tfvars"
+
+  adoTerraformManifestPath: "Deploy/terraform/ado-svc-conn"
+  devAdoBackendKey: "dev-ado-svc-conn-terraform.tfstate"
+  devAdoSvcConnTerraformVarsFile: "dev-ado-svc-conn-terraform.tfvars"
+
 pool:
   # vmImage: ubuntu-latest
   name: default
@@ -31,25 +36,68 @@ stages:
         steps:
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(Build.SourcesDirectory)/$(terraformManifestPath)'
-              artifact: 'terraform-manifest'
-              publishLocation: 'pipeline'
+              targetPath: "$(Build.SourcesDirectory)/$(aksTerraformManifestPath)"
+              artifact: "aks-terraform-manifest"
+              publishLocation: "pipeline"
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: "$(Build.SourcesDirectory)/$(adoTerraformManifestPath)"
+              artifact: "ado-svc-conn-terraform-manifest"
+              publishLocation: "pipeline"
 
   - stage: DeployToDevEnv
     displayName: Deploy to Dev Environment
     dependsOn: PublishArtifact
     condition: succeeded()
     jobs:
-      - template: templates/deploy-aks-using-terraform.yml
-        parameters:
-          envName: $(devEnvName)
-          azureServiceConnection: $(azureServiceConnection)
-          terraformVersion: $(terraformVersion)
-          backendResourceGroupName: $(backendResourceGroupName)
-          backendResourceGroupLocation: $(backendResourceGroupLocation)
-          backendAccountSku: $(backendAccountSku)
-          backendStorageAccountName: $(backendStorageAccountName)
-          backendContainerName: $(backendContainerName)
-          backendKey: $(devBackendKey)
-          sshKeyFile: $(devSshKeyFile)
-          terraformVarsFile: $(devTerraformVarsFile)
+      - deployment: Deployment
+        environment: $(devEnvName)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: DownloadSecureFile@1
+                  displayName: Download aks ssh key file
+                  name: devAksSshKeyFile
+                  inputs:
+                    secureFile: $(devAksSshKeyFile)
+                - task: DownloadSecureFile@1
+                  displayName: Download aks terraform vars file
+                  name: devAksTerraformVarsFile
+                  inputs:
+                    secureFile: $(devAksTerraformVarsFile)
+                - task: DownloadSecureFile@1
+                  displayName: Download ado terraform vars file
+                  name: devAdoSvcConnTerraformVarsFile
+                  inputs:
+                    secureFile: $(devAdoSvcConnTerraformVarsFile)
+                - template: templates/deploy-using-terraform.yml
+                  parameters:
+                    path: aks-terraform-manifest
+                    azureServiceConnection: $(azureServiceConnection)
+                    terraformVersion: $(terraformVersion)
+                    backendResourceGroupName: $(backendResourceGroupName)
+                    backendResourceGroupLocation: $(backendResourceGroupLocation)
+                    backendAccountSku: $(backendAccountSku)
+                    backendStorageAccountName: $(backendStorageAccountName)
+                    backendContainerName: $(backendContainerName)
+                    backendKey: $(devAksBackendKey)
+                    arguments: |-
+                      -var-file $(devAksTerraformVarsFile.secureFilePath) 
+                      -var "aks_ssh_public_key_path=$(devAksSshKeyFile.secureFilePath)"
+                - template: templates/deploy-using-terraform.yml
+                  parameters:
+                    path: ado-svc-conn-terraform-manifest
+                    azureServiceConnection: $(azureServiceConnection)
+                    terraformVersion: $(terraformVersion)
+                    backendResourceGroupName: $(backendResourceGroupName)
+                    backendResourceGroupLocation: $(backendResourceGroupLocation)
+                    backendAccountSku: $(backendAccountSku)
+                    backendStorageAccountName: $(backendStorageAccountName)
+                    backendContainerName: $(backendContainerName)
+                    backendKey: $(devAdoBackendKey)
+                    arguments: |-
+                      -var-file $(devAdoSvcConnTerraformVarsFile.secureFilePath) 
+                      -var "org_service_url=$(System.TeamFoundationCollectionUri)" 
+                      -var "personal_access_token=$(System.AccessToken)" 
+                      -var "project_name=$(System.TeamProject)"

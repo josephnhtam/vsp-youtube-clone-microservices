@@ -12,5 +12,5 @@ variable "github_repo" {
 variable "github_repo_default_branch" {
   type        = string
   description = "The branch name for which builds are triggered"
-  default     = "master"
+  default     = "refs/heads/master"
 }

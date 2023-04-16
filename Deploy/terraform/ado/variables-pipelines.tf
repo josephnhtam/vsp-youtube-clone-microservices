@@ -12,6 +12,10 @@ variable "pipelines" {
       yml_path = "AzurePipelines/common-pipeline.yml"
     }
 
+    "api-gateway-pipeline" = {
+      yml_path = "AzurePipelines/api-gateway-pipeline.yml"
+    }
+
     "community-api-pipeline" = {
       yml_path = "AzurePipelines/community-api-pipeline.yml"
     }
@@ -37,7 +41,7 @@ variable "pipelines" {
     }
 
     "storage-api-pipeline.yml" = {
-      yml_path = "AzurePipelines/storage-api-pipeline.yml.yml"
+      yml_path = "AzurePipelines/storage-api-pipeline.yml"
     }
 
     "subscriptions-api-pipeline" = {
