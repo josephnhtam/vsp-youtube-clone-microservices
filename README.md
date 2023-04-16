@@ -416,8 +416,35 @@ To deploy the application to Azure Kubernetes Service, you'll need to have the f
 
 The DNS zone and domain name are required for domain-name-based routing. The Kubernetes cluster is also integrated with **ingress-nginx**, **external-dns** and **cert-manager** which automatically manage the DNS records and TLS certificates for the services.
 
-**This repository contains:**
+#### This repository contains
 
-- Terraform manifests for provisioning the required infrastructure, including the AKS cluster, container registry, DNS zone, virtual network, subnets.
-- Kubernetes manifests for deploying the application to the AKS cluster.
-- Azure pipelines YAML files for creating pipelines to continuously build and deploy the application.
+##### Terraform manifests for deploying infrastructure ( Deploy/terraform/aks )
+
+- Provision the AKS cluster, container registry, DNS zone, virtual network, subnets
+- Install Helm charts including **ingress-nginx**, **external-dns** and **cert-manager** which automatically manage the DNS records and TLS certificates for the services
+- Assign roles such as DNS Zone Contributor to the Kubelet identity
+
+##### Terraform manifests for deploying the Azure DevOps project ( Deploy/terraform/ado )
+
+- Deploy the Azure DevOps project
+- Deploy the variable group
+- Deploy the pipelines for the infrastructure, microservices and web client
+- Deploy the Azure AD service principal with an owner role of the subscription and the corresponding service connection for Azure resource manager
+  - The owner role is required for role assignments to the Kubelet identity
+- Deploy the service connection to the GitHub repository
+- Add the Project Build Service user to the Endpoint Administrators group to ensure that the job access tokens provide permission to manipulate the service connections
+
+##### Azure pipelines YAML files ( AzurePipelines )
+
+- Configure the pipelines for infrastructure, microservices and web client
+- Bake the Kubernetes manifests and replace placeholders in the manifests with actual values, such as domain name, container registry and tag
+- Continuously build application images and deploy them to the AKS cluster
+
+##### Kubernetes manifests for deploying the application to the AKS cluster ( Deploy/kubernetes )
+
+- Use Kustomize to generate Kubernetes manifests for different environments
+- Deploy all the microservices and the web client to the AKS cluster
+- Deploy the RabbitMQ, PostgreSQL, MongoDB, ElasticSearch, Logstash, Redis, Jaeger (for development purposes)
+- Deploy an ingress for both domain-name-based and path-based routings
+- Deploy a cluster issuer to represent the Let’s Encrypt certificate authority to obtain the signed certificate
+- Deploy the horizontal pod autoscaler, pod monitor for the video processor service to scale it according to the usage automatically
