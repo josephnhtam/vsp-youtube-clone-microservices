@@ -434,6 +434,10 @@ The DNS zone and domain name are required for domain-name-based routing. The Kub
 - Deploy the service connection to the GitHub repository
 - Add the Project Build Service user to the Endpoint Administrators group to ensure that the job access tokens provide permission to manipulate the service connections
 
+##### Terraform manifests for deploying the Azure DevOps service connections ( Deploy/terraform/ado-svc-conn )
+
+- Apply after infrastructure provisioning to create service connections for AKS cluster and container registry automatically
+
 ##### Azure pipelines YAML files ( AzurePipelines )
 
 - Configure the pipelines for infrastructure, microservices and web client
