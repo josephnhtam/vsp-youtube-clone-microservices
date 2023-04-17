@@ -4,6 +4,7 @@ metadata:
   name: users-api
   labels:
     app: users-api
+    HealthChecks: "true"
 spec:
   selector:
     app: users-api

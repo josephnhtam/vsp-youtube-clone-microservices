@@ -4,6 +4,7 @@ metadata:
   name: subscriptions-api
   labels:
     app: subscriptions-api
+    HealthChecks: "true"
 spec:
   selector:
     app: subscriptions-api

@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: web-status-service-account-role-binding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: web-status-service-account
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: services-discovery
+  apiGroup: rbac.authorization.k8s.io

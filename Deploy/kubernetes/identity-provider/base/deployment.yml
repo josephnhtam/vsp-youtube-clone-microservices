@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: identity-provider
   labels:
-        app: identity-provider
+    app: identity-provider
 spec:
   selector:
     matchLabels:

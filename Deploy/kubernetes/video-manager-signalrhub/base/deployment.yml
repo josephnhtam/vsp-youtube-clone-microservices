@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: video-manager-signalrhub
   labels:
-        app: video-manager-signalrhub
+    app: video-manager-signalrhub
 spec:
   selector:
     matchLabels:

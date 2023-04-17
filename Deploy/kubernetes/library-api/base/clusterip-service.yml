@@ -4,6 +4,7 @@ metadata:
   name: library-api
   labels:
     app: library-api
+    HealthChecks: "true"
 spec:
   selector:
     app: library-api

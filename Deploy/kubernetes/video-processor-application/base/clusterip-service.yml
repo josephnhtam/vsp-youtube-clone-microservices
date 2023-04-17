@@ -4,6 +4,7 @@ metadata:
   name: video-processor-application
   labels:
     app: video-processor-application
+    HealthChecks: "true"
 spec:
   selector:
     app: video-processor-application

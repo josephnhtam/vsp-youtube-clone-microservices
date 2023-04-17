@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: library-api
   labels:
-        app: library-api
+    app: library-api
 spec:
   selector:
     matchLabels:

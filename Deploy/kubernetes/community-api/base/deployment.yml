@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: community-api
   labels:
-        app: community-api
+    app: community-api
 spec:
   selector:
     matchLabels:

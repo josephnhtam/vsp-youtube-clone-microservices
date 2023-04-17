@@ -6,3 +6,5 @@ resources:
   - "./secret.yml"
   - "./deployment.yml"
   - "./clusterip-service.yml"
+  - "./service-account.yml"
+  - "./cluster-role-binding.yml"

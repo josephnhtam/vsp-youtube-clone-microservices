@@ -4,6 +4,7 @@ metadata:
   name: identity-provider
   labels:
     app: identity-provider
+    HealthChecks: "true"
 spec:
   selector:
     app: identity-provider

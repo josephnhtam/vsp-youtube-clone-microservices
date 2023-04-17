@@ -13,6 +13,7 @@ spec:
       labels:
         app: web-status
     spec:
+      serviceAccountName: web-status-service-account
       containers:
       - name: web-status
         image: web-status

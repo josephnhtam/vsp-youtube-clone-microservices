@@ -4,6 +4,7 @@ metadata:
   name: video-manager-signalrhub
   labels:
     app: video-manager-signalrhub
+    HealthChecks: "true"
 spec:
   selector:
     app: video-manager-signalrhub

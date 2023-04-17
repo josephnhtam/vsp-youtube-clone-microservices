@@ -4,6 +4,7 @@ metadata:
   name: history-api
   labels:
     app: history-api
+    HealthChecks: "true"
 spec:
   selector:
     app: history-api

@@ -4,6 +4,7 @@ metadata:
   name: video-manager-api
   labels:
     app: video-manager-api
+    HealthChecks: "true"
 spec:
   selector:
     app: video-manager-api

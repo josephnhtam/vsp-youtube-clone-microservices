@@ -1,41 +1,65 @@
 {
-  "profiles": {
-    "http": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:16050"
-    },
-    "https": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:16050"
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true,
-      "useSSL": true
-    }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:16050",
-      "sslPort": 44382
-    }
-  }
+	"profiles": {
+		"http": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"HealthChecksUI__HealthChecks__0__Name": "Storage",
+				"HealthChecksUI__HealthChecks__0__Uri": "http://localhost:14200/hc",
+				"HealthChecksUI__HealthChecks__1__Name": "VideoManager",
+				"HealthChecksUI__HealthChecks__1__Uri": "http://localhost:15000/hc",
+				"HealthChecksUI__HealthChecks__2__Name": "VideoManagerSignalRHub",
+				"HealthChecksUI__HealthChecks__2__Uri": "http://localhost:15050/hc",
+				"HealthChecksUI__HealthChecks__3__Name": "IdentityProvider",
+				"HealthChecksUI__HealthChecks__3__Uri": "http://localhost:15100/hc",
+				"HealthChecksUI__HealthChecks__4__Name": "VideoProcessor",
+				"HealthChecksUI__HealthChecks__4__Uri": "http://localhost:15200/hc",
+				"HealthChecksUI__HealthChecks__5__Name": "VideoStore",
+				"HealthChecksUI__HealthChecks__5__Uri": "http://localhost:15400/hc",
+				"HealthChecksUI__HealthChecks__6__Name": "Community",
+				"HealthChecksUI__HealthChecks__6__Uri": "http://localhost:15500/hc",
+				"HealthChecksUI__HealthChecks__7__Name": "Library",
+				"HealthChecksUI__HealthChecks__7__Uri": "http://localhost:15600/hc",
+				"HealthChecksUI__HealthChecks__8__Name": "Search",
+				"HealthChecksUI__HealthChecks__8__Uri": "http://localhost:15700/hc",
+				"HealthChecksUI__HealthChecks__9__Name": "Subscriptions",
+				"HealthChecksUI__HealthChecks__9__Uri": "http://localhost:15800/hc",
+				"HealthChecksUI__HealthChecks__10__Name": "History",
+				"HealthChecksUI__HealthChecks__10__Uri": "http://localhost:15900/hc",
+				"HealthChecksUI__HealthChecks__11__Name": "APIGateway",
+				"HealthChecksUI__HealthChecks__11__Uri": "http://localhost:16000/hc"
+			},
+			"dotnetRunMessages": true,
+			"applicationUrl": "http://localhost:16050"
+		},
+		"https": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			},
+			"dotnetRunMessages": true,
+			"applicationUrl": "http://localhost:16050"
+		},
+		"IIS Express": {
+			"commandName": "IISExpress",
+			"launchBrowser": true,
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		},
+		"Docker": {
+			"commandName": "Docker",
+			"launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+			"publishAllPorts": true,
+			"useSSL": true
+		}
+	},
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:16050",
+			"sslPort": 44382
+		}
+	}
 }

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: storage-api
   labels:
-        app: storage-api
+    app: storage-api
 spec:
   selector:
     matchLabels:

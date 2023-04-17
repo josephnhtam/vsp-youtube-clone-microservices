@@ -4,6 +4,7 @@ metadata:
   name: search-api
   labels:
     app: search-api
+    HealthChecks: "true"
 spec:
   selector:
     app: search-api

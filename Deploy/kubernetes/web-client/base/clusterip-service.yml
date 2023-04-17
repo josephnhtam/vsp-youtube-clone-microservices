@@ -4,6 +4,7 @@ metadata:
   name: web-client
   labels:
     app: web-client
+    HealthChecks: "true"
 spec:
   selector:
     app: web-client

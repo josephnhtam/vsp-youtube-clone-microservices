@@ -4,6 +4,7 @@ metadata:
   name: api-gateway
   labels:
     app: api-gateway
+    HealthChecks: "true"
 spec:
   selector:
     app: api-gateway

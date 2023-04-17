@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: search-api
   labels:
-        app: search-api
+    app: search-api
 spec:
   selector:
     matchLabels:
