@@ -9,7 +9,7 @@
         }
 
         public static Exception? FindInnerException (this Exception ex, Type exceptionType) {
-            if (ex.GetType() == exceptionType) {
+            if (exceptionType.IsAssignableFrom(ex.GetType())) {
                 return ex;
             }
 
