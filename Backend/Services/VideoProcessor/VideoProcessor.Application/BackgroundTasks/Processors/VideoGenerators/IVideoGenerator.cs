@@ -3,7 +3,7 @@
 namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoGenerators {
     public interface IVideoGenerator {
         Task<ProcessedVideo?> GenerateAsync (
-            Video video,
+            IReadOnlyVideo video,
             VideoInfo videoInfo,
             string videoFilePath,
             VideoProcessingStep processingStep,

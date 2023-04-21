@@ -25,7 +25,7 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoGenerators 
         }
 
         public async Task<ProcessedVideo?> GenerateAsync (
-            Video video,
+            IReadOnlyVideo video,
             VideoInfo videoInfo,
             string videoFilePath,
             VideoProcessingStep processingStep,

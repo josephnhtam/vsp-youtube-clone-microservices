@@ -14,7 +14,7 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.FileDownloaders 
             _config = config.Value;
         }
 
-        public async Task<string> DownloadVideoAsync (Video video, string tempDirPath, CancellationToken cancellationToken) {
+        public async Task<string> DownloadVideoAsync (IReadOnlyVideo video, string tempDirPath, CancellationToken cancellationToken) {
             using var httpClient = _httpClientFactory.CreateClient(HttpClients.StorageClient);
             var downloadStream = await httpClient.GetStreamAsync(GetVideoFileUrl(video), cancellationToken);
 
@@ -32,7 +32,7 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.FileDownloaders 
             return videoPath;
         }
 
-        private Uri GetVideoFileUrl (Video video) {
+        private Uri GetVideoFileUrl (IReadOnlyVideo video) {
             if (string.IsNullOrEmpty(_config.BaseUri) ||
                 video.VideoFileUrl.StartsWith("http://") ||
                 video.VideoFileUrl.StartsWith("https://")) {

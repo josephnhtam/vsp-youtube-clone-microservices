@@ -70,7 +70,7 @@ namespace Infrastructure.EFCore.TransactionalEvents {
             }
         }
 
-        private async Task CommitGroupAsync (TDbContext context, string groupId, List<TransactionalEvent> transactionalEvents, TimeSpan? availableDelay, CancellationToken cancellationToken) {
+        private async Task AddGroupAsync (TDbContext context, string groupId, List<TransactionalEvent> transactionalEvents, TimeSpan? availableDelay, CancellationToken cancellationToken) {
             if (transactionalEvents.Count == 0) {
                 return;
             }
@@ -111,18 +111,32 @@ namespace Infrastructure.EFCore.TransactionalEvents {
             return transactionalEventsGroup;
         }
 
-        public async Task CommitEventsAsync (Dictionary<string, List<TransactionalEvent>> eventGroups, TimeSpan? availableDelay = null, CancellationToken cancellationToken = default) {
+        public async Task AddToContextAsync (Dictionary<string, List<TransactionalEvent>> eventGroups, TimeSpan? availableDelay = null, CancellationToken cancellationToken = default) {
             var context = ServiceProvider.GetRequiredService<TDbContext>();
 
             var groupIds = eventGroups.Keys.OrderBy(x => x);
 
             try {
                 foreach (var groupId in groupIds) {
-                    await CommitGroupAsync(context, groupId, eventGroups[groupId], availableDelay, cancellationToken);
+                    await AddGroupAsync(context, groupId, eventGroups[groupId], availableDelay, cancellationToken);
                 }
             } catch (Exception ex) {
                 _logger.LogError(ex, "An error occurred when committing events group");
                 throw;
+            }
+        }
+
+        public void RemoveFromContext (Dictionary<string, List<TransactionalEvent>> eventGroups) {
+            var context = ServiceProvider.GetRequiredService<TDbContext>();
+
+            var events = eventGroups.SelectMany(x => x.Value).ToList();
+
+            var dataEntries = context.ChangeTracker.Entries().Where(e =>
+                e.Entity is TransactionalEventData data && events.Contains(data.Event)
+            );
+
+            foreach (var entry in dataEntries) {
+                entry.State = EntityState.Detached;
             }
         }
 

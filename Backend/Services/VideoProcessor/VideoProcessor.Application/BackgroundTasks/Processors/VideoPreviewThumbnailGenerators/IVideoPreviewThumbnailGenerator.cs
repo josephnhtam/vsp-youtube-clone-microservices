@@ -3,7 +3,7 @@
 namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoPreviewThumbnailGenerators {
     public interface IVideoPreviewThumbnailGenerator {
         Task<VideoPreviewThumbnail> GenerateAsync (
-            Video video,
+            IReadOnlyVideo video,
             VideoInfo videoInfo,
             string videoFilePath,
             string tempDirPath,

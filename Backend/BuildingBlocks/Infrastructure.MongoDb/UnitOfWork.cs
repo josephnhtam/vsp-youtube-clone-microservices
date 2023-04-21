@@ -32,7 +32,7 @@ namespace Infrastructure.MongoDb {
             var eventGroups = _transactionalEventsCommitter?.ObtainEventGroups();
 
             if (eventGroups?.Count > 0) {
-                await _transactionalEventsCommitter!.CommitEventsAsync(eventGroups, _config.TransactionalEventAvailableDelay);
+                await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
             }
 
             await DoCommitAsync(cancellationToken);

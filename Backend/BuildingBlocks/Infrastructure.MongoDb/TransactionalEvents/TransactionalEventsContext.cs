@@ -87,7 +87,7 @@ namespace Infrastructure.MongoDb.TransactionalEvents {
             return transactionalEventsGroup;
         }
 
-        public Task CommitEventsAsync (Dictionary<string, List<TransactionalEvent>> eventGroups, TimeSpan? availableDelay = null, CancellationToken cancellationToken = default) {
+        public Task AddToContextAsync (Dictionary<string, List<TransactionalEvent>> eventGroups, TimeSpan? availableDelay = null, CancellationToken cancellationToken = default) {
             var context = ServiceProvider.GetRequiredService<IMongoCollectionContext<TransactionalEventsGroup>>();
 
             var groupIds = eventGroups.Keys.OrderBy(x => x);
@@ -97,6 +97,10 @@ namespace Infrastructure.MongoDb.TransactionalEvents {
             }
 
             return Task.CompletedTask;
+        }
+
+        public void RemoveFromContext (Dictionary<string, List<TransactionalEvent>> eventGroups) {
+            throw new NotSupportedException();
         }
 
     }

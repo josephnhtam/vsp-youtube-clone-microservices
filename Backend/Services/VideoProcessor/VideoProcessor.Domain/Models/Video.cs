@@ -2,7 +2,24 @@
 using VideoProcessor.Domain.DomainEvents;
 
 namespace VideoProcessor.Domain.Models {
-    public class Video : DomainEntity, IAggregateRoot {
+    public interface IReadOnlyVideo {
+        public Guid Id { get; }
+        public string CreatorId { get; }
+        public string OriginalFileName { get; }
+        public string VideoFileUrl { get; }
+        public VideoInfo? VideoInfo { get; }
+        public VideoProcessingStatus Status { get; }
+        public DateTimeOffset AvailableDate { get; }
+        public DateTimeOffset? ProcessedDate { get; }
+        public int RetryCount { get; }
+        public VideoPreviewThumbnail? PreviewThumbnail { get; }
+        public IReadOnlyList<VideoProcessingStep> ProcessingSteps { get; }
+        public IReadOnlyList<VideoThumbnail> Thumbnails { get; }
+        public IReadOnlyList<ProcessedVideo> Videos { get; }
+        public int LockVersion { get; }
+    }
+
+    public class Video : DomainEntity, IAggregateRoot, IReadOnlyVideo {
 
         private readonly List<VideoProcessingStep> _processingSteps;
         private readonly List<VideoThumbnail> _thumbnails;

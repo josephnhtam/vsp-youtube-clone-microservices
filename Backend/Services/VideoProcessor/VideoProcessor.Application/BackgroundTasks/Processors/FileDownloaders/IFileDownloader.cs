@@ -2,6 +2,6 @@
 
 namespace VideoProcessor.Application.BackgroundTasks.Processors.FileDownloaders {
     public interface IFileDownloader {
-        Task<string> DownloadVideoAsync (Video video, string tempDirPath, CancellationToken cancellationToken);
+        Task<string> DownloadVideoAsync (IReadOnlyVideo video, string tempDirPath, CancellationToken cancellationToken);
     }
 }

@@ -26,7 +26,7 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoThumbnailGe
         }
 
         public async Task<List<VideoThumbnail>> GenerateAsync (
-            Video video,
+            IReadOnlyVideo video,
             VideoInfo videoInfo,
             string videoFilePath,
             string tempDirPath,

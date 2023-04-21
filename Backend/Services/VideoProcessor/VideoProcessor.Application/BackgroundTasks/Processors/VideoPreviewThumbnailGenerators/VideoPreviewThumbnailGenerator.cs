@@ -29,7 +29,7 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoPreviewThum
         }
 
         public async Task<VideoPreviewThumbnail> GenerateAsync (
-            Video video,
+            IReadOnlyVideo video,
             VideoInfo videoInfo,
             string videoFilePath,
             string tempDirPath,

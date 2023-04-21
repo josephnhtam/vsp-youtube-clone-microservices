@@ -27,12 +27,6 @@ namespace Community.API.Application.Commands.Handlers {
         }
 
         public async Task<VideoComment> Handle (AddVideoCommentCommand request, CancellationToken cancellationToken) {
-            var userProfile = await _userProfileRepository.GetUserProfileAsync(request.UserId);
-
-            if (userProfile == null) {
-                throw new AppException("User profile not found", null, StatusCodes.Status404NotFound);
-            }
-
             if (request.ParentCommentId != null) {
                 return await AddReplyToCommentAsync(request);
             } else if (request.VideoId != null) {
@@ -42,37 +36,53 @@ namespace Community.API.Application.Commands.Handlers {
             throw new AppException(null, null, StatusCodes.Status400BadRequest);
         }
 
+        private async Task CheckUserProfile (AddVideoCommentCommand request) {
+            var userProfile = await _userProfileRepository.GetUserProfileAsync(request.UserId);
+
+            if (userProfile == null) {
+                throw new AppException("User profile not found", null, StatusCodes.Status404NotFound);
+            }
+        }
+
         private async Task<VideoComment> AddCommentToForumAsync (AddVideoCommentCommand request) {
-            var forum = await _forumRepository.GetVideoForumByIdAsync(request.VideoId!.Value);
-
-            if (forum == null) {
-                throw new AppException("The forum does not exist.", null, StatusCodes.Status400BadRequest);
-            }
-
-            if (!forum.AllowedToComment) {
-                throw new AppException("The forum does not allow to comment.", null, StatusCodes.Status400BadRequest);
-            }
-
-            var comment = forum.AddComment(request.UserId, request.Comment);
+            VideoComment comment = null!;
 
             await _unitOfWork.ExecuteTransactionAsync(async () => {
+                await CheckUserProfile(request);
+
+                var forum = await _forumRepository.GetVideoForumByIdAsync(request.VideoId!.Value);
+
+                if (forum == null) {
+                    throw new AppException("The forum does not exist.", null, StatusCodes.Status400BadRequest);
+                }
+
+                if (!forum.AllowedToComment) {
+                    throw new AppException("The forum does not allow to comment.", null, StatusCodes.Status400BadRequest);
+                }
+
+                comment = forum.AddComment(request.UserId, request.Comment);
+
                 await _commentRepository.AddVideoCommentAsync(comment);
                 await _unitOfWork.CommitAsync();
             });
 
-            return comment;
+            return comment!;
         }
 
         private async Task<VideoComment> AddReplyToCommentAsync (AddVideoCommentCommand request) {
-            var commentToReply = await _commentRepository.GetVideoCommentByIdAsync(request.ParentCommentId!.Value, true);
-
-            if (commentToReply == null) {
-                throw new AppException("The comment to reply does not exist.", null, StatusCodes.Status400BadRequest);
-            }
-
-            var comment = commentToReply.Reply(request.UserId, request.Comment);
+            VideoComment comment = null!;
 
             await _unitOfWork.ExecuteTransactionAsync(async () => {
+                await CheckUserProfile(request);
+
+                var commentToReply = await _commentRepository.GetVideoCommentByIdAsync(request.ParentCommentId!.Value, true);
+
+                if (commentToReply == null) {
+                    throw new AppException("The comment to reply does not exist.", null, StatusCodes.Status400BadRequest);
+                }
+
+                comment = commentToReply.Reply(request.UserId, request.Comment);
+
                 await _commentRepository.AddVideoCommentAsync(comment);
                 await _unitOfWork.CommitAsync();
             });

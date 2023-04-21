@@ -32,12 +32,18 @@ namespace Infrastructure.EFCore {
             }
 
             var eventGroups = _transactionalEventsCommitter?.ObtainEventGroups();
-
             if (eventGroups?.Count > 0) {
                 await ExecuteTransactionAsync(async () => {
-                    await _transactionalEventsCommitter!.CommitEventsAsync(eventGroups, _config.TransactionalEventAvailableDelay);
-                    await DoCommitAsync(cancellationToken);
-                });
+                    try {
+                        await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
+                        await DoCommitAsync(cancellationToken);
+                    } catch (Exception) {
+                        _transactionalEventsCommitter!.RemoveFromContext(eventGroups);
+                        throw;
+                    }
+                }, options => {
+                    (options as EfCoreTransactionOptions)!.ResetContext = false;
+                }, cancellationToken);
             } else {
                 await DoCommitAsync(cancellationToken);
             }
@@ -74,17 +80,11 @@ namespace Infrastructure.EFCore {
 
             await _dbContext.ExecuteResilentTransaction(async () => {
                 await task.Invoke();
-            }, options.IsolationLevel, cancellationToken);
+            }, options.IsolationLevel, options.ResetContext, cancellationToken);
         }
 
         public void ResetContext () {
-            DetachAllEntities(_dbContext);
-        }
-
-        private static void DetachAllEntities (DbContext context) {
-            foreach (var entry in context.ChangeTracker.Entries()) {
-                entry.State = EntityState.Detached;
-            }
+            _dbContext.ChangeTracker.Clear();
         }
 
         public async Task ExecuteOptimisticUpdateAsync (Func<Task> task) {
@@ -121,5 +121,6 @@ namespace Infrastructure.EFCore {
 
     public class EfCoreTransactionOptions : ITransactionOptions {
         public IsolationLevel? IsolationLevel { get; set; }
+        public bool ResetContext { get; set; } = true;
     }
 }

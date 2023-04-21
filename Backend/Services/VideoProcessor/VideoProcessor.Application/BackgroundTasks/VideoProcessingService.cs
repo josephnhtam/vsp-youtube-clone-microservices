@@ -14,7 +14,6 @@ using VideoProcessor.Application.BackgroundTasks.Processors.VideoPreviewThumbnai
 using VideoProcessor.Application.BackgroundTasks.Processors.VideoThumbnailGenerators;
 using VideoProcessor.Application.Configurations;
 using VideoProcessor.Application.Infrastructure;
-using VideoProcessor.Application.Services;
 using VideoProcessor.Domain.Contracts;
 using VideoProcessor.Domain.Models;
 
@@ -71,7 +70,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             using var scope = _services.CreateScope();
             var services = scope.ServiceProvider;
 
-            Video? video = null;
+            IReadOnlyVideo? video = null;
 
             try {
                 video = await PollVideoAsync(services, stoppingToken);
@@ -85,7 +84,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             }
         }
 
-        private async Task DoProcessVideoAsync (IServiceProvider services, Video video, CancellationToken cancellationToken = default) {
+        private async Task DoProcessVideoAsync (IServiceProvider services, IReadOnlyVideo video, CancellationToken cancellationToken = default) {
             Guid tempFilesId = Guid.NewGuid();
 
             try {
@@ -102,14 +101,14 @@ namespace VideoProcessor.Application.BackgroundTasks {
                                 string videoFilePath = await DownloadVideoAsync(services, video, tempDirPath, processingCancellationToken);
 
                                 VideoInfo videoInfo = await GenerateVideoInfoAsync(services, video, videoFilePath, processingCancellationToken);
-                                await SetVideoInfo(services, video, videoInfo);
+                                video = await SetVideoInfo(services, video, videoInfo);
 
                                 if (video.Status == VideoProcessingStatus.ProcessingThumbnails) {
-                                    await ProcessThumbnailsAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
+                                    video = await ProcessThumbnailsAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
                                 }
 
                                 if (video.Status == VideoProcessingStatus.ProcessingVideos) {
-                                    await ProcessVideosAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
+                                    video = await ProcessVideosAsync(services, video, tempDirPath, videoFilePath, videoInfo, processingCancellationToken);
                                 }
                             } catch (OperationCanceledException) {
                                 _logger.LogWarning("Processing of video ({VideoId}) is canceled.", video.Id);
@@ -137,7 +136,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return ex.Identify(ExceptionCategories.Transient) || ex is IOException;
         }
 
-        private Activity? CreateVideoProcessingActivity (Video video) {
+        private Activity? CreateVideoProcessingActivity (IReadOnlyVideo video) {
             var activity = _activitySource.StartActivity("ProcessVideo");
             activity?.SetTag("CreatorId", video.CreatorId);
             activity?.SetTag("OriginalFileName", video.OriginalFileName);
@@ -146,7 +145,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return activity;
         }
 
-        private async Task ProcessVideosAsync (IServiceProvider services, Video video, string tempDirPath, string videoFilePath, VideoInfo videoInfo, CancellationToken cancellationToken) {
+        private async Task<IReadOnlyVideo> ProcessVideosAsync (IServiceProvider services, IReadOnlyVideo video, string tempDirPath, string videoFilePath, VideoInfo videoInfo, CancellationToken cancellationToken) {
             var processingSteps = video.ProcessingSteps.OrderBy(x => x.Height);
 
             foreach (var processingStep in processingSteps) {
@@ -162,20 +161,20 @@ namespace VideoProcessor.Application.BackgroundTasks {
                             tempDirPath, cancellationToken);
 
                         if (processedVideo != null) {
-                            await AddVideoAsync(services, video, processingStep, processedVideo!);
+                            video = await AddVideoAsync(services, video, processingStep, processedVideo!);
                         }
                     }
                 }
             }
 
             if (video.Videos.Count > 0) {
-                await SetVideoProcessedAsync(services, video);
+                return await SetVideoProcessedAsync(services, video);
             } else {
                 throw new Exception("No video is processed");
             }
         }
 
-        private async Task ProcessThumbnailsAsync (IServiceProvider services, Video video, string tempDirPath, string videoFilePath, VideoInfo videoInfo, CancellationToken cancellationToken) {
+        private async Task<IReadOnlyVideo> ProcessThumbnailsAsync (IServiceProvider services, IReadOnlyVideo video, string tempDirPath, string videoFilePath, VideoInfo videoInfo, CancellationToken cancellationToken) {
             List<VideoThumbnail> thumbnails;
             VideoPreviewThumbnail previewThumbnail;
 
@@ -193,7 +192,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
                 cancellationToken);
             }
 
-            await AddVideoThumbnailsAsync(services, video, thumbnails, previewThumbnail);
+            return await AddVideoThumbnailsAsync(services, video, thumbnails, previewThumbnail);
         }
 
         private async Task RemoveAllTempDirectoryAsync (IServiceProvider services) {
@@ -207,10 +206,10 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return await tmpDirRepository.GetTempDirectoryAsync(tempFilesId);
         }
 
-        private async Task SetVideoProcessedAsync (IServiceProvider services, Video video) {
+        private async Task<IReadOnlyVideo> SetVideoProcessedAsync (IServiceProvider services, IReadOnlyVideo video) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
-            await ExecuteTransactionalVideoUpdateAsync(services, video, async () => {
+            return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
                 video.SetProcessed();
 
                 await unitOfWork.CommitAsync();
@@ -219,10 +218,10 @@ namespace VideoProcessor.Application.BackgroundTasks {
             });
         }
 
-        private async Task AddVideoAsync (IServiceProvider services, Video video, VideoProcessingStep processingStep, ProcessedVideo processedVideo) {
+        private async Task<IReadOnlyVideo> AddVideoAsync (IServiceProvider services, IReadOnlyVideo video, VideoProcessingStep processingStep, ProcessedVideo processedVideo) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
-            await ExecuteTransactionalVideoUpdateAsync(services, video, async () => {
+            return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
                 processingStep.SetComplete();
                 video.AddVideo(processedVideo);
 
@@ -232,17 +231,17 @@ namespace VideoProcessor.Application.BackgroundTasks {
             });
         }
 
-        private async Task AddVideoThumbnailsAsync (IServiceProvider services, Video video, List<VideoThumbnail> thumbnails, VideoPreviewThumbnail? previewThumbnail) {
+        private async Task<IReadOnlyVideo> AddVideoThumbnailsAsync (IServiceProvider services, IReadOnlyVideo video, List<VideoThumbnail> thumbnails, VideoPreviewThumbnail? previewThumbnail) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
-            await ExecuteTransactionalVideoUpdateAsync(services, video, async () => {
+            return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
                 video.AddThumbnails(thumbnails, previewThumbnail);
 
                 await unitOfWork.CommitAsync();
             });
         }
 
-        private async Task<VideoInfo> GenerateVideoInfoAsync (IServiceProvider services, Video video, string videoFilePath, CancellationToken cancellationToken) {
+        private async Task<VideoInfo> GenerateVideoInfoAsync (IServiceProvider services, IReadOnlyVideo video, string videoFilePath, CancellationToken cancellationToken) {
             using (_activitySource.StartActivity("GenerateVideoInfo")) {
                 using var scope = services.CreateScope();
                 _logger.LogInformation("Generating video info ({VideoId})", video.Id);
@@ -253,7 +252,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             }
         }
 
-        private async Task<List<VideoThumbnail>> GenerateVideoThumbnail (IServiceProvider services, Video video, VideoInfo videoInfo, string videoFilePath, string tempDirPath, CancellationToken cancellationToken) {
+        private async Task<List<VideoThumbnail>> GenerateVideoThumbnail (IServiceProvider services, IReadOnlyVideo video, VideoInfo videoInfo, string videoFilePath, string tempDirPath, CancellationToken cancellationToken) {
             using var scope = services.CreateScope();
             _logger.LogInformation("Generating video thumbnail ({VideoId})", video.Id);
             var generator = scope.ServiceProvider.GetRequiredService<IVideoThumbnailGenerator>();
@@ -262,7 +261,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return result;
         }
 
-        private async Task<VideoPreviewThumbnail> GenerateVideoPreviewThumbnail (IServiceProvider services, Video video, VideoInfo videoInfo, string videoFilePath, string tempDirPath, CancellationToken cancellationToken) {
+        private async Task<VideoPreviewThumbnail> GenerateVideoPreviewThumbnail (IServiceProvider services, IReadOnlyVideo video, VideoInfo videoInfo, string videoFilePath, string tempDirPath, CancellationToken cancellationToken) {
             using var scope = services.CreateScope();
             _logger.LogInformation("Generating video preview thumbnail ({VideoId})", video.Id);
             var generator = scope.ServiceProvider.GetRequiredService<IVideoPreviewThumbnailGenerator>();
@@ -271,7 +270,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return result;
         }
 
-        private async Task<ProcessedVideo?> GenerateVideoAsync (IServiceProvider services, Video video, VideoInfo videoInfo, string videoFilePath, VideoProcessingStep processingStep, bool required, string tempDirPath, CancellationToken cancellationToken) {
+        private async Task<ProcessedVideo?> GenerateVideoAsync (IServiceProvider services, IReadOnlyVideo video, VideoInfo videoInfo, string videoFilePath, VideoProcessingStep processingStep, bool required, string tempDirPath, CancellationToken cancellationToken) {
             using var scope = services.CreateScope();
             _logger.LogInformation("Generating video ({VideoId}) of resoultion ({Resoltuion})", video.Id, processingStep.Height);
             var generator = scope.ServiceProvider.GetRequiredService<IVideoGenerator>();
@@ -280,7 +279,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return result;
         }
 
-        private async Task<string> DownloadVideoAsync (IServiceProvider services, Video video, string tempDirPath, CancellationToken cancellationToken) {
+        private async Task<string> DownloadVideoAsync (IServiceProvider services, IReadOnlyVideo video, string tempDirPath, CancellationToken cancellationToken) {
             using (_activitySource.StartActivity("DownloadVideo")) {
                 using var scope = services.CreateScope();
                 var downloader = scope.ServiceProvider.GetRequiredService<IFileDownloader>();
@@ -297,10 +296,10 @@ namespace VideoProcessor.Application.BackgroundTasks {
             }
         }
 
-        private async Task SetVideoInfo (IServiceProvider services, Video video, VideoInfo videoInfo) {
+        private async Task<IReadOnlyVideo> SetVideoInfo (IServiceProvider services, IReadOnlyVideo video, VideoInfo videoInfo) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
-            await ExecuteTransactionalVideoUpdateAsync(services, video, async () => {
+            return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
                 video.SetVideoInfo(videoInfo);
 
                 await unitOfWork.CommitAsync();
@@ -309,10 +308,10 @@ namespace VideoProcessor.Application.BackgroundTasks {
             });
         }
 
-        private async Task SetVideoProcessingFailed (IServiceProvider services, Video video) {
+        private async Task<IReadOnlyVideo> SetVideoProcessingFailed (IServiceProvider services, IReadOnlyVideo video) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
-            await ExecuteTransactionalVideoUpdateAsync(services, video, async () => {
+            return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
                 video.SetFailed();
 
                 await unitOfWork.CommitAsync();
@@ -332,10 +331,10 @@ namespace VideoProcessor.Application.BackgroundTasks {
             }
         }
 
-        private async Task RetryVideoOrFailVideoProcessing (IServiceProvider services, Video video, bool considerMaxRetryCount = true) {
+        private async Task<IReadOnlyVideo> RetryVideoOrFailVideoProcessing (IServiceProvider services, IReadOnlyVideo video, bool considerMaxRetryCount = true) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
-            await ExecuteTransactionalVideoUpdateAsync(services, video, async () => {
+            return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
                 if (considerMaxRetryCount && video.RetryCount >= _config.MaxRetryCount) {
                     video.SetFailed();
 
@@ -379,20 +378,22 @@ namespace VideoProcessor.Application.BackgroundTasks {
             return result;
         }
 
-        private async Task ExecuteTransactionalVideoUpdateAsync (IServiceProvider services, Video video, Func<Task> task) {
+        private async Task<IReadOnlyVideo> ExecuteTransactionalVideoUpdateAsync (IServiceProvider services, IReadOnlyVideo video, Func<Video, Task> task) {
             var repository = services.GetRequiredService<IVideoRepository>();
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
             var transactionalEventsContext = services.GetRequiredService<ITransactionalEventsContext>();
 
+            Video? dbVideo = null;
+
             try {
                 await unitOfWork.ExecuteTransactionAsync(async () => {
-                    var dbVideo = await repository.GetVideoByIdAsync(video.Id);
+                    dbVideo = await repository.GetVideoByIdAsync(video.Id);
 
                     if (dbVideo == null || dbVideo.LockVersion != video.LockVersion) {
                         throw new ConflictException();
                     }
 
-                    await task.Invoke();
+                    await task.Invoke(dbVideo);
                 });
             } catch (Exception ex) {
                 _logger.LogError(ex, "An error occurred during executing task with lock version check for video ({VideoId})", video.Id);
@@ -401,6 +402,8 @@ namespace VideoProcessor.Application.BackgroundTasks {
 
             // The ordering of integration events publishing is not neccessary
             transactionalEventsContext.ResetDefaultEventsGroudId();
+
+            return dbVideo!;
         }
 
     }

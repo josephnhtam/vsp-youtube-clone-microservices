@@ -14,7 +14,7 @@ namespace VideoProcessor.Application.BackgroundTasks.Processors.VideoInfoGenerat
             _logger = logger;
         }
 
-        public async Task<VideoInfo> GenerateAsync (Video video, string videoFilePath, CancellationToken cancellationToken) {
+        public async Task<VideoInfo> GenerateAsync (IReadOnlyVideo video, string videoFilePath, CancellationToken cancellationToken) {
             var ffprobeProcess = new ChildProcess(FFmpegHelper.FFmpegExecutablesPath!, "ffprobe");
 
             var args = $@"-v panic -print_format json -show_format -show_streams ""{videoFilePath}""";
