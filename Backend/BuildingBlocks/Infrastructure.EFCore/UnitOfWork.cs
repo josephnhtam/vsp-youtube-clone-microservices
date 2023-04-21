@@ -90,27 +90,19 @@ namespace Infrastructure.EFCore {
         public async Task ExecuteOptimisticUpdateAsync (Func<Task> task) {
             int retries = _config.OptimisticConcurrencyConflictRetryCount;
             var retryPolicy = Policy.Handle<DbUpdateConcurrencyException>()
-                                    .WaitAndRetryAsync(_config.OptimisticConcurrencyConflictRetryCount,
-                                        (attempt) => TimeSpan.FromMilliseconds(10 * Math.Pow(2, retries)));
+                                    .WaitAndRetryAsync(retries,
+                                        (attempt) => TimeSpan.FromMilliseconds(10 * Math.Pow(2, attempt)),
+                                        (ex, timespan, context) => {
+                                            _logger.LogWarning(ex, $"A conflict occured during the optimistic update. Retrying the update after {timespan.Milliseconds}ms.");
+                                            ResetContext();
+                                        });
 
-            bool retry;
-
-            do {
-                retry = false;
-                try {
-                    await task.Invoke();
-                } catch (DbUpdateConcurrencyException ex) {
-                    if (retries > 0) {
-                        _logger.LogWarning(ex, "A conflict occured during the optimistic update. Retrying the update.");
-                        ResetContext();
-                        retries--;
-                        retry = true;
-                    } else {
-                        _logger.LogError(ex, "A conflict occured during the optimistic update. Exceeded max retry count.");
-                        throw new TransientException("Optimistic concurrency conflict", ex);
-                    }
-                }
-            } while (retry);
+            try {
+                await retryPolicy.ExecuteAsync(task);
+            } catch (DbUpdateConcurrencyException ex) {
+                _logger.LogError(ex, "A conflict occured during the optimistic update. Exceeded max retry count.");
+                throw new TransientException("Optimistic concurrency conflict", ex);
+            }
         }
 
         public bool IsInTransaction () {
