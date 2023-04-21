@@ -83,7 +83,7 @@ public class Callback : PageModel {
                 Nickname = name
             };
 
-            await _dbContext.ExecuteResilentTransaction(async () => {
+            await _dbContext.ExecuteResilientTransaction(async () => {
                 await _userManager.CreateAsync(user);
                 await _userManager.AddLoginAsync(user, new UserLoginInfo(provider, providerUserId, name));
                 await _userManager.AddToRoleAsync(user, Roles.User);

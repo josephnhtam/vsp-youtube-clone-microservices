@@ -78,7 +78,7 @@ namespace Infrastructure.EFCore {
                 configureOptions.Invoke(options);
             }
 
-            await _dbContext.ExecuteResilentTransaction(async () => {
+            await _dbContext.ExecuteResilientTransaction(async () => {
                 await task.Invoke();
             }, options.IsolationLevel, options.ResetContext, cancellationToken);
         }
