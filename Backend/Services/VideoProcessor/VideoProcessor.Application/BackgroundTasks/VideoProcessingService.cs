@@ -161,7 +161,7 @@ namespace VideoProcessor.Application.BackgroundTasks {
                             tempDirPath, cancellationToken);
 
                         if (processedVideo != null) {
-                            video = await AddVideoAsync(services, video, processingStep, processedVideo!);
+                            video = await AddVideoAsync(services, video, processingStep.Label, processedVideo!);
                         }
                     }
                 }
@@ -218,11 +218,11 @@ namespace VideoProcessor.Application.BackgroundTasks {
             });
         }
 
-        private async Task<IReadOnlyVideo> AddVideoAsync (IServiceProvider services, IReadOnlyVideo video, VideoProcessingStep processingStep, ProcessedVideo processedVideo) {
+        private async Task<IReadOnlyVideo> AddVideoAsync (IServiceProvider services, IReadOnlyVideo video, string processingStepLabel, ProcessedVideo processedVideo) {
             var unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
             return await ExecuteTransactionalVideoUpdateAsync(services, video, async (video) => {
-                processingStep.SetComplete();
+                video.ProcessingSteps.FirstOrDefault(x => x.Label == processingStepLabel)?.SetComplete();
                 video.AddVideo(processedVideo);
 
                 await unitOfWork.CommitAsync();
