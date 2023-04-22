@@ -38,13 +38,18 @@ namespace Infrastructure.EFCore {
                     await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
                     await DoCommitAsync(cancellationToken);
                 } else {
-                    await ExecuteTransactionAsync(async () => {
+                    try {
+                        await ExecuteTransactionAsync(async () => {
+                            _transactionalEventsCommitter!.RemoveFromContext(eventGroups);
+                            await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
+                            await DoCommitAsync(false, cancellationToken);
+                        }, options => {
+                            (options as EfCoreTransactionOptions)!.ResetContext = false;
+                        }, cancellationToken);
+                    } catch (Exception) {
                         _transactionalEventsCommitter!.RemoveFromContext(eventGroups);
-                        await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
-                        await DoCommitAsync(false, cancellationToken);
-                    }, options => {
-                        (options as EfCoreTransactionOptions)!.ResetContext = false;
-                    }, cancellationToken);
+                        throw;
+                    }
 
                     _dbContext.ChangeTracker.AcceptAllChanges();
                 }
