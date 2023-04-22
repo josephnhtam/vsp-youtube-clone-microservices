@@ -32,26 +32,34 @@ namespace Infrastructure.EFCore {
             }
 
             var eventGroups = _transactionalEventsCommitter?.ObtainEventGroups();
+
             if (eventGroups?.Count > 0) {
-                await ExecuteTransactionAsync(async () => {
-                    try {
-                        await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
-                        await DoCommitAsync(cancellationToken);
-                    } catch (Exception) {
+                if (IsInTransaction()) {
+                    await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
+                    await DoCommitAsync(cancellationToken);
+                } else {
+                    await ExecuteTransactionAsync(async () => {
                         _transactionalEventsCommitter!.RemoveFromContext(eventGroups);
-                        throw;
-                    }
-                }, options => {
-                    (options as EfCoreTransactionOptions)!.ResetContext = false;
-                }, cancellationToken);
+                        await _transactionalEventsCommitter!.AddToContextAsync(eventGroups, _config.TransactionalEventAvailableDelay);
+                        await DoCommitAsync(false, cancellationToken);
+                    }, options => {
+                        (options as EfCoreTransactionOptions)!.ResetContext = false;
+                    }, cancellationToken);
+
+                    _dbContext.ChangeTracker.AcceptAllChanges();
+                }
             } else {
                 await DoCommitAsync(cancellationToken);
             }
         }
 
         public async Task DoCommitAsync (CancellationToken cancellationToken = default) {
+            await DoCommitAsync(true, cancellationToken);
+        }
+
+        private async Task DoCommitAsync (bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default) {
             try {
-                await _dbContext.SaveChangesAsync(cancellationToken);
+                await _dbContext.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
             } catch (DbUpdateException ex) {
                 if (ex.Identify(ExceptionCategories.UniqueViolation)) {
                     foreach (var entry in ex.Entries) {
@@ -67,7 +75,7 @@ namespace Infrastructure.EFCore {
         }
 
         public async Task ExecuteTransactionAsync (Func<Task> task, Action<ITransactionOptions>? configureOptions = null, CancellationToken cancellationToken = default) {
-            if (_dbContext.Database.CurrentTransaction != null) {
+            if (IsInTransaction()) {
                 await task.Invoke();
                 return;
             }
