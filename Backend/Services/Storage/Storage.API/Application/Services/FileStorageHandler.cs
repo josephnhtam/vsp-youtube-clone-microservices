@@ -1,4 +1,4 @@
-﻿using Infrastructure;
+﻿using Domain.Contracts;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using SharedKernel.Exceptions;

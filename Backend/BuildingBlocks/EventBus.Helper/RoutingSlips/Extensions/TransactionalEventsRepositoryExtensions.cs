@@ -1,7 +1,7 @@
-﻿using EventBus.Helper.RoutingSlips.Contracts;
+﻿using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
+using EventBus.Helper.RoutingSlips.Contracts;
 using EventBus.RabbitMQ;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
 
 namespace EventBus.Helper.RoutingSlips.Extensions {
     public static class TransactionalEventsContextExtensions {

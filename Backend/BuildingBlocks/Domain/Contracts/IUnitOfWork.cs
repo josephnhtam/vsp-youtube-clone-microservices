@@ -1,4 +1,4 @@
-﻿namespace Infrastructure {
+﻿namespace Domain.Contracts {
     public interface IUnitOfWork {
         Task ExecuteOptimisticUpdateAsync (Func<Task> task);
         Task ExecuteTransactionAsync (Func<Task> task, Action<ITransactionOptions>? configureOptions = null, CancellationToken cancellationToken = default);

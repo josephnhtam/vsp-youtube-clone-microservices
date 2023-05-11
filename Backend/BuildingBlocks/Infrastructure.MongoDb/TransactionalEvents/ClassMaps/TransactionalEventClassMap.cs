@@ -1,4 +1,4 @@
-﻿using Infrastructure.TransactionalEvents;
+﻿using Domain.TransactionalEvents;
 using MongoDB.Bson.Serialization;
 
 namespace Infrastructure.MongoDb.TransactionalEvents.ClassMaps {

@@ -1,4 +1,4 @@
-﻿using Infrastructure;
+﻿using Domain.Contracts;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using SharedKernel.Processors;

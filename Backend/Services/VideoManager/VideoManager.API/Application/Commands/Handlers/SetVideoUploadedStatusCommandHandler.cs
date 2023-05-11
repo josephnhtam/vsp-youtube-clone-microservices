@@ -1,7 +1,7 @@
 ﻿using Application.Handlers;
-using Infrastructure;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
+using Domain.Contracts;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
 using MediatR;
 using Storage.Shared.IntegrationEvents;
 using VideoManager.Domain.Contracts;

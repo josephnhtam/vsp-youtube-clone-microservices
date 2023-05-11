@@ -1,6 +1,6 @@
 ﻿using Application.Handlers;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
 using Microsoft.Extensions.Options;
 using SharedKernel.Exceptions;
 using SharedKernel.Utilities;

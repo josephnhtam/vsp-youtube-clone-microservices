@@ -1,6 +1,6 @@
 ﻿using Application.Handlers;
 using AutoMapper;
-using Infrastructure;
+using Domain.Contracts;
 using MediatR;
 using SharedKernel.Exceptions;
 using Users.API.Application.DtoModels;

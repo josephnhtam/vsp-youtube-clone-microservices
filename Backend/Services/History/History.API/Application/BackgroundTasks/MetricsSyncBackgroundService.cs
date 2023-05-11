@@ -1,10 +1,10 @@
-﻿using EventBus;
+﻿using Domain.Contracts;
+using EventBus;
 using EventBus.RabbitMQ;
 using History.API.Application.Configurations;
 using History.API.Application.IntegrationEvents;
 using History.Domain.Contracts;
 using History.Domain.Models;
-using Infrastructure;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;
 using SharedKernel.Processors;

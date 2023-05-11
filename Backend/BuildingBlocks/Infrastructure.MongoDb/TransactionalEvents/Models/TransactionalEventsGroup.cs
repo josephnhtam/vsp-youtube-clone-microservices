@@ -1,4 +1,4 @@
-﻿using Infrastructure.TransactionalEvents;
+﻿using Domain.TransactionalEvents;
 
 namespace Infrastructure.MongoDb.TransactionalEvents.Models {
     public class TransactionalEventsGroup {

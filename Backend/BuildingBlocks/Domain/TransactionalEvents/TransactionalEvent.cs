@@ -1,7 +1,7 @@
 ﻿using SharedKernel.Utilities;
 using System.Text.Json;
 
-namespace Infrastructure.TransactionalEvents {
+namespace Domain.TransactionalEvents {
     public class TransactionalEvent {
         public string Category { get; private set; }
         public string Type { get; private set; }

@@ -1,5 +1,5 @@
-﻿using Infrastructure;
-using Infrastructure.TransactionalEvents;
+﻿using Domain.Contracts;
+using Domain.TransactionalEvents.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenTelemetry;

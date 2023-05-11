@@ -1,6 +1,6 @@
 ﻿using Application.Handlers;
-using Infrastructure;
-using Infrastructure.TransactionalEvents;
+using Domain.Contracts;
+using Domain.TransactionalEvents.Contracts;
 using MediatR;
 using SharedKernel.Exceptions;
 using VideoStore.Domain.Contracts;

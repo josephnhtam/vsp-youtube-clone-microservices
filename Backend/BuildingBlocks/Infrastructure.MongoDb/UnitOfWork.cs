@@ -1,4 +1,5 @@
-﻿using Domain.Events;
+﻿using Domain.Contracts;
+using Domain.Events;
 using Infrastructure.MongoDb.Contexts;
 using Infrastructure.TransactionalEvents;
 using Microsoft.Extensions.DependencyInjection;

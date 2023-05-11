@@ -1,4 +1,4 @@
-﻿using Infrastructure;
+﻿using Domain.Contracts;
 using Infrastructure.Idempotency;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

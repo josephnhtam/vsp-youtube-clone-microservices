@@ -1,6 +1,6 @@
 ﻿using Domain.Events;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
 using VideoManager.API.Application.IntegrationEvents;
 using VideoManager.Domain.Contracts;
 using VideoManager.Domain.DomainEvents;

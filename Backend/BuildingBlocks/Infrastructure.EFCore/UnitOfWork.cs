@@ -1,4 +1,5 @@
-﻿using Domain.Events;
+﻿using Domain.Contracts;
+using Domain.Events;
 using Infrastructure.TransactionalEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

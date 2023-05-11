@@ -1,7 +1,7 @@
 ﻿using Community.Domain.Contracts;
 using Community.Domain.DomainEvents;
+using Domain.Contracts;
 using Domain.Events;
-using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Community.Infrastructure.DomainEventHandlers {

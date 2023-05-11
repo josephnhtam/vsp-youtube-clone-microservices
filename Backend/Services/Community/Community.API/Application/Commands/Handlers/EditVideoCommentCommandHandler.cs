@@ -1,6 +1,6 @@
 ﻿using Application.Handlers;
 using Community.Domain.Contracts;
-using Infrastructure;
+using Domain.Contracts;
 using MediatR;
 using SharedKernel.Exceptions;
 

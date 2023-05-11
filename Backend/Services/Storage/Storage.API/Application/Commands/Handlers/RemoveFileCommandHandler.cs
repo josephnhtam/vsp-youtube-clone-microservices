@@ -1,5 +1,5 @@
 ﻿using Application.Handlers;
-using Infrastructure;
+using Domain.Contracts;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Storage.API.Application.Configurations;

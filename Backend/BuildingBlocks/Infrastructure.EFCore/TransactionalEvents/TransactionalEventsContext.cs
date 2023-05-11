@@ -1,4 +1,6 @@
-﻿using Infrastructure.EFCore.TransactionalEvents.Models;
+﻿using Domain.TransactionalEvents;
+using Domain.TransactionalEvents.Contracts;
+using Infrastructure.EFCore.TransactionalEvents.Models;
 using Infrastructure.TransactionalEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,7 +1,8 @@
-﻿using EventBus;
+﻿using Domain.TransactionalEvents.Contracts;
+using EventBus;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.TransactionalEvents.Outbox {
+namespace Domain.TransactionalEvents.Outbox {
     public static class TransactionalEventsContextExtensions {
 
         private static Type? _propertiesType;

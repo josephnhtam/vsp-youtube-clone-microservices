@@ -1,5 +1,5 @@
-﻿using EventBus;
-using Infrastructure;
+﻿using Domain.Contracts;
+using EventBus;
 using Microsoft.Extensions.Options;
 using SharedKernel.Exceptions;
 using VideoProcessor.Application.Configurations;

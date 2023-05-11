@@ -1,5 +1,5 @@
 ﻿using Application.Handlers;
-using Infrastructure;
+using Domain.Contracts;
 using MediatR;
 using SharedKernel.Exceptions;
 using VideoStore.Domain.Contracts;

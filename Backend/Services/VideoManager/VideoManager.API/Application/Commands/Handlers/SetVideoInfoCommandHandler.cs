@@ -1,5 +1,5 @@
 ﻿using Application.Handlers;
-using Infrastructure;
+using Domain.Contracts;
 using SharedKernel.Exceptions;
 using VideoManager.API.Commands;
 using VideoManager.Domain.Contracts;

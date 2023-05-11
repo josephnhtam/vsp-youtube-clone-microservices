@@ -1,5 +1,6 @@
-﻿using EventBus;
-using Infrastructure.TransactionalEvents.Outbox;
+﻿using Domain.TransactionalEvents;
+using Domain.TransactionalEvents.Outbox;
+using EventBus;
 using Infrastructure.TransactionalEvents.Processing;
 using Microsoft.Extensions.Logging;
 

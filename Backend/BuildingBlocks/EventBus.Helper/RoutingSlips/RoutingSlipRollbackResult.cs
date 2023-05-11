@@ -1,8 +1,8 @@
-﻿using EventBus.Helper.RoutingSlips.Contracts;
+﻿using Domain.Contracts;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
+using EventBus.Helper.RoutingSlips.Contracts;
 using EventBus.RabbitMQ;
-using Infrastructure;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EventBus.Helper.RoutingSlips {

@@ -1,7 +1,7 @@
 ﻿using Application.Handlers;
+using Domain.Contracts;
 using History.Domain.Contracts;
 using History.Infrastructure.Contracts;
-using Infrastructure;
 using MediatR;
 
 namespace History.API.Application.Commands.Handlers {

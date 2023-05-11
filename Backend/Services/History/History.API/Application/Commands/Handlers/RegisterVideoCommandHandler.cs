@@ -1,7 +1,7 @@
 ﻿using Application.Handlers;
+using Domain.Contracts;
 using History.Domain.Contracts;
 using History.Domain.Models;
-using Infrastructure;
 using MediatR;
 using SharedKernel.Exceptions;
 

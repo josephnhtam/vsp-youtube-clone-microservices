@@ -1,5 +1,5 @@
 ﻿using Application.Handlers;
-using Infrastructure;
+using Domain.Contracts;
 using Library.Domain.Contracts;
 using Library.Domain.Models;
 using MediatR;

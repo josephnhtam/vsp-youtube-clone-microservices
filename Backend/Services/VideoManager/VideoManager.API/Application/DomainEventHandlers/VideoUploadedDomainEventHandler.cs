@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Events;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
 using EventBus.Helper.RoutingSlips.Extensions;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
 using VideoManager.API.Application.DtoModels;
 using VideoManager.API.Application.IntegrationEvents;
 using VideoManager.Domain.Contracts;

@@ -1,8 +1,8 @@
 ﻿using Community.API.Application.IntegrationEvents;
 using Community.Domain.DomainEvents;
 using Domain.Events;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
 
 namespace Community.API.Application.DomainEventHandlers {
     public class VideoForumCommentAddedDomainEventHandler : IDomainEventHandler<VideoForumCommentAddedDomainEvent> {

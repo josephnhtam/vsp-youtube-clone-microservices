@@ -1,4 +1,4 @@
-﻿using Infrastructure.TransactionalEvents;
+﻿using Domain.TransactionalEvents;
 
 namespace Infrastructure.EFCore.TransactionalEvents.Models {
     public class TransactionalEventData {

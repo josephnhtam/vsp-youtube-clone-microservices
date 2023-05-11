@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.TransactionalEvents {
+﻿using Domain.TransactionalEvents;
+
+namespace Infrastructure.TransactionalEvents {
     public interface ITransactionalEventsCommitter {
         Dictionary<string, List<TransactionalEvent>> ObtainEventGroups ();
         void RemoveFromContext (Dictionary<string, List<TransactionalEvent>> eventGroups);

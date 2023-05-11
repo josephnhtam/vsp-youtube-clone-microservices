@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Events;
-using Infrastructure.TransactionalEvents;
-using Infrastructure.TransactionalEvents.Outbox;
+using Domain.TransactionalEvents.Contracts;
+using Domain.TransactionalEvents.Outbox;
 using Library.API.Application.DtoModels;
 using Library.API.Application.IntegrationEvents;
 using Library.Domain.Contracts;

@@ -4,7 +4,6 @@ using Duende.IdentityServer;
 using HealthChecks.UI.Client;
 using IdentityProvider.Configurations;
 using Infrastructure.EFCore.Exceptions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

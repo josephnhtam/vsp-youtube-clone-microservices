@@ -2,7 +2,7 @@
 using SharedKernel.Utilities;
 using System.Text.Json;
 
-namespace Infrastructure.TransactionalEvents.Outbox {
+namespace Domain.TransactionalEvents.Outbox {
     public class OutboxMessage {
 
         public const string Category = "Outbox";

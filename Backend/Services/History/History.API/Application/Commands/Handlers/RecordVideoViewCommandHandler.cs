@@ -1,8 +1,8 @@
 ﻿using Application.Handlers;
+using Domain.Contracts;
 using History.API.Application.Configurations;
 using History.Domain.Contracts;
 using History.Infrastructure.Contracts;
-using Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Options;
 using SharedKernel.Exceptions;

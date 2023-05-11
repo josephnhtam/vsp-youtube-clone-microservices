@@ -1,6 +1,6 @@
-﻿using EventBus;
+﻿using Domain.Contracts;
+using EventBus;
 using EventBus.RabbitMQ;
-using Infrastructure;
 using Library.API.Application.Configurations;
 using Library.API.Application.IntegrationEvents;
 using Library.Domain.Contracts;

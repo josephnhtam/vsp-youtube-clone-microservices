@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Events;
+using Domain.TransactionalEvents.Contracts;
 using EventBus.Helper.RoutingSlips.Extensions;
-using Infrastructure.TransactionalEvents;
 using Users.API.Application.DtoModels;
 using Users.Domain.Contracts;
 using Users.Domain.DomainEvents;

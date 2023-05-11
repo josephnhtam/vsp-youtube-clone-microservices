@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.TransactionalEvents {
+﻿namespace Domain.TransactionalEvents.Contracts {
     public interface ITransactionalEventsContext {
         IServiceProvider ServiceProvider { get; }
         void AddEvent (TransactionalEvent message);

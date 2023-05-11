@@ -1,4 +1,6 @@
-﻿using Infrastructure.MongoDb.Contexts;
+﻿using Domain.TransactionalEvents;
+using Domain.TransactionalEvents.Contracts;
+using Infrastructure.MongoDb.Contexts;
 using Infrastructure.MongoDb.TransactionalEvents.Models;
 using Infrastructure.TransactionalEvents;
 using Microsoft.Extensions.DependencyInjection;
