@@ -2,8 +2,6 @@
 
 This repository contains a YouTube Clone microservices application built with .NET 7 and Angular 14.
 
-> This project is still in progress and subject to changes and refactoring.
-
 ![Screenshot](Images/Screenshots/1.png)
 
 ### Table of Contents
