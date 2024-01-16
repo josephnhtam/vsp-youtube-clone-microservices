@@ -46,7 +46,11 @@ namespace EventBus.RabbitMQ {
 
                     using var cts = CancellationTokenSource.CreateLinkedTokenSource(_connectionAborted, channelAborted);
 
-                    await Task.Delay(Timeout.Infinite, cts.Token);
+                    try {
+                        await Task.Delay(Timeout.Infinite, cts.Token);
+                    } finally {
+                        cts.Cancel();
+                    }
                 } catch (OperationCanceledException) {
                     _logger.LogInformation("Sub channel is stopping");
                 } catch (Exception ex) {

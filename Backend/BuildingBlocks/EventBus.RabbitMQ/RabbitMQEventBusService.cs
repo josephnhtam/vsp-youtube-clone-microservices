@@ -60,13 +60,16 @@ namespace EventBus.RabbitMQ {
         }
 
         private async Task ShutdownTask (CancellationToken stoppingToken, CancellationToken connectionAborted) {
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken, connectionAborted);
+
             try {
-                using var cts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken, connectionAborted);
                 await Task.Delay(Timeout.Infinite, cts.Token);
             } catch (OperationCanceledException) {
                 if (!connectionAborted.IsCancellationRequested) {
                     _connection.Stop();
                 }
+            } finally { 
+                cts.Cancel(); 
             }
         }
 

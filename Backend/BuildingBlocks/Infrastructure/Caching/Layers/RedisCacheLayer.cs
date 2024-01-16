@@ -106,7 +106,7 @@ namespace Infrastructure.Caching.Layers {
 
             batch.Execute();
 
-            await Task.WhenAny(Task.WhenAll(tasks), Task.Delay(Timeout.Infinite, cancellationToken));
+            await Task.WhenAll(tasks).WithCancellation(cancellationToken);
         }
 
         public async ValueTask<object?> GetCacheAsync (string key, CancellationToken cancellationToken = default) {

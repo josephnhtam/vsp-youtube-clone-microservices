@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Exceptions;
+using SharedKernel.Utilities;
 using StackExchange.Redis;
 using Subscriptions.Domain.Contracts;
 using Subscriptions.Domain.Models;
@@ -48,7 +49,7 @@ namespace Subscriptions.Infrastructure.DataAccess {
 
             batch.Execute();
 
-            await Task.WhenAny(Task.WhenAll(tasks), Task.Delay(Timeout.Infinite, cancellationToken));
+            await Task.WhenAll(tasks).WithCancellation(cancellationToken);
         }
 
         public async Task<string?> GetLastReceivedMessageIdAsync (string userId) {
