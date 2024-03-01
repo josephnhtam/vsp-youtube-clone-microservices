@@ -3,8 +3,9 @@ FROM node:14-alpine AS build
 WORKDIR /usr/local/app
 
 COPY package.json .
+COPY package-lock.json .
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
