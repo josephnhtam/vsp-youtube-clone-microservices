@@ -14,8 +14,8 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.2.2" />
-    <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.2.2" />
-    <PackageReference Include="Duende.IdentityServer.EntityFramework.Storage" Version="6.2.2" />
+    <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.3.8" />
+    <PackageReference Include="Duende.IdentityServer.EntityFramework.Storage" Version="6.3.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2" />
